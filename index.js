@@ -23,7 +23,7 @@ client.on('ready', async function () {
 });
 
 
-client.on('message', async function (msg) {
+client.on('messageCreate', async function (msg) {
     if (msg.webhookID != null) return; // Ignores webhooks
     if (prefixes[msg.guild.id] != undefined) { prefix = prefixes[msg.guild.id]; } else { prefix = "." }; // sets the custom prefix
     if (msg.content.startsWith(prefix)) {
