@@ -1,0 +1,22 @@
+{
+  "name": "discord-v13",
+  "version": "1.0.0",
+  "description": "Bot de Discord escrito en node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/opus": "^0.5.3",
+    "@discordjs/voice": "^0.5.1",
+    "@google-cloud/text-to-speech": "^3.2.4",
+    "discord.js": "^13.0.0-dev.fe6cc0c.1625227356",
+    "dotenv": "^10.0.0",
+    "ffmpeg-static": "^4.4.0",
+    "rss-parser": "^3.12.0",
+    "tweetnacl": "^1.0.3"
+  }
+}
