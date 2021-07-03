@@ -1,9 +1,8 @@
 const fs = require('fs');
 require('dotenv').config();
-let channels = JSON.parse(fs.readFileSync('./data/channels.json', 'utf-8'));
 
 
-function relayMsg(msg, prefix) {
+function relayMsg(msg, prefix, channels) {
     let error_img = ["https://support.discord.com/hc/article_attachments/1500008304041/Screenshot_3.png", "https://support.discord.com/hc/article_attachments/115002742811/mceclip1.png"];
     let error_msg = "Usa `!setup + channelID` para empezar a mandar mensajes a otro servidor.\n"
     error_msg += "(Debe tener permisos: ADMINISTRATOR o MANAGE_CHANNELS)\n";
@@ -34,6 +33,7 @@ function relayMsg(msg, prefix) {
             msg.channel.send({ content: error_msg, files: error_img }).catch();
         }
     }
+    return channels;
 }
 
 

@@ -11,12 +11,13 @@ const relay = require('./utils/relay_msg.js');
 const firstSetup = require('./utils/firstSetup.js');
 const help = require('./utils/help.js');
 // const test = require('./utils/tests_autoescuela.js');
-let prefixes = JSON.parse(fs.readFileSync('./data/customPrefix.json', 'utf-8'));
-
+let prefixes, channels;
 
 client.on('ready', async function () {
     console.log('Bot ready');
     firstSetup.first_execution();
+    prefixes = JSON.parse(fs.readFileSync('./data/customPrefix.json', 'utf-8'));
+    channels = JSON.parse(fs.readFileSync('./data/channels.json', 'utf-8'));
     const mins15 = 900000;
     setInterval(rss.sendRSS, mins15, client);
 });
@@ -33,7 +34,7 @@ client.on('message', async function (msg) {
         rss.setRSSchannel(msg, prefix);
         rss.deleteRSSchannel(msg, prefix);
         tts.disable_enable_voice(msg, prefix);
-        relay.relayMsg(msg, prefix);
+        channels = relay.relayMsg(msg, prefix, channels);
         // test.start_test(msg, prefix);
         // Delete embeds
         // TTT
