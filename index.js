@@ -43,7 +43,7 @@ client.on('messageCreate', async function (msg) {
 });
 
 
-client.on('interaction', async interaction => {
+client.on('interactionCreate', async interaction => {
     await interaction.deferUpdate();
     if (!interaction.isMessageComponent() && interaction.componentType !== 'BUTTON') return;
     await xgame.xgame_continue(interaction);
