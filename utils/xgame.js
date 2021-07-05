@@ -1,6 +1,6 @@
 const { MessageActionRow, MessageButton } = require('discord.js');
-
 let games = {};
+
 
 function getRandomInt(min, max) { return Math.floor(Math.random() * (max - min)) + min; };
 
@@ -9,13 +9,13 @@ function xgame_start(msg, prefix) {
     const instructions = "Objetivo: Ocultar todas las x pulsando los botones. Los botones se invierten en forma de cruz +";
     if (msg.content.toLowerCase().startsWith(`${prefix}xgame`)) {
         if (msg.content.toLowerCase() == `${prefix}xgame`) {
-            let game = new x_game(getRandomInt(3, 5), getRandomInt(3, 5));
+            let game = new x_game(getRandomInt(3, 6), getRandomInt(3, 6));
             msg.channel.send({ content: instructions, components: game.toMessage() }).then(function (msg2) { game.message_id = msg2.id; });
             games[msg.author.id] = game;
         } else if (msg.content.toLowerCase().length == 10 && msg.content.includes(" ")) {
-            let instructions = msg.content.split(" ");
-            if (instructions[1].toLowerCase().includes("x")) {
-                let dimensions = instructions[1].toLowerCase().split("x");
+            let msg_instructions = msg.content.split(" ");
+            if (msg_instructions[1].toLowerCase().includes("x")) {
+                let dimensions = msg_instructions[1].toLowerCase().split("x");
                 try {
                     dimensions[0] = parseInt(dimensions[0]);
                     dimensions[1] = parseInt(dimensions[1]);
@@ -25,6 +25,8 @@ function xgame_start(msg, prefix) {
                         let game = new x_game(dimensions[0], dimensions[1]);
                         msg.channel.send({ content: instructions, components: game.toMessage() }).then(function (msg2) { game.message_id = msg2.id; });
                         games[msg.author.id] = game;
+                    } else {
+                        msg.channel.send(error_message);
                     }
                 } else {
                     msg.channel.send(error_message);
@@ -44,8 +46,8 @@ async function xgame_continue(interaction) {
     const win = "🎉🎉🎉 Ganaste 🎉🎉🎉";
     if (games[interaction.user.id] !== undefined) {
         if (interaction.message.id == games[interaction.user.id].message_id) {
-            let x = interaction.customID[0];
-            let y = interaction.customID[1];
+            let x = interaction.customId[0];
+            let y = interaction.customId[1];
             games[interaction.user.id].change_boxes(x, y);
             interaction.editReply({ components: games[interaction.user.id].toMessage() });
             if (games[interaction.user.id].check_win(" ")) {
@@ -107,7 +109,7 @@ class x_game {
             const row = new MessageActionRow();
             for (let x = 0; x < this.x; x++) {
                 row.addComponents(new MessageButton()
-                    .setCustomID(x.toString() + y.toString())
+                    .setCustomId(x.toString() + y.toString())
                     .setLabel(this.board[y][x])
                     .setStyle('SECONDARY'));
             }

@@ -57,4 +57,4 @@ client.on("voiceStateUpdate", function (oldMember, newMember) {
 });
 
 
-client.login(process.env.TOKEN);
+client.login(process.env.TOKENHIPPO);

@@ -36,7 +36,7 @@ class list_class {
     createButton() {
         const row = new MessageActionRow()
             .addComponents(new MessageButton()
-                .setCustomID("Join")
+                .setCustomId("Join")
                 .setLabel("Unirse/Salirse")
                 .setStyle('SECONDARY'));
         return [row]
