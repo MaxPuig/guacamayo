@@ -54,7 +54,7 @@ async function descargar_audio(displayName, userID, guildID, datos) {
 
 //Si se ha unido alguien a un canal de voz (y no se ha desconectado) y no es un bot
 function userJoined(oldMember, newMember) {
-    if (oldMember.channelID != newMember.channelID && (newMember.channelID != null || newMember.channelID != undefined) && !newMember.member.user.bot) {
+    if (oldMember.channelId != newMember.channelId && (newMember.channelId != null || newMember.channelId != undefined) && !newMember.member.user.bot) {
         let usersInChannel = 0;
         newMember.channel.members.forEach(usuario => {
             if (!usuario.user.bot) {
