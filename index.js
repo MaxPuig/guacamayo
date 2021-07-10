@@ -14,7 +14,7 @@ const help = require('./utils/help.js');
 let prefixes, channels;
 
 client.on('ready', async function () {
-    console.log('Bot ready');
+    console.log('Bot ready!');
     firstSetup.first_execution();
     prefixes = JSON.parse(fs.readFileSync('./data/customPrefix.json', 'utf-8'));
     channels = JSON.parse(fs.readFileSync('./data/channels.json', 'utf-8'));
@@ -52,7 +52,7 @@ client.on('interactionCreate', async interaction => {
 });
 
 
-client.on("voiceStateUpdate", function (oldMember, newMember) {
+client.on('voiceStateUpdate', function (oldMember, newMember) {
     tts.userJoined(oldMember, newMember)
 });
 
