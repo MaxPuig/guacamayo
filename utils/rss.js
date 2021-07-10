@@ -8,7 +8,7 @@ async function sendRSS(client) {
     rssChannels = JSON.parse(fs.readFileSync('./data/rss.json', 'utf-8'));
     try {
         if (rssChannels.length > 0) {
-            let oferta = await freeFames();
+            let oferta = await freeGames();
             if (oferta.length > 0) {
                 for (const channel in rssChannels) {
                     client.channels.cache.get(rssChannels[channel]).send(oferta);
@@ -21,17 +21,21 @@ async function sendRSS(client) {
 
 //Establece el canal donde tiene que enviar los mensajes
 function setRSSchannel(msg, prefix) {
-    if (msg.content == `${prefix}rss` && msg.member.permissions.has("ADMINISTRATOR")) {
+    if (msg.content == `${prefix}rss` && msg.member.permissions.has('ADMINISTRATOR')) {
         rssChannels = JSON.parse(fs.readFileSync('./data/rss.json', 'utf-8'));
-        rssChannels.push(msg.channel.id)
-        fs.writeFileSync('./data/rss.json', JSON.stringify(rssChannels));
-        msg.channel.send('Canal establecido. `' + prefix + 'rss borrar` Para dejar de enviar las ofertas.');
+        if (rssChannels.indexOf(msg.channel.id) !== -1) {
+            msg.channel.send('El canal ya estaba establecido. `' + prefix + 'rss borrar` Para dejar de enviar las ofertas.');
+        } else {
+            rssChannels.push(msg.channel.id)
+            fs.writeFileSync('./data/rss.json', JSON.stringify(rssChannels));
+            msg.channel.send('Canal establecido. `' + prefix + 'rss borrar` Para dejar de enviar las ofertas.');
+        }
     }
 };
 
 
 function deleteRSSchannel(msg, prefix) {
-    if (msg.content == `${prefix}rss borrar` && msg.member.permissions.has("ADMINISTRATOR")) {
+    if (msg.content == `${prefix}rss borrar` && msg.member.permissions.has('ADMINISTRATOR')) {
         rssChannels = JSON.parse(fs.readFileSync('./data/rss.json', 'utf-8'));
         const index = rssChannels.indexOf(msg.channel.id);
         if (index > -1) { rssChannels.splice(index, 1); }
@@ -42,9 +46,9 @@ function deleteRSSchannel(msg, prefix) {
 
 
 //Crea un string con las nuevas ofertas
-async function freeFames() {
+async function freeGames() {
     let feed = await parser.parseURL('https://steamcommunity.com/groups/GrabFreeGames/rss/');
-    let nombres, link;
+    let nombres;
     let nombresNuevos = [];
     let mensaje = '';
     try {
@@ -58,21 +62,21 @@ async function freeFames() {
             if (!mensaje.startsWith('**Nueva Oferta**')) {
                 mensaje += '**Nueva Oferta**\n';
             }
-            link = item.content;
-            link = link.split('href=\"');
-            link = link[1].split('"');
-            link = link[0];
-            if (link.startsWith('https://steamcommunity.com/linkfilter/?url=')) {
-                link = link.split('https://steamcommunity.com/linkfilter/?url=')[1];
+            let links = item.content.split('href="');
+            links.shift();
+            let gameLinks = [];
+            for (let link of links) {
+                if (link.includes("discord.gg")) { break; }
+                link = link.split('"')[0];
+                link = link.replace('https://steamcommunity.com/linkfilter/?url=', '');
+                link = link.replace('store.epicgames.com/GRABFREEGAMES/', 'www.epicgames.com/store/es-ES/p/');
+                gameLinks.push(link);
             }
-            if (link.startsWith('https://store.epicgames.com/GRABFREEGAMES')) {
-                link = link.replace('epicgames.com/GRABFREEGAMES/', 'epicgames.com/store/');
-            }
-            mensaje += item.title + '\n' + link + '\n\n';
+            mensaje += item.title + '\n' + gameLinks.join('\n') + '\n\n';
         }
     });
     fs.writeFileSync('./data/freeGames.json', JSON.stringify(nombresNuevos));
-    return mensaje;
+    return mensaje.substring(0, 2000);
 };
 
 
