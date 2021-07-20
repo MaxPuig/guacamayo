@@ -1,5 +1,8 @@
 const fs = require('fs');
 
+
+/** Cambia el prefijo con el que se llama al bot. ("." por defecto).
+ * Devuelve un objeto con todos los prefijos. */
 function changePrefix(msg, prefixes) {
     if (msg.member.permissions.has("ADMINISTRATOR") && msg.content.toLowerCase().startsWith(prefix + "prefijo")) { // change prefix (only admin)
         let newPrefix = msg.content.split(" ")[1];
@@ -9,5 +12,6 @@ function changePrefix(msg, prefixes) {
     }
     return prefixes;
 }
+
 
 module.exports = { changePrefix };

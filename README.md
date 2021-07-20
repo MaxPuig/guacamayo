@@ -11,7 +11,7 @@
 
 ## COMANDOS
 - `.prefijo <nuevo prefijo>` para cambiar el prefijo de los comandos. Ejemplo `.prefijo !` (Solo admin)
-- `.voice <enable/disable>` para activar/desactivar los avisos de quien se une a un canal de voz. (Solo admin)
+- `.voz <activar/desactivar>` para activar/desactivar los avisos de quien se une a un canal de voz. (Solo admin)
 - `.rss` para establecer ese canal de texto para recibir ofertas de juegos. `.rss borrar` para deshacerlo. (Solo admin)
 - `.relay` info sobre como mandar mensajes entre servidores. (Solo admin)
 - `.lista` para empezar una lista de nombres. Hay que pulsar el botón para unirse.

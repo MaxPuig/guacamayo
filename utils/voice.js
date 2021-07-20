@@ -7,32 +7,33 @@ const { createDiscordJSAdapter } = require('./adapter');
 const { createReadStream } = require('fs');
 
 
+/** Activa o desactiva la función de avisar por el canal de voz quién se ha unido.*/
 function disable_enable_voice(msg, prefix) {
-    if (msg.content == `${prefix}voice disable` && msg.member.permissions.has("ADMINISTRATOR")) {
+    if (msg.content.toLowerCase() == `${prefix}voz desactivar` && msg.member.permissions.has("ADMINISTRATOR")) {
         let datos = JSON.parse(fs.readFileSync('./data/nombresAudio.json', 'utf-8'));
         if (datos[msg.channel.guild.id] != undefined) {
             datos[msg.channel.guild.id]["disabled"] = true;
-            msg.channel.send('Avisos de voz desactivados. `' + prefix + 'voice enable` para deshacer.');
+            msg.channel.send('Avisos de voz desactivados. `' + prefix + 'voz activar` para deshacer.');
         } else {
             datos[msg.channel.guild.id] = { "disabled": true };
-            msg.channel.send('Avisos de voz desactivados. `' + prefix + 'voice enable` para deshacer.');
+            msg.channel.send('Avisos de voz desactivados. `' + prefix + 'voz activar` para deshacer.');
         }
         fs.writeFileSync('./data/nombresAudio.json', JSON.stringify(datos));
-    } else if (msg.content == `${prefix}voice enable` && msg.member.permissions.has("ADMINISTRATOR")) {
+    } else if (msg.content.toLowerCase() == `${prefix}voz activar` && msg.member.permissions.has("ADMINISTRATOR")) {
         let datos = JSON.parse(fs.readFileSync('./data/nombresAudio.json', 'utf-8'));
         if (datos[msg.channel.guild.id] != undefined) {
             datos[msg.channel.guild.id]["disabled"] = false;
-            msg.channel.send('Avisos de voz activados. `' + prefix + 'voice disable` para deshacer.');
+            msg.channel.send('Avisos de voz activados. `' + prefix + 'voz desactivar` para deshacer.');
         } else {
             datos[msg.channel.guild.id] = { "disabled": false };
-            msg.channel.send('Avisos de voz activados. `' + prefix + 'voice disable` para deshacer.');
+            msg.channel.send('Avisos de voz activados. `' + prefix + 'voz desactivar` para deshacer.');
         }
         fs.writeFileSync('./data/nombresAudio.json', JSON.stringify(datos));
     }
 }
 
 
-// Descarga el audio desde Google
+/** Descarga de la API de Google el audio (.mp3). */
 async function descargar_audio(displayName, userID, guildID, datos) {
     const text = 'Se ha unido ' + displayName;
     const request = {
@@ -52,38 +53,41 @@ async function descargar_audio(displayName, userID, guildID, datos) {
 }
 
 
-//Si se ha unido alguien a un canal de voz (y no se ha desconectado) y no es un bot
-function userJoined(oldMember, newMember) {
-    if (oldMember.channelId != newMember.channelId && (newMember.channelId != null || newMember.channelId != undefined) && !newMember.member.user.bot) {
+/** Si se ha unido alguien a un canal de voz, reproduce el audio.
+ * Debe de haber alguien (no bot) en el canal y que el server no haya desactivado la funcionalidad (.voz desactivar) para reproducir el audio. */
+function userJoined(oldState, newState) {
+    if (oldState.channelId != newState.channelId && (newState.channelId != null || newState.channelId != undefined) && !newState.member.user.bot) {
         let usersInChannel = 0;
-        newMember.channel.members.forEach(usuario => {
+        newState.channel.members.forEach(usuario => {
             if (!usuario.user.bot) {
                 usersInChannel++;
             }
         });
         if (usersInChannel > 1) {
             let datos = JSON.parse(fs.readFileSync('./data/nombresAudio.json', 'utf-8'));
-            if (datos[newMember.channel.guild.id] != undefined) {
-                if (datos[newMember.channel.guild.id]["disabled"] == true) {
+            if (datos[newState.channel.guild.id] != undefined) {
+                if (datos[newState.channel.guild.id]["disabled"] == true) {
                     return;
                 } else {
-                    playAudio(newMember, datos);
+                    playAudio(newState, datos);
                 }
             } else {
-                playAudio(newMember, datos);
+                playAudio(newState, datos);
             }
         }
     }
 }
 
 
-async function playAudio(new_Member, datos) {
-    let voiceChannel = new_Member.channel;
-    let currentDisplayName = new_Member.member.displayName;
+/** Si el no existe el audio o el usuario ha cambiado de nombre, descargará el audio.
+ * Deben de pasar al menos 10 segundos para que se reprodzca el audio. */
+async function playAudio(newState, datos) {
+    let voiceChannel = newState.channel;
+    let currentDisplayName = newState.member.displayName;
     let currentTime = Math.floor(Date.now() / 1000);
     let displayName, lastTime;
-    let userID = new_Member.member.user.id;
-    let guildID = new_Member.channel.guild.id;
+    let userID = newState.member.user.id;
+    let guildID = newState.channel.guild.id;
     try {
         displayName = datos[guildID][userID][0];
         lastTime = datos[guildID][userID][1];
@@ -93,7 +97,7 @@ async function playAudio(new_Member, datos) {
     if (displayName != currentDisplayName) { // Si el nombre NO es el mismo que el del audio
         await descargar_audio(currentDisplayName, userID, guildID, datos);
     }
-    if (currentTime - lastTime > 9) { // 9 Si han pasado más de 10 secs de la última vez que se ha reproducido
+    if (currentTime - lastTime > 9) { // Si han pasado más de 10 secs de la última vez que se ha reproducido
         datos[guildID][userID][1] = Math.floor(Date.now() / 1000);
         fs.writeFileSync('./data/nombresAudio.json', JSON.stringify(datos));
         const player = createAudioPlayer();
@@ -112,6 +116,7 @@ async function playAudio(new_Member, datos) {
 };
 
 
+/** Crea una conexión con el canal de voz. */
 async function connectToChannel(channel) { // message.member.voice.channel
     const connection = joinVoiceChannel({ channelId: channel.id, guildId: channel.guild.id, adapterCreator: createDiscordJSAdapter(channel), });
     try {
@@ -122,7 +127,6 @@ async function connectToChannel(channel) { // message.member.voice.channel
         throw error;
     }
 }
-
 
 
 module.exports = { userJoined, disable_enable_voice };

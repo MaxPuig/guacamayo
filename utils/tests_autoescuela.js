@@ -4,32 +4,34 @@ let tests = {};
 let user_progress = {};
 
 
+/** Envía un nuevo test, instrucciones de como empezar un test o las estadísticas de cada persona. */
 function start_test(msg, prefix) {
-    if (msg.content.toLowerCase() == prefix+"test") {
+    if (msg.content.toLowerCase() == prefix + "test") {
         // enviar info y Hechos / Aprobados / Suspendidos / No hechos
         user_progress = JSON.parse(fs.readFileSync('./data/resultados.json', 'utf-8'));
         if (user_progress[msg.author.id] != undefined) {
-            msg.channel.send({ content: 'Usa `'+prefix+'test` para ver info.\n`'+prefix+'test <numero 1-90>` para empezar ese test.', embeds: [user_progress[msg.author.id].progress()] })
+            msg.channel.send({ content: 'Usa `' + prefix + 'test` para ver info.\n`' + prefix + 'test <numero 1-90>` para empezar ese test.', embeds: [user_progress[msg.author.id].progress()] })
         } else {
-            msg.channel.send('Usa `'+prefix+'test` para ver info.\n`'+prefix+'test <numero 1-90>` para empezar ese test.\nHaz un test para ver tu progreso.')
+            msg.channel.send('Usa `' + prefix + 'test` para ver info.\n`' + prefix + 'test <numero 1-90>` para empezar ese test.\nHaz un test para ver tu progreso.')
         }
-    } else if (msg.content.toLowerCase().startsWith(prefix+"test ")) {
+    } else if (msg.content.toLowerCase().startsWith(prefix + "test ")) {
         if (isNumeric(msg.content.toLowerCase().split(" ")[1]) && 1 <= msg.content.toLowerCase().split(" ")[1] <= 90) {
             let test = new test_class(Number(msg.content.toLowerCase().split(" ")[1]));
             msg.channel.send(test.newTest()).then(function (msg2) { test.message_id = msg2.id; });
             tests[msg.author.id] = test;
         } else {
             // enviar error
-            msg.channel.send("Usa `"+prefix+"test` para ver info.\n`"+prefix+"test <numero>` para empezar ese test.")
+            msg.channel.send("Usa `" + prefix + "test` para ver info.\n`" + prefix + "test <numero>` para empezar ese test.")
         }
     }
 }
 
 
+/** Si el usuario responde a la pregunta usando los botones, corrige la pregunta mostrando la explicación o pasa a la siguiente. */
 async function test_continue(interaction) {
     if (tests[interaction.user.id] !== undefined) {
         if (interaction.message.id == tests[interaction.user.id].message_id) {
-            if (interaction.customID == 'Siguiente') {
+            if (interaction.customId == 'Siguiente') {
                 // next
                 await interaction.message.removeAttachments()
                 let answer = await tests[interaction.user.id].siguiente(interaction.user.id);
@@ -37,7 +39,7 @@ async function test_continue(interaction) {
             } else {
                 // coregir
                 if (tests[interaction.user.id].esperar_siguiente) return;
-                let answer = tests[interaction.user.id].corregir(interaction.customID);
+                let answer = tests[interaction.user.id].corregir(interaction.customId);
                 await interaction.editReply(answer);
             }
             if (tests[interaction.user.id].acabado) {
@@ -47,6 +49,8 @@ async function test_continue(interaction) {
     }
 }
 
+
+/** Función para saber si un string es un número. */
 function isNumeric(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
 }
@@ -74,7 +78,7 @@ class test_class {
         const abc = ["a", "b", "c"];
         for (let x = 0; x < 3; x++) {
             row.addComponents(new MessageButton()
-                .setCustomID(abc[x])
+                .setCustomId(abc[x])
                 .setLabel(abc[x])
                 .setStyle('SECONDARY'));
         }
@@ -116,19 +120,19 @@ class test_class {
         }
         const row = new MessageActionRow();
         row.addComponents(new MessageButton()
-            .setCustomID("a")
+            .setCustomId("a")
             .setLabel("a")
             .setStyle(a_color));
         row.addComponents(new MessageButton()
-            .setCustomID("b")
+            .setCustomId("b")
             .setLabel("b")
             .setStyle(b_color));
         row.addComponents(new MessageButton()
-            .setCustomID("c")
+            .setCustomId("c")
             .setLabel("c")
             .setStyle(c_color));
         row.addComponents(new MessageButton()
-            .setCustomID("Siguiente")
+            .setCustomId("Siguiente")
             .setLabel("Siguiente")
             .setStyle('SECONDARY'));
         if (this.test[this.pregunta].imagen) {
@@ -155,7 +159,7 @@ class test_class {
         } else {
             this.acabado = true;
             this.test_acabado(interaction_user_id);
-            return { embeds: [user_progress[interaction_user_id].progress()], components: []};
+            return { embeds: [user_progress[interaction_user_id].progress()], components: [] };
         }
     }
 }
@@ -201,7 +205,6 @@ class progress_class {
         this.aprobados.sort();
         this.suspendidos.sort();
     }
-
     progress() { //returns embed
         let hechos = "· ";
         for (let i = 0; i < this.done.length; i++) {

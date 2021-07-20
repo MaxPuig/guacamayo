@@ -2,9 +2,11 @@ const fs = require('fs');
 require('dotenv').config();
 
 
+/** Si se ha establecido un canal, reenviará todos los mensajes a ese canal.
+ * Devuelve un objeto con todos los canales establecidos. */
 function relayMsg(msg, prefix, channels) {
     let error_img = ["https://support.discord.com/hc/article_attachments/1500008304041/Screenshot_3.png", "https://support.discord.com/hc/article_attachments/115002742811/mceclip1.png"];
-    let error_msg = "Usa `!setup + channelID` para empezar a mandar mensajes a otro servidor.\n"
+    let error_msg = "Usa `" + prefix + "setup + channelID` para empezar a mandar mensajes a otro servidor.\n";
     error_msg += "(Debe tener permisos: ADMINISTRATOR o MANAGE_CHANNELS)\n";
     error_msg += "Para encontrar el channel ID: <https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID->\n";
     error_msg += "Asegurate de tener el modo desarollador activado(Ajustes>Avanzado>Modo desarollador: ON) y después click derecho sobre el text-channel de destino (`Copy ID`)\n";
@@ -15,7 +17,7 @@ function relayMsg(msg, prefix, channels) {
         let guild_id = channels[msg.channel.id];
         let message_send = "**`" + msg.author.username + " (" + msg.member.displayName + "):`** " + msg.content;
         if (msg.attachments.size > 0) { if (msg.attachments.first().size < 8387000) { attachment = [msg.attachments.first().url]; } else { message_send += "\n[File too Big]" } }
-        message_send.replace("@", "@ "); // no mentions
+        message_send.replace("@", "@ "); // delete mentions
         message_send = message_send.substr(0, 2000);
         let destination = client.channels.cache.get(guild_id);
         if (destination != undefined) {
@@ -35,7 +37,6 @@ function relayMsg(msg, prefix, channels) {
     }
     return channels;
 }
-
 
 
 module.exports = { relayMsg };

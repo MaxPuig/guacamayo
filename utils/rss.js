@@ -3,7 +3,8 @@ let parser = new Parser();
 const fs = require('fs');
 let rssChannels = [];
 
-//Cada 15 mins, si hay una oferta nueva la envía
+
+/** Recoge las ofertas de juegos de un feed RSS y las envía a todos los canales que se han "inscrito". */
 async function sendRSS(client) {
     rssChannels = JSON.parse(fs.readFileSync('./data/rss.json', 'utf-8'));
     try {
@@ -19,9 +20,9 @@ async function sendRSS(client) {
 };
 
 
-//Establece el canal donde tiene que enviar los mensajes
+/** Establece el canal donde tiene que enviar los mensajes y lo guarda en "./data/rss.json". */
 function setRSSchannel(msg, prefix) {
-    if (msg.content == `${prefix}rss` && msg.member.permissions.has('ADMINISTRATOR')) {
+    if (msg.content.toLowerCase() == `${prefix}rss` && msg.member.permissions.has('ADMINISTRATOR')) {
         rssChannels = JSON.parse(fs.readFileSync('./data/rss.json', 'utf-8'));
         if (rssChannels.indexOf(msg.channel.id) !== -1) {
             msg.channel.send('El canal ya estaba establecido. `' + prefix + 'rss borrar` Para dejar de enviar las ofertas.');
@@ -34,8 +35,9 @@ function setRSSchannel(msg, prefix) {
 };
 
 
+/** Elimina el canal de "./data/rss.json" para dejar de recibir las ofertas. */
 function deleteRSSchannel(msg, prefix) {
-    if (msg.content == `${prefix}rss borrar` && msg.member.permissions.has('ADMINISTRATOR')) {
+    if (msg.content.toLowerCase() == `${prefix}rss borrar` && msg.member.permissions.has('ADMINISTRATOR')) {
         rssChannels = JSON.parse(fs.readFileSync('./data/rss.json', 'utf-8'));
         const index = rssChannels.indexOf(msg.channel.id);
         if (index > -1) { rssChannels.splice(index, 1); }
@@ -45,7 +47,8 @@ function deleteRSSchannel(msg, prefix) {
 };
 
 
-//Crea un string con las nuevas ofertas
+/** Recolecta las ofertas del feed RSS y devuelve un string con ellas.
+ * Las ofertas serán nuevas la ofertas si no están en el array de './data/freeGames.json'. */
 async function freeGames() {
     let feed = await parser.parseURL('https://steamcommunity.com/groups/GrabFreeGames/rss/');
     let nombres;
@@ -78,7 +81,6 @@ async function freeGames() {
     fs.writeFileSync('./data/freeGames.json', JSON.stringify(nombresNuevos));
     return mensaje.substring(0, 2000);
 };
-
 
 
 module.exports = { sendRSS, setRSSchannel, deleteRSSchannel };

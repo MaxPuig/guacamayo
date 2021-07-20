@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { Client, Intents } = require('discord.js');
-const client = new Client({ intents: Intents.NON_PRIVILEGED });
+const client = new Client({ intents: 1665 }); // https://ziad87.net/intents/
 const fs = require('fs');
 const xgame = require('./utils/xgame.js');
 const customPrefix = require('./utils/change_prefix.js');
@@ -13,6 +13,7 @@ const help = require('./utils/help.js');
 // const test = require('./utils/tests_autoescuela.js');
 let prefixes, channels;
 
+
 client.on('ready', async function () {
     console.log('Bot ready!');
     firstSetup.first_execution();
@@ -24,7 +25,7 @@ client.on('ready', async function () {
 
 
 client.on('messageCreate', async function (msg) {
-    if (msg.webhookID != null) return; // Ignores webhooks
+    if (msg.webhookId != null) return; // Ignores webhooks
     if (prefixes[msg.guild.id] != undefined) { prefix = prefixes[msg.guild.id]; } else { prefix = "." }; // sets the custom prefix
     if (msg.content.startsWith(prefix)) {
         prefixes = customPrefix.changePrefix(msg, prefixes);
@@ -36,9 +37,6 @@ client.on('messageCreate', async function (msg) {
         tts.disable_enable_voice(msg, prefix);
         channels = relay.relayMsg(msg, prefix, channels);
         // test.start_test(msg, prefix);
-        // Delete embeds
-        // TTT
-        // C4
     }
 });
 
@@ -52,8 +50,9 @@ client.on('interactionCreate', async interaction => {
 });
 
 
-client.on('voiceStateUpdate', function (oldMember, newMember) {
-    tts.userJoined(oldMember, newMember)
+client.on('voiceStateUpdate', function (oldState, newState) {
+    if (newState.channel?.type == 'GUILD_STAGE_VOICE') return; // Ignores stage channels
+    tts.userJoined(oldState, newState)
 });
 
 

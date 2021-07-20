@@ -2,8 +2,11 @@ const { MessageActionRow, MessageButton } = require('discord.js');
 let games = {};
 
 
+/** Devuelve un número aleatorio. [min, max) == [incluido, excluido). */
 function getRandomInt(min, max) { return Math.floor(Math.random() * (max - min)) + min; };
 
+
+/** Empieza una nueva partida de xgame o devuelve instrucciones de como empezar. */
 function xgame_start(msg, prefix) {
     const error_message = "Formato incorrecto, usa `" + prefix + "xgame` para dimensiones aleatorias o \n`" + prefix + "xgame 4x5` para tamaño personalizado (mínimo: 3x3, máximo: 5x5)";
     const instructions = "Objetivo: Ocultar todas las x pulsando los botones. Los botones se invierten en forma de cruz +";
@@ -41,7 +44,7 @@ function xgame_start(msg, prefix) {
 }
 
 
-
+/** Continúa la partida y comprueba si ha ganado. */
 async function xgame_continue(interaction) {
     const win = "🎉🎉🎉 Ganaste 🎉🎉🎉";
     if (games[interaction.user.id] !== undefined) {
@@ -59,7 +62,6 @@ async function xgame_continue(interaction) {
 }
 
 
-
 class x_game {
     constructor(x, y) {
         this.x = x;
@@ -69,7 +71,6 @@ class x_game {
         this.randomize_board();
         this.message_id = undefined;
     }
-
     create_board() {
         for (let i = 0; i < this.y; i++) {
             let line = [];
@@ -79,7 +80,6 @@ class x_game {
             this.board.push(line);
         }
     }
-
     change_boxes(press_x, press_y) {
         press_y = parseInt(press_y);
         press_x = parseInt(press_x);
@@ -94,7 +94,6 @@ class x_game {
         // Right
         if (press_x + 1 != this.x) { if (this.board[press_y][press_x + 1] == " ") { this.board[press_y][press_x + 1] = "x"; } else { this.board[press_y][press_x + 1] = " "; } };
     }
-
     randomize_board() {
         while (this.check_win(" ")) {
             for (let k = 0; k < getRandomInt(5, 20); k++) {
@@ -102,7 +101,6 @@ class x_game {
             }
         }
     }
-
     toMessage() {
         let rows = [];
         for (let y = 0; y < this.y; y++) {
@@ -117,7 +115,6 @@ class x_game {
         }
         return rows;
     }
-
     // returns true when all are figure_to_check
     check_win(figure_to_check) { // figure_to_check = "x" or " "
         for (let i = 0; i < this.y; i++) {
