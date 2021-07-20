@@ -1,5 +1,5 @@
 {
-  "name": "discord-v13",
+  "name": "bot-discord-v13",
   "version": "1.0.0",
   "description": "Bot de Discord escrito en node.js",
   "main": "index.js",
@@ -7,13 +7,13 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Max Puig",
   "license": "ISC",
   "dependencies": {
     "@discordjs/opus": "^0.5.3",
-    "@discordjs/voice": "^0.5.1",
-    "@google-cloud/text-to-speech": "^3.2.4",
-    "discord.js": "^13.0.0-dev.676118a.1625486570",
+    "@discordjs/voice": "^0.5.4",
+    "@google-cloud/text-to-speech": "^3.2.5",
+    "discord.js": "^13.0.0-dev.02f55f0.1626782659",
     "dotenv": "^10.0.0",
     "ffmpeg-static": "^4.4.0",
     "rss-parser": "^3.12.0",
