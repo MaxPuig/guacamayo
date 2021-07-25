@@ -1,5 +1,5 @@
 # Bot Discord
-[Link de invitación](https://discord.com/api/oauth2/authorize?client_id=710608604876767323&permissions=2150952000&scope=bot)
+[Link de invitación](https://bot.maxpuig.com)
 
 ## FUNCIONES
 - Avisa por el canal de voz quien se ha unido (Usando Google TTS)
@@ -10,12 +10,12 @@
 - Juegos (xgame, 3 en Raya y Conecta 4)
 
 ## COMANDOS
-- `.prefijo <nuevo prefijo>` para cambiar el prefijo de los comandos. Ejemplo `.prefijo !` (Solo admin)
-- `.voz <activar/desactivar>` para activar/desactivar los avisos de quien se une a un canal de voz. (Solo admin)
-- `.rss` para establecer ese canal de texto para recibir ofertas de juegos. `.rss borrar` para deshacerlo. (Solo admin)
-- `.relay` info sobre como mandar mensajes entre servidores. (Solo admin)
-- `.lista` para empezar una lista de nombres. Hay que pulsar el botón para unirse.
-- `.xgame` (Juego) para dimensiones aleatorias o `.xgame 4x5` para tamaño personalizado (mínimo: 3x3, máximo: 5x5).
+- `.prefijo <nuevo prefijo> [Solo Admin]` para cambiar el prefijo de los comandos. Ejemplo `.prefijo !`
+- `.voz <activar/desactivar> [Solo Admin]` para activar/desactivar los avisos de quien se une a un canal de voz.
+- `.rss [Solo Admin]` para establecer ese canal de texto para recibir ofertas de juegos. `.rss borrar` para deshacerlo.
+- `.relay [Solo Admin]` info sobre como mandar mensajes entre servidores.
+- `.lista <Opcional: Nombre de lista>` para empezar una lista de nombres. Hay que pulsar el botón para unirse.
+- `.xgame <Opcional: Tamaño>` (Juego) para dimensiones aleatorias o `.xgame 4x5` para tamaño personalizado (mínimo: 3x3, máximo: 5x5).
 
 ## SETUP
 ```Es necesario tener una clave/credencial de google para usar su TTS```
