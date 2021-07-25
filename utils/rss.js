@@ -51,17 +51,13 @@ function deleteRSSchannel(msg, prefix) {
  * Las ofertas serán nuevas la ofertas si no están en el array de './data/freeGames.json'. */
 async function freeGames() {
     let feed = await parser.parseURL('https://steamcommunity.com/groups/GrabFreeGames/rss/');
-    let nombres;
-    let nombresNuevos = [];
+    let nombres = JSON.parse(fs.readFileSync('./data/freeGames.json', 'utf-8'));
     let mensaje = '';
-    try {
-        nombres = JSON.parse(fs.readFileSync('./data/freeGames.json', 'utf-8'));
-    } catch (error) {
-        nombres = [];
-    }
+    let total = 0;
     feed.items.forEach(item => {
-        nombresNuevos.push(item.title);
         if (!nombres.includes(item.title)) {
+            total++;
+            nombres.push(item.title);
             if (!mensaje.startsWith('**Nueva Oferta**')) {
                 mensaje += '**Nueva Oferta**\n';
             }
@@ -78,7 +74,8 @@ async function freeGames() {
             mensaje += item.title + '\n' + gameLinks.join('\n') + '\n\n';
         }
     });
-    fs.writeFileSync('./data/freeGames.json', JSON.stringify(nombresNuevos));
+    fs.writeFileSync('./data/freeGames.json', JSON.stringify(nombres));
+    if (total == 10) { return ''; } // Ignora la primera vez que se ejecuta
     return mensaje.substring(0, 2000);
 };
 
