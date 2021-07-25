@@ -13,7 +13,7 @@
     "@discordjs/opus": "^0.5.3",
     "@discordjs/voice": "^0.5.4",
     "@google-cloud/text-to-speech": "^3.2.5",
-    "discord.js": "^13.0.0-dev.02f55f0.1626782659",
+    "discord.js": "^13.0.0-dev.4886ae2.1627214570",
     "dotenv": "^10.0.0",
     "ffmpeg-static": "^4.4.0",
     "rss-parser": "^3.12.0",
