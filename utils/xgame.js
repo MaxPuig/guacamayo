@@ -1,4 +1,4 @@
-const { MessageActionRow, MessageButton } = require('discord.js');
+import { MessageActionRow, MessageButton } from 'discord.js';
 let games = {};
 
 
@@ -129,4 +129,4 @@ class x_game {
 }
 
 
-module.exports = { xgame_start, xgame_continue };
+export { xgame_start, xgame_continue };

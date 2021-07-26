@@ -1,5 +1,5 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
-const fs = require('fs');
+import { MessageEmbed, MessageActionRow, MessageButton } from 'discord.js';
+import { readFileSync, writeFileSync } from 'fs';
 let tests = {};
 let user_progress = {};
 
@@ -8,7 +8,7 @@ let user_progress = {};
 function start_test(msg, prefix) {
     if (msg.content.toLowerCase() == prefix + "test") {
         // enviar info y Hechos / Aprobados / Suspendidos / No hechos
-        user_progress = JSON.parse(fs.readFileSync('./data/resultados.json', 'utf-8'));
+        user_progress = JSON.parse(readFileSync('./data/resultados.json', 'utf-8'));
         if (user_progress[msg.author.id] != undefined) {
             msg.channel.send({ content: 'Usa `' + prefix + 'test` para ver info.\n`' + prefix + 'test <numero 1-90>` para empezar ese test.', embeds: [user_progress[msg.author.id].progress()] })
         } else {
@@ -59,7 +59,7 @@ function isNumeric(n) {
 class test_class {
     constructor(numero_test) {
         this.message_id = undefined;
-        this.test = JSON.parse(fs.readFileSync('./data/tests.json', 'utf-8'))[numero_test - 1];
+        this.test = JSON.parse(readFileSync('./data/tests.json', 'utf-8'))[numero_test - 1];
         this.numero_test = numero_test;
         this.pregunta = 0;
         this.correcta;
@@ -145,11 +145,11 @@ class test_class {
         if (user_progress[interaction_user_id] != undefined) {
             user_progress[interaction_user_id].newTestDone(this.numero_test, this.aprobado > 27, this.aprobado);
         } else {
-            user_progress = JSON.parse(fs.readFileSync('./data/resultados.json', 'utf-8'));
+            user_progress = JSON.parse(readFileSync('./data/resultados.json', 'utf-8'));
             let progress = new progress_class(this.numero_test, this.aprobado > 27, this.aprobado);
             user_progress[interaction_user_id] = progress;
         }
-        fs.writeFileSync('./data/resultados.json', JSON.stringify(user_progress));
+        writeFileSync('./data/resultados.json', JSON.stringify(user_progress));
     }
     siguiente(interaction_user_id) {
         this.esperar_siguiente = false;
@@ -253,4 +253,4 @@ class progress_class {
 }
 
 
-module.exports = { start_test, test_continue };
+export { start_test, test_continue };

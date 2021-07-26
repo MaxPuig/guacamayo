@@ -1,16 +1,16 @@
-const textToSpeech = require('@google-cloud/text-to-speech');
-const fs = require('fs');
-require('dotenv').config();
-const client = new textToSpeech.TextToSpeechClient({ projectId: 'tts-nodejs-discord', keyFilename: process.env.PATHGOOGLE, });
-const { joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, } = require('@discordjs/voice');
-const { createDiscordJSAdapter } = require('./adapter');
-const { createReadStream } = require('fs');
+import dotenv from 'dotenv';
+dotenv.config();
+import { TextToSpeechClient } from '@google-cloud/text-to-speech';
+import { readFileSync, writeFileSync, mkdirSync, createReadStream } from 'fs';
+const client = new TextToSpeechClient({ projectId: 'tts-nodejs-discord', keyFilename: process.env.PATHGOOGLE, });
+import { joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, } from '@discordjs/voice';
+import { createDiscordJSAdapter } from './adapter.js';
 
 
 /** Activa o desactiva la función de avisar por el canal de voz quién se ha unido.*/
 function disable_enable_voice(msg, prefix) {
     if (msg.content.toLowerCase() == `${prefix}voz desactivar` && msg.member.permissions.has("ADMINISTRATOR")) {
-        let datos = JSON.parse(fs.readFileSync('./data/nombresAudio.json', 'utf-8'));
+        let datos = JSON.parse(readFileSync('./data/nombresAudio.json', 'utf-8'));
         if (datos[msg.channel.guild.id] != undefined) {
             datos[msg.channel.guild.id]["disabled"] = true;
             msg.channel.send('Avisos de voz desactivados. `' + prefix + 'voz activar` para deshacer.');
@@ -18,9 +18,9 @@ function disable_enable_voice(msg, prefix) {
             datos[msg.channel.guild.id] = { "disabled": true };
             msg.channel.send('Avisos de voz desactivados. `' + prefix + 'voz activar` para deshacer.');
         }
-        fs.writeFileSync('./data/nombresAudio.json', JSON.stringify(datos));
+        writeFileSync('./data/nombresAudio.json', JSON.stringify(datos));
     } else if (msg.content.toLowerCase() == `${prefix}voz activar` && msg.member.permissions.has("ADMINISTRATOR")) {
-        let datos = JSON.parse(fs.readFileSync('./data/nombresAudio.json', 'utf-8'));
+        let datos = JSON.parse(readFileSync('./data/nombresAudio.json', 'utf-8'));
         if (datos[msg.channel.guild.id] != undefined) {
             datos[msg.channel.guild.id]["disabled"] = false;
             msg.channel.send('Avisos de voz activados. `' + prefix + 'voz desactivar` para deshacer.');
@@ -28,7 +28,7 @@ function disable_enable_voice(msg, prefix) {
             datos[msg.channel.guild.id] = { "disabled": false };
             msg.channel.send('Avisos de voz activados. `' + prefix + 'voz desactivar` para deshacer.');
         }
-        fs.writeFileSync('./data/nombresAudio.json', JSON.stringify(datos));
+        writeFileSync('./data/nombresAudio.json', JSON.stringify(datos));
     }
 }
 
@@ -43,13 +43,13 @@ async function descargar_audio(displayName, userID, guildID, datos) {
     };
     const [response] = await client.synthesizeSpeech(request);
     let targetDir = `./data/audioNombres/${guildID}`;
-    fs.mkdirSync(targetDir, { recursive: true });
-    fs.writeFileSync(targetDir + `/${userID}.mp3`, response.audioContent, 'binary');
+    mkdirSync(targetDir, { recursive: true });
+    writeFileSync(targetDir + `/${userID}.mp3`, response.audioContent, 'binary');
     console.log(displayName + ` - Audio content written to file: ${guildID}/${userID}.mp3`);
 
     if (datos[guildID] == undefined) { datos[guildID] = {}; };
     datos[guildID][userID] = [displayName, Math.floor(Date.now() / 1000)];
-    fs.writeFileSync('./data/nombresAudio.json', JSON.stringify(datos));
+    writeFileSync('./data/nombresAudio.json', JSON.stringify(datos));
 }
 
 
@@ -64,7 +64,7 @@ function userJoined(oldState, newState) {
             }
         });
         if (usersInChannel > 1) {
-            let datos = JSON.parse(fs.readFileSync('./data/nombresAudio.json', 'utf-8'));
+            let datos = JSON.parse(readFileSync('./data/nombresAudio.json', 'utf-8'));
             if (datos[newState.channel.guild.id] != undefined) {
                 if (datos[newState.channel.guild.id]["disabled"] == true) {
                     return;
@@ -99,7 +99,7 @@ async function playAudio(newState, datos) {
     }
     if (currentTime - lastTime > 9) { // Si han pasado más de 10 secs de la última vez que se ha reproducido
         datos[guildID][userID][1] = Math.floor(Date.now() / 1000);
-        fs.writeFileSync('./data/nombresAudio.json', JSON.stringify(datos));
+        writeFileSync('./data/nombresAudio.json', JSON.stringify(datos));
         const player = createAudioPlayer();
         const resource = createAudioResource(createReadStream(`./data/audioNombres/${guildID}/${userID}.mp3`), { inputType: StreamType.Arbitrary, });
         player.play(resource);
@@ -129,4 +129,4 @@ async function connectToChannel(channel) { // message.member.voice.channel
 }
 
 
-module.exports = { userJoined, disable_enable_voice };
+export { userJoined, disable_enable_voice };

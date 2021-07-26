@@ -1,5 +1,6 @@
-require('dotenv').config();
-const { MessageEmbed } = require('discord.js');
+import dotenv from 'dotenv';
+dotenv.config();
+import { MessageEmbed } from 'discord.js';
 
 
 /** Envia por el canal de texto los comandos y como usarlos. */
@@ -23,4 +24,4 @@ function sendHelpCommands(msg, prefix) {
 }
 
 
-module.exports = { sendHelpCommands };
+export { sendHelpCommands };
