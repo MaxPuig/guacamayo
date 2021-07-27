@@ -1,4 +1,4 @@
-import { writeFileSync } from 'fs';
+import { setDatabase } from './database.js';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -33,12 +33,12 @@ function relayMsg(msg, client, channels, prefix) {
             let id = msg.content.toLowerCase().split(" ")[1];
             if (id.toLowerCase() == "stop") {
                 delete channels[msg.channel.id];
-                writeFileSync('./data/channels.json', JSON.stringify(channels));
+                setDatabase('channels', channels);
                 msg.channel.send({ content: "Canal de envío deshabilitado." }).catch();
             } else if (id.length == 18 && Number.isInteger(parseInt(id))) {
                 if (client.channels.cache.get(msg.content.split(" ")[1]) != undefined) {
                     channels[msg.channel.id] = msg.content.split(" ")[1];
-                    writeFileSync('./data/channels.json', JSON.stringify(channels));
+                    setDatabase('channels', channels);
                     let name = client.channels.cache.get(msg.content.split(" ")[1]).name;
                     msg.channel.send({ content: "Canal establecido correctamente: " + name }).catch();
                 } else { msg.channel.send({ content: error_msg, files: error_img }).catch(); }

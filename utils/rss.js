@@ -1,12 +1,12 @@
 import Parser from 'rss-parser';
 let parser = new Parser();
-import { readFileSync, writeFileSync } from 'fs';
+import { getDatabase, setDatabase } from './database.js';
 let rssChannels = [];
 
 
 /** Recoge las ofertas de juegos de un feed RSS y las envía a todos los canales que se han "inscrito". */
 async function sendRSS(client) {
-    rssChannels = JSON.parse(readFileSync('./data/rss.json', 'utf-8'));
+    rssChannels = await getDatabase('rss');
     try {
         if (rssChannels.length > 0) {
             let oferta = await freeGames();
@@ -21,14 +21,14 @@ async function sendRSS(client) {
 
 
 /** Establece el canal donde tiene que enviar los mensajes y lo guarda en "./data/rss.json". */
-function setRSSchannel(msg, prefix) {
+async function setRSSchannel(msg, prefix) {
     if (msg.content.toLowerCase() == `${prefix}rss` && msg.member.permissions.has('ADMINISTRATOR')) {
-        rssChannels = JSON.parse(readFileSync('./data/rss.json', 'utf-8'));
+        rssChannels = await getDatabase('rss');
         if (rssChannels.indexOf(msg.channel.id) !== -1) {
             msg.channel.send('El canal ya estaba establecido. `' + prefix + 'rss borrar` Para dejar de enviar las ofertas.');
         } else {
             rssChannels.push(msg.channel.id)
-            writeFileSync('./data/rss.json', JSON.stringify(rssChannels));
+            setDatabase('rss', rssChannels);
             msg.channel.send('Canal establecido. `' + prefix + 'rss borrar` Para dejar de enviar las ofertas.');
         }
     }
@@ -36,12 +36,12 @@ function setRSSchannel(msg, prefix) {
 
 
 /** Elimina el canal de "./data/rss.json" para dejar de recibir las ofertas. */
-function deleteRSSchannel(msg, prefix) {
+async function deleteRSSchannel(msg, prefix) {
     if (msg.content.toLowerCase() == `${prefix}rss borrar` && msg.member.permissions.has('ADMINISTRATOR')) {
-        rssChannels = JSON.parse(readFileSync('./data/rss.json', 'utf-8'));
+        rssChannels = await getDatabase('rss');
         const index = rssChannels.indexOf(msg.channel.id);
         if (index > -1) { rssChannels.splice(index, 1); }
-        writeFileSync('./data/rss.json', JSON.stringify(rssChannels));
+        setDatabase('rss', rssChannels);
         msg.channel.send('Este canal ya no recibirá ofertas. \n`' + prefix + 'rss` para volver a recibirlas. (Solo admin)');
     }
 };
@@ -51,7 +51,7 @@ function deleteRSSchannel(msg, prefix) {
  * Las ofertas serán nuevas la ofertas si no están en el array de './data/freeGames.json'. */
 async function freeGames() {
     let feed = await parser.parseURL('https://steamcommunity.com/groups/GrabFreeGames/rss/');
-    let nombres = JSON.parse(readFileSync('./data/freeGames.json', 'utf-8'));
+    let nombres = await getDatabase('freeGames');
     let mensaje = '';
     let total = 0;
     feed.items.forEach(item => {
@@ -74,7 +74,7 @@ async function freeGames() {
             mensaje += item.title + '\n' + gameLinks.join('\n') + '\n\n';
         }
     });
-    writeFileSync('./data/freeGames.json', JSON.stringify(nombres));
+    setDatabase('freeGames', nombres);
     if (total == 10) { return ''; } // Ignora la primera vez que se ejecuta
     return mensaje.substring(0, 2000);
 };

@@ -1,4 +1,4 @@
-import { writeFileSync } from 'fs';
+import { setDatabase } from './database.js';
 
 
 /** Cambia el prefijo con el que se llama al bot. ("." por defecto).
@@ -7,7 +7,7 @@ function changePrefix(msg, prefixes, prefix) {
     if (msg.member.permissions.has("ADMINISTRATOR") && msg.content.toLowerCase().startsWith(prefix + "prefijo")) { // change prefix (only admin)
         let newPrefix = msg.content.split(" ")[1];
         prefixes[msg.guild.id] = newPrefix;
-        writeFileSync('./data/customPrefix.json', JSON.stringify(prefixes));
+        setDatabase('customPrefix', prefixes);
         msg.channel.send("Prefijo Cambiado a " + newPrefix + "\nAhora los comandos se activan así: `" + newPrefix + "help`");
     }
     return prefixes;

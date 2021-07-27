@@ -1,6 +1,6 @@
 import { MessageEmbed, MessageActionRow, MessageButton } from 'discord.js';
-import { readFileSync, writeFileSync } from 'fs';
-let lists = JSON.parse(readFileSync('./data/lists.json', 'utf-8'));
+import { getDatabase, setDatabase } from './database.js';
+let lists = await getDatabase('lists');
 
 
 /** Convierte la lista guardada en clases. Ejecutada al final del script. */
@@ -15,13 +15,13 @@ function classify(lists) {
 
 
 /** Crea una nueva lista y la envía. Admite título de lista personalizado.*/
-function startList(msg, prefix) {
+async function startList(msg, prefix) {
     if (msg.content.toLowerCase().startsWith(`${prefix}lista`)) {
         let list_title = "Lista de jugadores:";
         if (msg.content.split("lista")[1].length > 0) { list_title = msg.content.split("lista")[1].substring(1) + ":"; }
         let list = new list_class(list_title);
         msg.channel.send(list.title()).then(function (msg2) { lists[msg2.id] = list; });
-        writeFileSync('./data/lists.json', JSON.stringify(lists));
+        await setDatabase('lists', lists);
     };
 };
 
@@ -31,10 +31,10 @@ async function addDeleteUser(interaction) {
     if (lists[interaction.message.id] != undefined) {
         if (lists[interaction.message.id].user_ids_and_nicks.hasOwnProperty(interaction.user.id)) {
             interaction.editReply(lists[interaction.message.id].deleteUser(interaction.user.id));
-            writeFileSync('./data/lists.json', JSON.stringify(lists));
+            await setDatabase('lists', lists);
         } else {
             interaction.editReply(lists[interaction.message.id].addUser(interaction.user.id, interaction.member.displayName))
-            writeFileSync('./data/lists.json', JSON.stringify(lists));
+            await setDatabase('lists', lists);
         }
     }
 }

@@ -1,14 +1,24 @@
 import { MessageEmbed, MessageActionRow, MessageButton } from 'discord.js';
-import { readFileSync, writeFileSync } from 'fs';
-let tests = {};
-let user_progress = {};
+import { readFileSync } from 'fs';
+import { getDatabase, setDatabase } from './database.js';
+let tests = {}; // Mientras se está haciendo un test. No se guarda en la DB.
+let user_progress = await getDatabase('resultados');
+if (user_progress == undefined) user_progress = {};
+
+
+/* Setup index.js
+import { start_test, test_continue } from './utils/tests_autoescuela.js';
+client.on('messageCreate'
+        start_test(msg, prefix);
+client.on('interactionCreate'
+    await test_continue(interaction);
+*/
 
 
 /** Envía un nuevo test, instrucciones de como empezar un test o las estadísticas de cada persona. */
-function start_test(msg, prefix) {
+async function start_test(msg, prefix) {
     if (msg.content.toLowerCase() == prefix + "test") {
         // enviar info y Hechos / Aprobados / Suspendidos / No hechos
-        user_progress = JSON.parse(readFileSync('./data/resultados.json', 'utf-8'));
         if (user_progress[msg.author.id] != undefined) {
             msg.channel.send({ content: 'Usa `' + prefix + 'test` para ver info.\n`' + prefix + 'test <numero 1-90>` para empezar ese test.', embeds: [user_progress[msg.author.id].progress()] })
         } else {
@@ -16,7 +26,8 @@ function start_test(msg, prefix) {
         }
     } else if (msg.content.toLowerCase().startsWith(prefix + "test ")) {
         if (isNumeric(msg.content.toLowerCase().split(" ")[1]) && 1 <= msg.content.toLowerCase().split(" ")[1] <= 90) {
-            let test = new test_class(Number(msg.content.toLowerCase().split(" ")[1]));
+            const numero_test = Number(msg.content.toLowerCase().split(" ")[1]);
+            let test = new test_class(numero_test);
             msg.channel.send(test.newTest()).then(function (msg2) { test.message_id = msg2.id; });
             tests[msg.author.id] = test;
         } else {
@@ -141,15 +152,16 @@ class test_class {
         }
         return { embeds: [embed], components: [row] };
     }
-    test_acabado(interaction_user_id) {
+    async test_acabado(interaction_user_id) {
         if (user_progress[interaction_user_id] != undefined) {
             user_progress[interaction_user_id].newTestDone(this.numero_test, this.aprobado > 27, this.aprobado);
         } else {
-            user_progress = JSON.parse(readFileSync('./data/resultados.json', 'utf-8'));
+            user_progress = await getDatabase('resultados');
+            // user_progress = JSON.parse(readFileSync('./data/resultados.json', 'utf-8'));
             let progress = new progress_class(this.numero_test, this.aprobado > 27, this.aprobado);
             user_progress[interaction_user_id] = progress;
         }
-        writeFileSync('./data/resultados.json', JSON.stringify(user_progress));
+        setDatabase('resultados', user_progress);
     }
     siguiente(interaction_user_id) {
         this.esperar_siguiente = false;
@@ -175,7 +187,7 @@ class progress_class {
         this.ultimo_test_numero;
         this.newTestDone(numero, aprobado, ultimo_test_correctas);
     }
-    newTestDone(numero, aprobado, ultimo_test_correctas) { //numero 1-90; aprobado: bool
+    newTestDone(numero, aprobado, ultimo_test_correctas) { // numero 1-90; aprobado: bool
         this.ultimo_test_correctas = ultimo_test_correctas;
         this.ultimo_test_numero = numero;
         this.done.push(numero);

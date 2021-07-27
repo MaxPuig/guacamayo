@@ -1,16 +1,17 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import { TextToSpeechClient } from '@google-cloud/text-to-speech';
-import { readFileSync, writeFileSync, mkdirSync, createReadStream } from 'fs';
+import { writeFileSync, mkdirSync, createReadStream } from 'fs';
+import { getDatabase, setDatabase } from './database.js';
 const client = new TextToSpeechClient({ projectId: 'tts-nodejs-discord', keyFilename: process.env.PATHGOOGLE, });
 import { joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, } from '@discordjs/voice';
 import { createDiscordJSAdapter } from './adapter.js';
 
 
 /** Activa o desactiva la función de avisar por el canal de voz quién se ha unido.*/
-function disable_enable_voice(msg, prefix) {
+async function disable_enable_voice(msg, prefix) {
     if (msg.content.toLowerCase() == `${prefix}voz desactivar` && msg.member.permissions.has("ADMINISTRATOR")) {
-        let datos = JSON.parse(readFileSync('./data/nombresAudio.json', 'utf-8'));
+        let datos = await getDatabase('nombresAudio');
         if (datos[msg.channel.guild.id] != undefined) {
             datos[msg.channel.guild.id]["disabled"] = true;
             msg.channel.send('Avisos de voz desactivados. `' + prefix + 'voz activar` para deshacer.');
@@ -18,9 +19,9 @@ function disable_enable_voice(msg, prefix) {
             datos[msg.channel.guild.id] = { "disabled": true };
             msg.channel.send('Avisos de voz desactivados. `' + prefix + 'voz activar` para deshacer.');
         }
-        writeFileSync('./data/nombresAudio.json', JSON.stringify(datos));
+        setDatabase('nombresAudio', datos);
     } else if (msg.content.toLowerCase() == `${prefix}voz activar` && msg.member.permissions.has("ADMINISTRATOR")) {
-        let datos = JSON.parse(readFileSync('./data/nombresAudio.json', 'utf-8'));
+        let datos = await getDatabase('nombresAudio');
         if (datos[msg.channel.guild.id] != undefined) {
             datos[msg.channel.guild.id]["disabled"] = false;
             msg.channel.send('Avisos de voz activados. `' + prefix + 'voz desactivar` para deshacer.');
@@ -28,7 +29,7 @@ function disable_enable_voice(msg, prefix) {
             datos[msg.channel.guild.id] = { "disabled": false };
             msg.channel.send('Avisos de voz activados. `' + prefix + 'voz desactivar` para deshacer.');
         }
-        writeFileSync('./data/nombresAudio.json', JSON.stringify(datos));
+        setDatabase('nombresAudio', datos);
     }
 }
 
@@ -49,13 +50,13 @@ async function descargar_audio(displayName, userID, guildID, datos) {
 
     if (datos[guildID] == undefined) { datos[guildID] = {}; };
     datos[guildID][userID] = [displayName, Math.floor(Date.now() / 1000)];
-    writeFileSync('./data/nombresAudio.json', JSON.stringify(datos));
+    setDatabase('nombresAudio', datos);
 }
 
 
 /** Si se ha unido alguien a un canal de voz, reproduce el audio.
  * Debe de haber alguien (no bot) en el canal y que el server no haya desactivado la funcionalidad (.voz desactivar) para reproducir el audio. */
-function userJoined(oldState, newState) {
+async function userJoined(oldState, newState) {
     if (oldState.channelId != newState.channelId && (newState.channelId != null || newState.channelId != undefined) && !newState.member.user.bot) {
         let usersInChannel = 0;
         newState.channel.members.forEach(usuario => {
@@ -64,7 +65,7 @@ function userJoined(oldState, newState) {
             }
         });
         if (usersInChannel > 1) {
-            let datos = JSON.parse(readFileSync('./data/nombresAudio.json', 'utf-8'));
+            let datos = await getDatabase('nombresAudio');
             if (datos[newState.channel.guild.id] != undefined) {
                 if (datos[newState.channel.guild.id]["disabled"] == true) {
                     return;
@@ -99,7 +100,7 @@ async function playAudio(newState, datos) {
     }
     if (currentTime - lastTime > 9) { // Si han pasado más de 10 secs de la última vez que se ha reproducido
         datos[guildID][userID][1] = Math.floor(Date.now() / 1000);
-        writeFileSync('./data/nombresAudio.json', JSON.stringify(datos));
+        setDatabase('nombresAudio', datos);
         const player = createAudioPlayer();
         const resource = createAudioResource(createReadStream(`./data/audioNombres/${guildID}/${userID}.mp3`), { inputType: StreamType.Arbitrary, });
         player.play(resource);
