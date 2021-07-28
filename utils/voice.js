@@ -42,7 +42,7 @@ async function change_voice_properties(msg, prefix) {
                 "delante_o_detras": datos[msg.channel.guild.id].delante_o_detras,
                 "disabled": datos[msg.channel.guild.id].disabled,
                 "frase": datos[msg.channel.guild.id].frase,
-                "idioma": datos[msg.channel.guild.id].idioma,
+                "idioma": 'es-es',
             };
             datos[msg.channel.guild.id] = nuevosdatos;
             msg.channel.send('Género de voz cambiado a chica.');
@@ -58,7 +58,7 @@ async function change_voice_properties(msg, prefix) {
                 "delante_o_detras": datos[msg.channel.guild.id].delante_o_detras,
                 "disabled": datos[msg.channel.guild.id].disabled,
                 "frase": datos[msg.channel.guild.id].frase,
-                "idioma": datos[msg.channel.guild.id].idioma,
+                "idioma": 'es-es',
             };
             datos[msg.channel.guild.id] = nuevosdatos;
             msg.channel.send('Género de voz cambiado a chico.');
@@ -97,7 +97,7 @@ async function change_voice_properties(msg, prefix) {
             .setColor('#4166c5')
             .addFields(
                 { name: '`' + prefix + 'voz <activar/desactivar>`', value: 'Activa o desactiva los avisos en el canal de voz.\nEjemplo: `' + prefix + 'voz desactivar`.' },
-                { name: '`' + prefix + 'voz <chico/chica>`', value: 'Cambia la voz. Chico solo puede ser en Español.' },
+                { name: '`' + prefix + 'voz <chico/chica>`', value: 'Cambia la voz a español en el género escogido.' },
                 { name: '`' + prefix + 'voz idioma <Idioma_nuevo>`', value: 'Lista de idiomas (2 o 4 letras): <https://www.npmjs.com/package/gtts#supported-languages>.\nEjemplo: `' + prefix + 'voz idioma pt` para portugués.' },
                 { name: 'Cambiar la frase', value: 'Próximamente' }
             )
