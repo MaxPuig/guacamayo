@@ -6,7 +6,7 @@ import { xgame_start, xgame_continue } from './utils/xgame.js';
 import { changePrefix } from './utils/change_prefix.js';
 import { startList, addDeleteUser } from './utils/lists.js';
 import { sendRSS, setRSSchannel, deleteRSSchannel } from './utils/rss.js';
-import { disable_enable_voice, userJoined } from './utils/voice.js';
+import { change_voice_properties, userJoined } from './utils/voice.js';
 import { relayMsg } from './utils/relay_msg.js';
 import { sendHelpCommands } from './utils/help.js';
 import { getDatabase } from './utils/database.js';
@@ -33,7 +33,7 @@ client.on('messageCreate', async function (msg) {
         sendHelpCommands(msg, prefix);
         setRSSchannel(msg, prefix);
         deleteRSSchannel(msg, prefix);
-        disable_enable_voice(msg, prefix);
+        change_voice_properties(msg, prefix);
     }
     channels = relayMsg(msg, client, channels, prefix);
 });
