@@ -73,7 +73,7 @@ async function change_voice_properties(msg, prefix) {
             'en-us', 'eo', 'fi', 'fr', 'de', 'el', 'ht', 'hi', 'hu', 'is', 'id', 'it', 'ja', 'ko', 'la', 'lv', 'mk', 'no',
             'pl', 'pt', 'pt-br', 'ro', 'ru', 'sr', 'sk', 'es', 'es-es', 'es-us', 'sw', 'sv', 'ta', 'th', 'tr', 'vi', 'cy'
         ]
-        const requested_lang = msg.content.toLowerCase().split(' ')[2];
+        let requested_lang = msg.content.toLowerCase().split(' ')[2];
         if (['es', 'es-es', 'es-us'].includes(requested_lang)) { requested_lang = 'es-es'; }
         if (availabla_lang.includes(requested_lang) && requested_lang != datos[msg.channel.guild.id].idioma) {
             let nuevosdatos = {
@@ -91,7 +91,7 @@ async function change_voice_properties(msg, prefix) {
         } else {
             msg.channel.send('Idioma no es correcto.');
         }
-    } else if (msg.content.toLowerCase() == `${prefix}voz` && msg.member.permissions.has("ADMINISTRATOR")) {
+    } else if (msg.content.toLowerCase() == `${prefix}voz`) {
         let embed = new MessageEmbed()
             .setTitle('**Ajustes de Voz [Solo admin]: **')
             .setColor('#4166c5')
