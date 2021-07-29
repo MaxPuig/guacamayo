@@ -157,10 +157,10 @@ async function descargar_audio_google(displayName, userID, guildID, datos) {
         audioConfig: { audioEncoding: 'MP3', effectsProfileId: ['headphone-class-device'], pitch: -5, speakingRate: 1 }
     };
     const [response] = await client.synthesizeSpeech(request);
-    let targetDir = `./ data / audioNombres / ${guildID}`;
+    let targetDir = `./data/audioNombres/${guildID}`;
     mkdirSync(targetDir, { recursive: true });
-    writeFileSync(targetDir + `/ ${userID}.mp3`, response.audioContent, 'binary');
-    console.log(`${displayName} - Audio content written to file: ${guildID} / ${userID}.mp3`);
+    writeFileSync(targetDir + `/${userID}.mp3`, response.audioContent, 'binary');
+    console.log(`${displayName} - Audio content written to file: ${guildID}/${userID}.mp3`);
 
     datos[guildID][userID] = [displayName, Math.floor(Date.now() / 1000)];
     return datos;
@@ -178,12 +178,12 @@ async function descargar_audio_gtts(displayName, userID, guildID, datos) {
         frase = `${frase} ${displayName}`;
     }
     const gtts = new gTTS(frase, idioma);
-    let path = `./ data / audioNombres / ${guildID}`;
+    let path = `./data/audioNombres/${guildID}`;
     mkdirSync(path, { recursive: true });
     await new Promise(resolve => {
-        gtts.save(path + `/ ${userID}.mp3`, function (err, response) {
+        gtts.save(path + `/${userID}.mp3`, function (err, response) {
             if (err) { throw new Error(err) }
-            console.log(`${displayName} - Audio content written to file: ${guildID} / ${userID}.mp3`);
+            console.log(`${displayName} - Audio content written to file: ${guildID}/${userID}.mp3`);
             resolve(response)
         });
     });
@@ -253,7 +253,7 @@ async function playAudio(newState, datos) {
         datos[guildID][userID][1] = Math.floor(Date.now() / 1000);
         setDatabase('nombresAudio', datos);
         const player = createAudioPlayer();
-        const resource = createAudioResource(createReadStream(`./ data / audioNombres / ${guildID} / ${userID}.mp3`), { inputType: StreamType.Arbitrary, });
+        const resource = createAudioResource(createReadStream(`./data/audioNombres/${guildID}/${userID}.mp3`), { inputType: StreamType.Arbitrary, });
         player.play(resource);
         try {
             const connection = await connectToChannel(voiceChannel);
