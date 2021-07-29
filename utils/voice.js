@@ -10,7 +10,6 @@ import { MessageEmbed } from 'discord.js';
 import gTTS from 'gtts';
 
 
-
 /** Activa o desactiva la función de avisar por el canal de voz quién se ha unido.
 * Tambien puede cambiar las propiedades de la voz o enviar info de como cambiarlas. */
 async function change_voice_properties(msg, prefix) {
@@ -38,11 +37,11 @@ async function change_voice_properties(msg, prefix) {
         let datos = await getDatabase('nombresAudio');
         if (datos[msg.channel.guild.id].genero == 'chico') {
             let nuevosdatos = { // Borra todo para volver a descargar todos los audios.
-                "genero": "chica",
-                "delante_o_detras": datos[msg.channel.guild.id].delante_o_detras,
                 "disabled": datos[msg.channel.guild.id].disabled,
+                "delante_o_detras": datos[msg.channel.guild.id].delante_o_detras,
                 "frase": datos[msg.channel.guild.id].frase,
                 "idioma": 'es-es',
+                "genero": "chica"
             };
             datos[msg.channel.guild.id] = nuevosdatos;
             msg.channel.send('Género de voz cambiado a chica.');
@@ -54,11 +53,11 @@ async function change_voice_properties(msg, prefix) {
         let datos = await getDatabase('nombresAudio');
         if (datos[msg.channel.guild.id].genero == 'chica') {
             let nuevosdatos = {
-                "genero": "chico",
-                "delante_o_detras": datos[msg.channel.guild.id].delante_o_detras,
                 "disabled": datos[msg.channel.guild.id].disabled,
+                "delante_o_detras": datos[msg.channel.guild.id].delante_o_detras,
                 "frase": datos[msg.channel.guild.id].frase,
                 "idioma": 'es-es',
+                "genero": "chico"
             };
             datos[msg.channel.guild.id] = nuevosdatos;
             msg.channel.send('Género de voz cambiado a chico.');
@@ -77,11 +76,11 @@ async function change_voice_properties(msg, prefix) {
         if (['es', 'es-es', 'es-us'].includes(requested_lang)) { requested_lang = 'es-es'; }
         if (availabla_lang.includes(requested_lang) && requested_lang != datos[msg.channel.guild.id].idioma) {
             let nuevosdatos = {
-                "genero": 'chica',
-                "delante_o_detras": datos[msg.channel.guild.id].delante_o_detras,
                 "disabled": datos[msg.channel.guild.id].disabled,
+                "delante_o_detras": datos[msg.channel.guild.id].delante_o_detras,
                 "frase": datos[msg.channel.guild.id].frase,
                 "idioma": requested_lang,
+                "genero": 'chica'
             };
             datos[msg.channel.guild.id] = nuevosdatos;
             msg.channel.send('Idioma cambiado');
@@ -91,7 +90,44 @@ async function change_voice_properties(msg, prefix) {
         } else {
             msg.channel.send('Idioma no es correcto.');
         }
-    } else if (msg.content.toLowerCase() == `${prefix}voz`) {
+    } else if (msg.content.toLowerCase().startsWith(`${prefix}voz delante `) && msg.member.permissions.has("ADMINISTRATOR")) {
+        let datos = await getDatabase('nombresAudio');
+        let nuevosdatos = {
+            "disabled": datos[msg.channel.guild.id].disabled,
+            "delante_o_detras": 'delante',
+            "frase": msg.content.split(`${prefix}voz delante `)[1],
+            "idioma": datos[msg.channel.guild.id].idioma,
+            "genero": datos[msg.channel.guild.id].genero
+        };
+        datos[msg.channel.guild.id] = nuevosdatos;
+        msg.channel.send(`Ahora los audios serán así: ${msg.member.displayName} ${nuevosdatos.frase}.`);
+        setDatabase('nombresAudio', datos);
+    } else if (msg.content.toLowerCase().startsWith(`${prefix}voz detras `) && msg.member.permissions.has("ADMINISTRATOR")) {
+        let datos = await getDatabase('nombresAudio');
+        let nuevosdatos = {
+            "disabled": datos[msg.channel.guild.id].disabled,
+            "delante_o_detras": 'detras',
+            "frase": msg.content.split(`${prefix}voz detras `)[1],
+            "idioma": datos[msg.channel.guild.id].idioma,
+            "genero": datos[msg.channel.guild.id].genero
+        };
+        datos[msg.channel.guild.id] = nuevosdatos;
+        msg.channel.send(`Ahora los audios serán así: ${nuevosdatos.frase} ${msg.member.displayName}.`);
+        setDatabase('nombresAudio', datos);
+    } else if (msg.content.toLowerCase() == `${prefix}voz default` && msg.member.permissions.has("ADMINISTRATOR")) {
+        let datos = await getDatabase('nombresAudio');
+        let nuevosdatos = {
+            "disabled": false,
+            "delante_o_detras": "detras",
+            "frase": "Se ha unido",
+            "idioma": "es-es",
+            "genero": "chico"
+        }
+        datos[msg.channel.guild.id] = nuevosdatos;
+        msg.channel.send(`Voz reseteada a español chico. Los audios serán así: ${nuevosdatos.frase} ${msg.member.displayName}.`);
+        setDatabase('nombresAudio', datos);
+    } else if (msg.content.toLowerCase().startsWith(`${prefix}voz`)) {
+        let frase_larga = 'voz delante bienvenido a la llamada`.\nAhora el audio será => `"Nombre" bienvenido a la llamada`.';
         let embed = new MessageEmbed()
             .setTitle('**Ajustes de Voz [Solo admin]: **')
             .setColor('#4166c5')
@@ -99,7 +135,7 @@ async function change_voice_properties(msg, prefix) {
                 { name: '`' + prefix + 'voz <activar/desactivar>`', value: 'Activa o desactiva los avisos en el canal de voz.\nEjemplo: `' + prefix + 'voz desactivar`.' },
                 { name: '`' + prefix + 'voz <chico/chica>`', value: 'Cambia la voz a español en el género escogido.' },
                 { name: '`' + prefix + 'voz idioma <Idioma_nuevo>`', value: 'Lista de idiomas (2 o 4 letras): <https://www.npmjs.com/package/gtts#supported-languages>.\nEjemplo: `' + prefix + 'voz idioma pt` para portugués.' },
-                { name: 'Cambiar la frase', value: 'Próximamente' }
+                { name: '`' + prefix + 'voz <delante/detras> <Nueva_frase>`', value: 'Cambia la frase del audio. <delante/detras> especifíca dónde va el nombre respecto la frase.\nEjemplo: `' + prefix + frase_larga }
             )
         msg.channel.send({ embeds: [embed] });
     }
@@ -121,10 +157,10 @@ async function descargar_audio_google(displayName, userID, guildID, datos) {
         audioConfig: { audioEncoding: 'MP3', effectsProfileId: ['headphone-class-device'], pitch: -5, speakingRate: 1 }
     };
     const [response] = await client.synthesizeSpeech(request);
-    let targetDir = `./data/audioNombres/${guildID}`;
+    let targetDir = `./ data / audioNombres / ${guildID}`;
     mkdirSync(targetDir, { recursive: true });
-    writeFileSync(targetDir + `/${userID}.mp3`, response.audioContent, 'binary');
-    console.log(`${displayName} - Audio content written to file: ${guildID}/${userID}.mp3`);
+    writeFileSync(targetDir + `/ ${userID}.mp3`, response.audioContent, 'binary');
+    console.log(`${displayName} - Audio content written to file: ${guildID} / ${userID}.mp3`);
 
     datos[guildID][userID] = [displayName, Math.floor(Date.now() / 1000)];
     return datos;
@@ -142,12 +178,12 @@ async function descargar_audio_gtts(displayName, userID, guildID, datos) {
         frase = `${frase} ${displayName}`;
     }
     const gtts = new gTTS(frase, idioma);
-    let path = `./data/audioNombres/${guildID}`;
+    let path = `./ data / audioNombres / ${guildID}`;
     mkdirSync(path, { recursive: true });
     await new Promise(resolve => {
-        gtts.save(path + `/${userID}.mp3`, function (err, response) {
+        gtts.save(path + `/ ${userID}.mp3`, function (err, response) {
             if (err) { throw new Error(err) }
-            console.log(`${displayName} - Audio content written to file: ${guildID}/${userID}.mp3`);
+            console.log(`${displayName} - Audio content written to file: ${guildID} / ${userID}.mp3`);
             resolve(response)
         });
     });
@@ -217,7 +253,7 @@ async function playAudio(newState, datos) {
         datos[guildID][userID][1] = Math.floor(Date.now() / 1000);
         setDatabase('nombresAudio', datos);
         const player = createAudioPlayer();
-        const resource = createAudioResource(createReadStream(`./data/audioNombres/${guildID}/${userID}.mp3`), { inputType: StreamType.Arbitrary, });
+        const resource = createAudioResource(createReadStream(`./ data / audioNombres / ${guildID} / ${userID}.mp3`), { inputType: StreamType.Arbitrary, });
         player.play(resource);
         try {
             const connection = await connectToChannel(voiceChannel);
