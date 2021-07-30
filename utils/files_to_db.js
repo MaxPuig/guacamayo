@@ -4,6 +4,19 @@ import { setDatabase, getDatabase } from './database.js';
 let datos = await getDatabase('nombresAudio')
 
 for (const [key, value] of Object.entries(datos)) {
+    console.log(key)
+    if(datos[key].genero == 'chico') {
+        datos[key].genero = 'hombre';
+    } else {
+        datos[key].genero = 'mujer';
+    }
+}
+
+setDatabase('nombresAudio', datos);
+console.log('Changes applied to db')
+
+/*
+for (const [key, value] of Object.entries(datos)) {
     datos[key] = value;
     datos[key].disabled = false;
     datos[key].delante_o_detras = "detras";
@@ -14,7 +27,7 @@ for (const [key, value] of Object.entries(datos)) {
 
 setDatabase('nombresAudio', datos);
 console.log("Changes applied to db");
-
+*/
 
 /*
 import { readFileSync } from 'fs';

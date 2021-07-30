@@ -2,26 +2,29 @@ import dotenv from 'dotenv';
 dotenv.config();
 import { MessageEmbed } from 'discord.js';
 
+/** Envía la lista de comandos. */
+function sendHelpCommands() {
+    const embed = new MessageEmbed()
+        .setTitle('**Comandos:**')
+        .setColor('#4166c5')
+        .addFields(
+            { name: '`/invite`', value: 'Envía el link de invitación del Bot.' },
+            { name: '`/lista` <Opcional: Nombre de lista>', value: 'Empieza una lista de nombres. Hay que pulsar un botón para unirse.' },
+            { name: '`/xgame` <Tamaño>', value: 'Juego. Objetivo: ocultar todas las "x".' },
+            { name: '`/rss` [Solo Admin]', value: 'Establece (o quita) ese canal de texto para recibir ofertas de juegos gratis.' },
+            { name: '`/voz` [Solo Admin]', value: 'Cambia los ajustes de los avisos de voz.' }
+        )
+    return { embeds: [embed] };
+}
 
-/** Envia por el canal de texto los comandos y como usarlos. */
-function sendHelpCommands(msg, prefix) {
-    if (msg.content.toLowerCase() == `${prefix}help`) {
-        let embed = new MessageEmbed()
-            .setTitle('**Comandos:**')
-            .setColor('#4166c5')
-            .addFields(
-                { name: '`' + prefix + 'xgame` <Opcional: Tamaño>', value: 'Juego. Sin especificar tamaño para dimensiones aleatorias o `' + prefix + 'xgame 4x5` para tamaño personalizado (mínimo: 3x3, máximo: 5x5)' },
-                { name: '`' + prefix + 'lista` <Opcional: Nombre de lista>', value: 'Empezar una lista de nombres. Hay que pulsar un botón para unirse.' },
-                { name: '`' + prefix + 'voz` [Solo Admin]', value: 'Info sobre los ajustes de los avisos de voz.' },
-                { name: '`' + prefix + 'rss` [Solo Admin]', value: 'Establecer ese canal de texto para recibir ofertas de juegos gratis. `' + prefix + 'rss borrar` para deshacerlo.' },
-                { name: '`' + prefix + 'prefijo` <nuevo prefijo> [Solo Admin]', value: 'Cambiar el prefijo de los comandos. Ejemplo `.prefijo !`.' },
-                // { name: '`' + prefix + 'relay` [Solo Admin]', value: 'Info sobre como mandar mensajes entre servidores.' },
-                { name: `**Link de Invitación**`, value: '<' + process.env.INVITELINK + '>' }
-            )
-        // - Prefijo // - Voice // - RSS // - Lista // - Relay mensajes // - Xgame // - Invitación // Tests coche // TTT C4
-        msg.channel.send({ embeds: [embed] });
-    }
+/** Envía el link de invitación del bot. */
+function sendInvite() {
+    const embed = new MessageEmbed()
+        .setTitle('**Añade el bot a tu server**')
+        .setURL(process.env.INVITELINK.toString())
+        .setColor('#4166c5')
+    return { embeds: [embed] };
 }
 
 
-export { sendHelpCommands };
+export { sendHelpCommands, sendInvite };

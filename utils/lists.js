@@ -15,14 +15,11 @@ function classify(lists) {
 
 
 /** Crea una nueva lista y la envía. Admite título de lista personalizado.*/
-async function startList(msg, prefix) {
-    if (msg.content.toLowerCase().startsWith(`${prefix}lista`)) {
-        let list_title = "Lista de jugadores:";
-        if (msg.content.split("lista")[1].length > 0) { list_title = msg.content.split("lista")[1].substring(1) + ":"; }
-        let list = new list_class(list_title);
-        msg.channel.send(list.title()).then(function (msg2) { lists[msg2.id] = list; });
-        await setDatabase('lists', lists);
-    };
+async function startList(interaction, list_title) {
+    if (!list_title) list_title = "Lista de jugadores";
+    let list = new list_class(list_title);
+    await interaction.reply(list.title()).then(function (msg2) { lists[msg2.id] = list; });
+    await setDatabase('lists', lists);
 };
 
 
@@ -30,10 +27,10 @@ async function startList(msg, prefix) {
 async function addDeleteUser(interaction) {
     if (lists[interaction.message.id] != undefined) {
         if (lists[interaction.message.id].user_ids_and_nicks.hasOwnProperty(interaction.user.id)) {
-            interaction.editReply(lists[interaction.message.id].deleteUser(interaction.user.id));
+            await interaction.editReply(lists[interaction.message.id].deleteUser(interaction.user.id));
             await setDatabase('lists', lists);
         } else {
-            interaction.editReply(lists[interaction.message.id].addUser(interaction.user.id, interaction.member.displayName))
+            await interaction.editReply(lists[interaction.message.id].addUser(interaction.user.id, interaction.member.displayName))
             await setDatabase('lists', lists);
         }
     }
@@ -62,7 +59,7 @@ class list_class {
         return [row]
     }
     title() {
-        let title = this.list_title;
+        let title = this.list_title + ':';
         let message = "nadie";
         let i = 0;
         for (const [key, value] of Object.entries(this.user_ids_and_nicks)) {
@@ -77,7 +74,7 @@ class list_class {
         if (message.length > 0) {
             embed.setDescription(message);
         }
-        return { embeds: [embed], components: this.createButton() };
+        return { embeds: [embed], components: this.createButton(), fetchReply: true };
     }
 }
 

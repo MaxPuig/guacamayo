@@ -1,49 +1,32 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import { Client } from 'discord.js';
-const client = new Client({ intents: 1665 }); // https://ziad87.net/intents/
-import { xgame_start, xgame_continue } from './utils/xgame.js';
-import { changePrefix } from './utils/change_prefix.js';
-import { startList, addDeleteUser } from './utils/lists.js';
-import { sendRSS, setRSSchannel, deleteRSSchannel } from './utils/rss.js';
-import { change_voice_properties, userJoined } from './utils/voice.js';
-import { relayMsg } from './utils/relay_msg.js';
-import { sendHelpCommands } from './utils/help.js';
-import { getDatabase } from './utils/database.js';
-let prefixes, channels;
+const client = new Client({ intents: 129 }); // https://ziad87.net/intents/
+import { slash_command } from './utils/slash_commands.js';
+import { addDeleteUser } from './utils/lists.js';
+import { xgame_continue } from './utils/xgame.js';
+import { userJoined } from './utils/voice.js';
+import { sendRSS } from './utils/rss.js';
 
 
 client.on('ready', async function () {
     console.log('Bot ready!');
-    prefixes = await getDatabase('customPrefix');
-    channels = await getDatabase('channelsRelay');
     const mins15 = 900000;
     setInterval(sendRSS, mins15, client);
-});
-
-
-client.on('messageCreate', async function (msg) {
-    if (msg.webhookId != null) return; // Ignores webhooks
-    let prefix;
-    if (prefixes[msg.guild.id] != undefined) { prefix = prefixes[msg.guild.id]; } else { prefix = "." }; // sets the custom prefix
-    if (msg.content.startsWith(prefix)) {
-        prefixes = changePrefix(msg, prefixes, prefix);
-        xgame_start(msg, prefix);
-        startList(msg, prefix);
-        sendHelpCommands(msg, prefix);
-        setRSSchannel(msg, prefix);
-        deleteRSSchannel(msg, prefix);
-        change_voice_properties(msg, prefix);
-    }
-    channels = relayMsg(msg, client, channels, prefix);
+    // client.guilds.cache.forEach(guild => { console.log(`${guild.name} | ${guild.id}`); })
 });
 
 
 client.on('interactionCreate', async interaction => {
+    if (interaction.isCommand()) { // slash command
+        slash_command(interaction);
+        return;
+    }
     await interaction.deferUpdate();
-    if (!interaction.isMessageComponent() && interaction.componentType !== 'BUTTON') return;
-    await xgame_continue(interaction);
-    await addDeleteUser(interaction);
+    if (interaction.isMessageComponent() && interaction.componentType == 'BUTTON') {
+        await xgame_continue(interaction);
+        await addDeleteUser(interaction);
+    }
 });
 
 

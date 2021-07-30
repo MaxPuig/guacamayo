@@ -6,41 +6,14 @@ let games = {};
 function getRandomInt(min, max) { return Math.floor(Math.random() * (max - min)) + min; };
 
 
-/** Empieza una nueva partida de xgame o devuelve instrucciones de como empezar. */
-function xgame_start(msg, prefix) {
-    const error_message = "Formato incorrecto, usa `" + prefix + "xgame` para dimensiones aleatorias o \n`" + prefix + "xgame 4x5` para tamaño personalizado (mínimo: 3x3, máximo: 5x5)";
-    const instructions = "Objetivo: Ocultar todas las x pulsando los botones. Los botones se invierten en forma de cruz +";
-    if (msg.content.toLowerCase().startsWith(`${prefix}xgame`)) {
-        if (msg.content.toLowerCase() == `${prefix}xgame`) {
-            let game = new x_game(getRandomInt(3, 6), getRandomInt(3, 6));
-            msg.channel.send({ content: instructions, components: game.toMessage() }).then(function (msg2) { game.message_id = msg2.id; });
-            games[msg.author.id] = game;
-        } else if (msg.content.toLowerCase().length == 10 && msg.content.includes(" ")) {
-            let msg_instructions = msg.content.split(" ");
-            if (msg_instructions[1].toLowerCase().includes("x")) {
-                let dimensions = msg_instructions[1].toLowerCase().split("x");
-                try {
-                    dimensions[0] = parseInt(dimensions[0]);
-                    dimensions[1] = parseInt(dimensions[1]);
-                } catch (error) { }
-                if (Number.isInteger(dimensions[0]) && Number.isInteger(dimensions[1])) {
-                    if (dimensions[0] < 6 && dimensions[1] < 6 && dimensions[0] > 2 && dimensions[1] > 2) {
-                        let game = new x_game(dimensions[0], dimensions[1]);
-                        msg.channel.send({ content: instructions, components: game.toMessage() }).then(function (msg2) { game.message_id = msg2.id; });
-                        games[msg.author.id] = game;
-                    } else {
-                        msg.channel.send(error_message);
-                    }
-                } else {
-                    msg.channel.send(error_message);
-                }
-            } else {
-                msg.channel.send(error_message);
-            }
-        } else {
-            msg.channel.send(error_message);
-        }
-    }
+/** Empieza una nueva partida de xgame. */
+async function xgame_start(interaction, x, y) {
+    const instructions = 'Objetivo: Ocultar todas las x pulsando los botones. Los botones se invierten en forma de cruz +';
+    if (x == 0) x = getRandomInt(3, 6);
+    if (y == 0) y = getRandomInt(3, 6);
+    let game = new x_game(x, y);
+    await interaction.reply({ content: instructions, components: game.toMessage(), fetchReply: true }).then(function (msg2) { game.message_id = msg2.id; });
+    games[interaction.user.id] = game;
 }
 
 

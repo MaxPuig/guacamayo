@@ -1,12 +1,11 @@
 import Parser from 'rss-parser';
 let parser = new Parser();
 import { getDatabase, setDatabase } from './database.js';
-let rssChannels = [];
 
 
-/** Recoge las ofertas de juegos de un feed RSS y las envía a todos los canales que se han "inscrito". */
+/** Recoge las ofertas de juegos de un feed RSS y las envía a todos los canales de la db. */
 async function sendRSS(client) {
-    rssChannels = await getDatabase('rss');
+    let rssChannels = await getDatabase('rss');
     try {
         if (rssChannels.length > 0) {
             let oferta = await freeGames();
@@ -20,29 +19,27 @@ async function sendRSS(client) {
 };
 
 
-/** Establece el canal donde tiene que enviar los mensajes y lo guarda en "./data/rss.json". */
-async function setRSSchannel(msg, prefix) {
-    if (msg.content.toLowerCase() == `${prefix}rss` && msg.member.permissions.has('ADMINISTRATOR')) {
-        rssChannels = await getDatabase('rss');
-        if (rssChannels.indexOf(msg.channel.id) !== -1) {
-            msg.channel.send('El canal ya estaba establecido. `' + prefix + 'rss borrar` Para dejar de enviar las ofertas.');
+/** Establece o elimina el canal donde tiene que enviar los mensajes y lo guarda en "./data/rss.json". */
+async function setRSSchannel(interaction, activo) {
+    if (activo == 'establecer') {
+        let rssChannels = await getDatabase('rss');
+        if (rssChannels.indexOf(interaction.channel.id) !== -1) {
+            await interaction.reply('El canal ya estaba establecido. `/rss` Para dejar de enviar las ofertas.');
         } else {
-            rssChannels.push(msg.channel.id)
+            rssChannels.push(interaction.channel.id)
             setDatabase('rss', rssChannels);
-            msg.channel.send('Canal establecido. `' + prefix + 'rss borrar` Para dejar de enviar las ofertas.');
+            await interaction.reply('Canal establecido. `/rss` Para dejar de enviar las ofertas.');
         }
-    }
-};
-
-
-/** Elimina el canal de "./data/rss.json" para dejar de recibir las ofertas. */
-async function deleteRSSchannel(msg, prefix) {
-    if (msg.content.toLowerCase() == `${prefix}rss borrar` && msg.member.permissions.has('ADMINISTRATOR')) {
-        rssChannels = await getDatabase('rss');
-        const index = rssChannels.indexOf(msg.channel.id);
-        if (index > -1) { rssChannels.splice(index, 1); }
-        setDatabase('rss', rssChannels);
-        msg.channel.send('Este canal ya no recibirá ofertas. \n`' + prefix + 'rss` para volver a recibirlas. (Solo admin)');
+    } else {
+        let rssChannels = await getDatabase('rss');
+        const index = rssChannels.indexOf(interaction.channel.id);
+        if (index > -1) {
+            rssChannels.splice(index, 1);
+            setDatabase('rss', rssChannels);
+            await interaction.reply('Este canal ya no recibirá ofertas. `/rss` para volver a recibirlas.');
+        } else {
+            await interaction.reply('El canal NO recibía ofertas. `/rss` Para establecerlo.');
+        }
     }
 };
 
@@ -80,4 +77,4 @@ async function freeGames() {
 };
 
 
-export { sendRSS, setRSSchannel, deleteRSSchannel };
+export { sendRSS, setRSSchannel };
