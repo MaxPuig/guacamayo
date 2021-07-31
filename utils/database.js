@@ -10,7 +10,8 @@ if (db.data === null) { // Si no existe el archivo/db, lo crea.
         'nombresAudio': {},
         'freeGames': [],
         'rss': [],
-        'lists': {}
+        'lists': {},
+        'adminPerms': {}
     }
     await db.write();
 }

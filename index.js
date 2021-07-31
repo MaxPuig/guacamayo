@@ -17,6 +17,21 @@ client.on('ready', async function () {
 });
 
 
+/** Descomentar esto para crear los slash commands al enviar un mensaje en qualquier canal. */
+/*
+import { all_commands_array } from './utils/set_slash_cmds.js';
+client.on('messageCreate', async message => {
+    const guildID = '123456789'; // Replace with your guild ID for slash commands
+    // 1 Guild
+    // await client.guilds.cache.get(guildID)?.commands.set(all_commands_array);
+    // Global
+    // await client.application?.commands.set([]);
+    // await client.application?.commands.set(all_commands_array);
+
+});
+*/
+
+
 client.on('interactionCreate', async interaction => {
     if (interaction.isCommand()) { // slash command
         slash_command(interaction);

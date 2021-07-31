@@ -1,6 +1,9 @@
 import { setDatabase, getDatabase } from './database.js';
 
 
+setDatabase('adminPerms', {});
+
+/*
 let datos = await getDatabase('nombresAudio')
 
 for (const [key, value] of Object.entries(datos)) {
@@ -14,6 +17,7 @@ for (const [key, value] of Object.entries(datos)) {
 
 setDatabase('nombresAudio', datos);
 console.log('Changes applied to db')
+*/
 
 /*
 for (const [key, value] of Object.entries(datos)) {
