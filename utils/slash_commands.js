@@ -41,12 +41,11 @@ async function slash_command(interaction) {
         voice_slash_command(interaction);
     } else if (interaction.commandName == 'dar_permisos_bot') {
         if (interaction.member.permissions.has("ADMINISTRATOR")) {
-            const user = interaction.options.getUser('usuario').id;
+            const userId = interaction.options.getUser('usuario').id;
             const addDelete = interaction.options.getString('dar_o_quitar');
-            addDeleteUserPermission(interaction, addDelete, user)
-            console.log(user, addDelete);
+            addDeleteUserPermission(interaction, addDelete, userId);
         } else {
-            interaction.reply({ content: 'No puedes dar permisos. Solo un administrador.', ephemeral: true });
+            interaction.reply({ content: 'No puedes dar permisos. Solo un administrador puede.', ephemeral: true });
         }
     }
 }
