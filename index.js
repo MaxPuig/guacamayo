@@ -27,7 +27,6 @@ client.on('messageCreate', async message => {
     // Global
     // await client.application?.commands.set([]);
     // await client.application?.commands.set(all_commands_array);
-
 });
 */
 
@@ -47,7 +46,9 @@ client.on('interactionCreate', async interaction => {
 
 client.on('voiceStateUpdate', function (oldState, newState) {
     if (newState.channel?.type == 'GUILD_STAGE_VOICE') return; // Ignores stage channels
-    userJoined(oldState, newState)
+    if (newState.channel?.joinable && !newState.channel?.full) {
+        userJoined(oldState, newState);
+    }
 });
 
 
