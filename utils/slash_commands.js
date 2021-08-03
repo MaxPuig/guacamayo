@@ -6,6 +6,7 @@ import { setRSSchannel } from './rss.js';
 import { xgame_start } from './xgame.js';
 import { getDatabase, setDatabase } from './database.js';
 import { addDeleteUserPermission } from './adminPerms.js';
+import { getActivity } from './activities.js';
 import { avisos, default_settings, espanol, idioma, frase } from './voice_settings.js';
 
 
@@ -26,6 +27,16 @@ async function slash_command(interaction) {
         const tamano_y = interaction.options.getInteger('tamaño_y');
         xgame_start(interaction, tamano_x, tamano_y);
         return;
+    } else if (interaction.commandName == 'activity') {
+        const canal = interaction.options.getChannel('canal');
+        const actividad = interaction.options.getString('actividad');
+        if (canal.type == 'GUILD_VOICE') {
+            interaction.reply(await getActivity(canal.id, actividad));
+            return;
+        } else {
+            interaction.reply({content: 'El canal debe ser un canal de voz.', ephemeral: true});
+            return;
+        }
     }
     let datos = await getDatabase('adminPerms');
     datos = datos[interaction.guild.id];
@@ -51,7 +62,7 @@ async function slash_command(interaction) {
 }
 
 
-/** Responde a los slash commands de la voz. */
+/** Responde a los slash-commands relacionados con la voz. */
 async function voice_slash_command(interaction) {
     let datos = await getDatabase('nombresAudio');
     if (datos[interaction.guild.id] == undefined) {

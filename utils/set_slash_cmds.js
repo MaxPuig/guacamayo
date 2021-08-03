@@ -124,7 +124,7 @@ const voz = {
         },
         {
             name: 'español',
-            description: 'Cambia el genero de voz (Solo español).',
+            description: 'Cambia el género de voz (Solo español).',
             type: 'SUB_COMMAND',
             options: [{
                 name: 'género',
@@ -261,12 +261,50 @@ const adminPerms = {
     }]
 }
 
+const activity = {
+    name: 'activity',
+    description: 'Empieza una actividad en el canal de voz.',
+    options: [{
+        name: 'canal',
+        type: 'CHANNEL',
+        description: 'Canal DE VOZ donde empezar la actividad.',
+        required: true
+    },
+    {
+        name: 'actividad',
+        type: 'STRING',
+        description: 'Actividad a empezar.',
+        required: true,
+        choices: [{
+            name: 'Youtube Together',
+            value: '755600276941176913'
+        },
+        {
+            name: 'Poker Night',
+            value: '755827207812677713'
+        },
+        {
+            name: 'Betrayal.io',
+            value: '773336526917861400'
+        },
+        {
+            name: 'Fishington.io',
+            value: '814288819477020702'
+        },
+        {
+            name: 'Chess in the Park',
+            value: '832012774040141894'
+        }]
+    }]
+}
 
-const all_commands_array = [help, invite, lista, rss, voz, xgame, adminPerms];
+
+const all_commands_array = [help, activity, lista, invite, rss, voz, xgame, adminPerms];
+
 // Global
-// const commands = await client.application?.commands.set([help, invite, lista, rss, voz, xgame]);
+// const commands = await client.application?.commands.set(all_commands_array);
 // En solo 1 servidor
-// await client.guilds.cache.get(guildID)?.commands.set([help, invite, lista, rss, voz, xgame]);
+// await client.guilds.cache.get(guildID)?.commands.set(all_commands_array);
 // console.log(commands);
 
 export { all_commands_array }
