@@ -11,6 +11,7 @@ import { sendRSS } from './utils/rss.js';
 
 client.on('ready', async function () {
     console.log('Bot ready!');
+    client.user.setActivity('/help', { type: 'WATCHING' });
     const mins15 = 900000;
     setInterval(sendRSS, mins15, client);
     // client.guilds.cache.forEach(guild => { console.log(`${guild.name} | ${guild.id}`); })
