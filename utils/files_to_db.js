@@ -1,7 +1,7 @@
 import { setDatabase, getDatabase } from './database.js';
 
 
-setDatabase('adminPerms', {});
+setDatabase('activities', {});
 
 /*
 let datos = await getDatabase('nombresAudio')

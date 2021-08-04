@@ -11,7 +11,7 @@ import { avisos, default_settings, espanol, idioma, frase } from './voice_settin
 
 
 /** Recibe los slash-commands y ejecuta lo que corresponde. */
-async function slash_command(interaction) {
+async function slash_command(interaction, client) {
     if (interaction.commandName == 'help') {
         interaction.reply(sendHelpCommands());
         return;
@@ -31,10 +31,10 @@ async function slash_command(interaction) {
         const canal = interaction.options.getChannel('canal');
         const actividad = interaction.options.getString('actividad');
         if (canal.type == 'GUILD_VOICE') {
-            interaction.reply(await getActivity(canal.id, actividad));
+            interaction.reply(await getActivity(canal.id, actividad, interaction.guild.id, client));
             return;
         } else {
-            interaction.reply({content: 'El canal debe ser un canal de voz.', ephemeral: true});
+            interaction.reply({ content: 'El canal debe ser un canal de voz.', ephemeral: true });
             return;
         }
     }

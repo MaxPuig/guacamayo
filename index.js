@@ -34,7 +34,7 @@ client.on('messageCreate', async message => {
 
 client.on('interactionCreate', async interaction => {
     if (interaction.isCommand()) { // slash command
-        slash_command(interaction);
+        slash_command(interaction, client);
         return;
     }
     await interaction.deferUpdate();

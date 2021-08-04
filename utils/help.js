@@ -10,7 +10,7 @@ function sendHelpCommands() {
         .setColor('#fc0303')
         .addFields(
             { name: '`/invite`', value: 'Envía el link de invitación del Bot.' },
-            { name: '`/activity`', value: 'Juega o mira YouTube en un canal de voz.' },
+            { name: '`/activity`', value: 'Juega o mira videos de YouTube directamente desde una llamada.' },
             { name: '`/lista` <Opcional: Nombre de lista>', value: 'Empieza una lista de nombres. Hay que pulsar un botón para unirse.' },
             { name: '`/xgame` <Tamaño>', value: 'Juego. Objetivo: ocultar todas las "x".' },
             { name: '`/rss` [Solo Admin]', value: 'Establece (o quita) ese canal de texto para recibir ofertas de juegos gratis.' },

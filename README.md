@@ -10,6 +10,7 @@
 ## COMANDOS de Barra [/]
 - `/help`: Envía todos los comandos.
 - `/invite`: Envía el link de invitación del Bot.
+- `/activity`: Juega o mira videos de YouTube directamente desde una llamada.
 - `/lista <Opcional: Nombre de lista>`: Empieza una lista de nombres. Hay que pulsar un botón para unirse.
 - `/xgame <Tamaño>`: Juego. Objetivo: ocultar todas las "x".
 - `/rss` [Solo Admin]: Establece (o quita) ese canal de texto para recibir ofertas de juegos gratis.
