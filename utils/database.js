@@ -5,13 +5,12 @@ const db = new Low(new JSONFile('./data/database.json'));
 await db.read();
 if (db.data === null) { // Si no existe el archivo/db, lo crea.
     db.data = {
-        'channelsRelay': {},
-        'customPrefix': {},
         'nombresAudio': {},
         'freeGames': [],
         'rss': [],
         'lists': {},
-        'adminPerms': {}
+        'adminPerms': {},
+        'activities': {}
     }
     await db.write();
 }
