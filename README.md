@@ -25,7 +25,7 @@ sudo apt install nodejs
 sudo apt install npm
 sudo npm cache clean -f
 sudo npm install -g n
-sudo n stable
+sudo n latest
 ```
 - Descargar los archivos del bot ```git clone https://github.com/MaxPuig/bot-discord-js-v13.git```
 - Descargar los paquetes ```npm install```
