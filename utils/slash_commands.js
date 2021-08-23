@@ -7,7 +7,7 @@ import { xgame_start } from './xgame.js';
 import { getDatabase, setDatabase } from './database.js';
 import { addDeleteUserPermission } from './adminPerms.js';
 import { getActivity } from './activities.js';
-import { avisos, default_settings, espanol, idioma, frase } from './voice_settings.js';
+import { avisos, espanol, idioma, frase } from './voice_settings.js';
 
 
 /** Recibe los slash-commands y ejecuta lo que corresponde. */
@@ -45,7 +45,7 @@ async function slash_command(interaction, client) {
         let mensaje = 'Solo la gente con rol/permiso de administrador puede usar este comando.\n';
         mensaje += '`/help` Para ver lo que puedes usar.';
         interaction.reply({ content: mensaje, ephemeral: true });
-    } else if (interaction.commandName == 'rss') {
+    } else if (interaction.commandName == 'ofertas') {
         const activo = interaction.options.getString('establecer_o_quitar');
         setRSSchannel(interaction, activo);
     } else if (interaction.commandName == 'voz') {
@@ -78,8 +78,6 @@ async function voice_slash_command(interaction) {
     if (interaction.options._subCommand == 'avisos') {
         const voz_activa = interaction.options.getString('activar_o_desactivar');
         avisos(interaction, voz_activa);
-    } else if (interaction.options._subCommand == 'dafault') {
-        default_settings(interaction);
     } else if (interaction.options._subCommand == 'español') {
         const genero = interaction.options.getString('género');
         espanol(interaction, genero);

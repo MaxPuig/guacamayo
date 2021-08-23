@@ -3,6 +3,7 @@
 
 ## FUNCIONES
 - Avisa por el canal de voz quien se ha unido.
+- Juega o mira videos de YouTube directamente desde una llamada.
 - Envía ofertas de juegos gratis.
 - Crea listas de jugadores.
 - Juego: xgame.
@@ -13,7 +14,7 @@
 - `/activity`: Juega o mira videos de YouTube directamente desde una llamada.
 - `/lista <Opcional: Nombre de lista>`: Empieza una lista de nombres. Hay que pulsar un botón para unirse.
 - `/xgame <Tamaño>`: Juego. Objetivo: ocultar todas las "x".
-- `/rss` [Solo Admin]: Establece (o quita) ese canal de texto para recibir ofertas de juegos gratis.
+- `/ofertas` [Solo Admin]: Establece (o quita) ese canal de texto para recibir ofertas de juegos gratis.
 - `/voz` [Solo Admin]: Cambia los ajustes de los avisos de voz.
 
 ## SETUP

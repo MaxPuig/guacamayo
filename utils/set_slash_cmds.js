@@ -75,8 +75,8 @@ const lista = {
     }]
 }
 
-const rss = {
-    name: 'rss',
+const ofertas = {
+    name: 'ofertas',
     description: 'Establece (o no) este canal para recibir ofertas de juegos gratis.',
     options: [{
         name: 'establecer_o_quitar',
@@ -84,11 +84,11 @@ const rss = {
         description: 'Quieres recibir ofertas o quitarlas de este canal?',
         required: true,
         choices: [{
-            name: 'Establecer',
+            name: 'establecer',
             value: 'establecer',
         },
         {
-            name: 'Quitar',
+            name: 'quitar',
             value: 'quitar',
         }]
     }]
@@ -118,13 +118,8 @@ const voz = {
             }]
         },
         {
-            name: 'dafault',
-            description: 'Reinicia los ajustes de voz a español, hombre.',
-            type: 'SUB_COMMAND'
-        },
-        {
             name: 'español',
-            description: 'Cambia el género de voz (Solo español).',
+            description: 'Cambia la voz a español, hombre o mujer.',
             type: 'SUB_COMMAND',
             options: [{
                 name: 'género',
@@ -256,7 +251,7 @@ const adminPerms = {
     {
         name: 'usuario',
         type: 'USER',
-        description: 'Usuario al que darle permisos para editar la comandos Admin como: /voz /rss',
+        description: 'Usuario al que darle permisos para editar la comandos Admin como: /voz /ofertas',
         required: true
     }]
 }
@@ -299,7 +294,7 @@ const activity = {
 }
 
 
-const all_commands_array = [help, activity, lista, invite, rss, voz, xgame, adminPerms];
+const all_commands_array = [help, activity, lista, invite, ofertas, voz, xgame, adminPerms];
 
 // Global
 // const commands = await client.application?.commands.set(all_commands_array);

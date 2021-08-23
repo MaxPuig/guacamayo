@@ -39,22 +39,6 @@ async function avisos(interaction, voz_activa) {
 }
 
 
-/** Restablece los ajustes (frase, idioma, genero). */
-async function default_settings(interaction, args) {
-    let datos = await getDatabase('nombresAudio');
-    let nuevosdatos = {
-        "disabled": false,
-        "delante_o_detras": "detras",
-        "frase": "Se ha unido",
-        "idioma": "es-es",
-        "genero": "hombre"
-    }
-    datos[interaction.guild.id] = nuevosdatos;
-    interaction.reply(`Voz reseteada a español hombre. Los audios serán así: ${nuevosdatos.frase} ${interaction.member.displayName}.`);
-    setDatabase('nombresAudio', datos);
-}
-
-
 /** Activa o desactiva los avisos en el canal de voz. */
 async function espanol(interaction, genero) {
     if (genero == 'hombre') {
@@ -145,4 +129,4 @@ async function frase(interaction, posicion_nombre, frase_nueva) {
 }
 
 
-export { avisos, default_settings, espanol, idioma, frase };
+export { avisos, espanol, idioma, frase };
