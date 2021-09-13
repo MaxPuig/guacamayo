@@ -75,17 +75,17 @@ async function voice_slash_command(interaction) {
         };
         await setDatabase('nombresAudio', datos);
     }
-    if (interaction.options._subCommand == 'avisos') {
+    if (interaction.options._subcommand == 'avisos') {
         const voz_activa = interaction.options.getString('activar_o_desactivar');
         avisos(interaction, voz_activa);
-    } else if (interaction.options._subCommand == 'español') {
+    } else if (interaction.options._subcommand == 'español') {
         const genero = interaction.options.getString('género');
         espanol(interaction, genero);
-    } else if (interaction.options._subCommand == 'idioma') {
+    } else if (interaction.options._subcommand == 'idioma') {
         const idioma_nuevo = interaction.options.getString('idioma_nuevo');
         const idioma_nuevo_2 = interaction.options.getString('idioma_nuevo_2');
         idioma(interaction, idioma_nuevo, idioma_nuevo_2);
-    } else if (interaction.options._subCommand == 'frase') {
+    } else if (interaction.options._subcommand == 'frase') {
         const posicion_nombre = interaction.options.getString('posición_nombre');
         const frase_nueva = interaction.options.getString('frase_nueva');
         frase(interaction, posicion_nombre, frase_nueva);
