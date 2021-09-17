@@ -1,4 +1,3 @@
-/** Esto deberá pegarse en index.js para crear los slash commands. */
 const idiomas = [
     { "name": "Afrikaans", "value": "af" },
     { "name": "Albanian", "value": "sq" },
@@ -271,8 +270,12 @@ const activity = {
         description: 'Actividad a empezar.',
         required: true,
         choices: [{
-            name: 'Youtube Together',
+            name: 'Youtube Together (Viejo/Mejor)',
             value: '755600276941176913'
+        },
+        {
+            name: 'Youtube Together (Nuevo/Peor)',
+            value: '880218394199220334'
         },
         {
             name: 'Poker Night',
