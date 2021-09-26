@@ -270,11 +270,11 @@ const activity = {
         description: 'Actividad a empezar.',
         required: true,
         choices: [{
-            name: 'Youtube Together (Viejo/Mejor)',
+            name: 'Youtube Together (Viejo)',
             value: '755600276941176913'
         },
         {
-            name: 'Youtube Together (Nuevo/Peor)',
+            name: 'Watch Together (Nuevo)',
             value: '880218394199220334'
         },
         {
@@ -292,6 +292,21 @@ const activity = {
         {
             name: 'Chess in the Park',
             value: '832012774040141894'
+        },
+        {
+            name: 'Doodle Crew',
+            value: '878067389634314250'
+        },
+        {
+            name: 'Letter Tile',
+            value: '879863686565621790'
+        },
+        {
+            name: 'Word Snacks',
+            value: '879863976006127627'
+        },{
+            name: 'Awkword',
+            value: '879863881349087252'
         }]
     }]
 }
