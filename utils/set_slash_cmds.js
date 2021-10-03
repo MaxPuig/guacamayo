@@ -85,8 +85,7 @@ const ofertas = {
         choices: [{
             name: 'establecer',
             value: 'establecer',
-        },
-        {
+        }, {
             name: 'quitar',
             value: 'quitar',
         }]
@@ -96,89 +95,80 @@ const ofertas = {
 const voz = {
     name: 'voz',
     description: 'Cambiar ajustes de los avisos de voz.',
-    options: [
-        {
-            name: 'avisos',
-            description: 'Activa o deactiva los avisos en los canales de voz.',
-            type: 'SUB_COMMAND', // 2 is type SUB_COMMAND_GROUP
-            options: [{
-                name: 'activar_o_desactivar',
-                description: 'Quieres activar o desactivar los avisos de voz?',
-                type: 'STRING',
-                required: true,
-                choices: [{
-                    name: 'Activar',
-                    value: 'activar'
-                },
-                {
-                    name: 'Desactivar',
-                    value: 'desactivar'
-                }]
-            }]
-        },
-        {
-            name: 'español',
-            description: 'Cambia la voz a español, hombre o mujer.',
-            type: 'SUB_COMMAND',
-            options: [{
-                name: 'género',
-                description: 'Quieres que la voz en español sea hombre o mujer?',
-                type: 'STRING',
-                required: true,
-                choices: [{
-                    name: 'Hombre',
-                    value: 'hombre'
-                },
-                {
-                    name: 'Mujer',
-                    value: 'mujer'
-                }]
-            }]
-        },
-        {
-            name: 'idioma',
-            description: 'Cambia el idioma de la voz.',
-            type: 'SUB_COMMAND',
-            options: [{
-                name: 'idioma_nuevo',
-                description: 'Escoge el idioma.',
-                type: 'STRING',
-                required: true,
-                choices: primeros
-            },
-            {
-                name: 'idioma_nuevo_2',
-                description: 'Escoge el idioma si no lo has hecho antes.',
-                type: 'STRING',
-                required: true,
-                choices: segundos
-            }]
-        },
-        {
-            name: 'frase',
-            description: 'Cambia la frase que dice la voz.',
-            type: 'SUB_COMMAND',
-            options: [{
-                name: 'posición_nombre',
-                description: 'El nombre va delante o detrás de la frase?',
-                type: 'STRING',
-                required: true,
-                choices: [{
-                    name: 'Delante',
-                    value: 'delante'
-                },
-                {
-                    name: 'Detrás',
-                    value: 'detras'
-                }]
-            },
-            {
-                name: 'frase_nueva',
-                description: 'Nueva frase. Ejemplo: se ha unido',
-                type: 'STRING',
-                required: true
+    options: [{
+        name: 'avisos',
+        description: 'Activa o deactiva los avisos en los canales de voz.',
+        type: 'SUB_COMMAND',
+        options: [{
+            name: 'activar_o_desactivar',
+            description: 'Quieres activar o desactivar los avisos de voz?',
+            type: 'STRING',
+            required: true,
+            choices: [{
+                name: 'Activar',
+                value: 'activar'
+            }, {
+                name: 'Desactivar',
+                value: 'desactivar'
             }]
         }]
+    }, {
+        name: 'español',
+        description: 'Cambia la voz a español, hombre o mujer.',
+        type: 'SUB_COMMAND',
+        options: [{
+            name: 'género',
+            description: 'Quieres que la voz en español sea hombre o mujer?',
+            type: 'STRING',
+            required: true,
+            choices: [{
+                name: 'Hombre',
+                value: 'hombre'
+            }, {
+                name: 'Mujer',
+                value: 'mujer'
+            }]
+        }]
+    }, {
+        name: 'idioma',
+        description: 'Cambia el idioma de la voz.',
+        type: 'SUB_COMMAND',
+        options: [{
+            name: 'idioma_nuevo',
+            description: 'Escoge el idioma.',
+            type: 'STRING',
+            required: true,
+            choices: primeros
+        }, {
+            name: 'idioma_nuevo_2',
+            description: 'Escoge el idioma si no lo has hecho antes.',
+            type: 'STRING',
+            required: true,
+            choices: segundos
+        }]
+    }, {
+        name: 'frase',
+        description: 'Cambia la frase que dice la voz.',
+        type: 'SUB_COMMAND',
+        options: [{
+            name: 'posición_nombre',
+            description: 'El nombre va delante o detrás de la frase?',
+            type: 'STRING',
+            required: true,
+            choices: [{
+                name: 'Delante',
+                value: 'delante'
+            }, {
+                name: 'Detrás',
+                value: 'detras'
+            }]
+        }, {
+            name: 'frase_nueva',
+            description: 'Nueva frase. Ejemplo: se ha unido',
+            type: 'STRING',
+            required: true
+        }]
+    }]
 }
 
 const xgame = {
@@ -192,21 +182,17 @@ const xgame = {
         choices: [{
             name: 'Random',
             value: 0,
-        },
-        {
+        }, {
             name: '3',
             value: 3,
-        },
-        {
+        }, {
             name: '4',
             value: 4,
-        },
-        {
+        }, {
             name: '5',
             value: 5,
         }]
-    },
-    {
+    }, {
         name: 'tamaño_y',
         type: 'INTEGER',
         description: 'Tamaño "Y" del tablero.',
@@ -214,16 +200,13 @@ const xgame = {
         choices: [{
             name: 'Random',
             value: 0,
-        },
-        {
+        }, {
             name: '3',
             value: 3,
-        },
-        {
+        }, {
             name: '4',
             value: 4,
-        },
-        {
+        }, {
             name: '5',
             value: 5,
         }]
@@ -241,13 +224,11 @@ const adminPerms = {
         choices: [{
             name: 'Dar permisos',
             value: 'add'
-        },
-        {
+        }, {
             name: 'Quitar permisos',
             value: 'delete'
         }]
-    },
-    {
+    }, {
         name: 'usuario',
         type: 'USER',
         description: 'Usuario al que darle permisos para editar la comandos Admin como: /voz /ofertas',
@@ -261,10 +242,10 @@ const activity = {
     options: [{
         name: 'canal',
         type: 'CHANNEL',
+        channelTypes: ['GUILD_VOICE'],
         description: 'Canal DE VOZ donde empezar la actividad.',
         required: true
-    },
-    {
+    }, {
         name: 'actividad',
         type: 'STRING',
         description: 'Actividad a empezar.',
@@ -272,41 +253,39 @@ const activity = {
         choices: [{
             name: 'Youtube Together (Viejo)',
             value: '755600276941176913'
-        },
-        {
+        }, {
             name: 'Watch Together (Nuevo)',
             value: '880218394199220334'
-        },
-        {
+        }, {
             name: 'Poker Night',
             value: '755827207812677713'
-        },
-        {
+        }, {
             name: 'Betrayal.io',
             value: '773336526917861400'
-        },
-        {
+        }, {
             name: 'Fishington.io',
             value: '814288819477020702'
-        },
-        {
+        }, {
             name: 'Chess in the Park',
             value: '832012774040141894'
-        },
-        {
+        }, {
             name: 'Doodle Crew',
             value: '878067389634314250'
-        },
-        {
+        }, {
             name: 'Letter Tile',
             value: '879863686565621790'
-        },
-        {
+        }, {
             name: 'Word Snacks',
             value: '879863976006127627'
-        },{
+        }, {
             name: 'Awkword',
             value: '879863881349087252'
+        }, {
+            name: 'Click Dis (No va aún)',
+            value: '832012854282158180'
+        }, {
+            name: 'Sketchy Artist (No va aún)',
+            value: '879864070101172255'
         }]
     }]
 }
@@ -314,10 +293,5 @@ const activity = {
 
 const all_commands_array = [help, activity, lista, invite, ofertas, voz, xgame, adminPerms];
 
-// Global
-// const commands = await client.application?.commands.set(all_commands_array);
-// En solo 1 servidor
-// await client.guilds.cache.get(guildID)?.commands.set(all_commands_array);
-// console.log(commands);
 
 export { all_commands_array }
