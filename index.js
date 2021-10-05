@@ -13,16 +13,15 @@ import { all_commands_array } from './utils/set_slash_cmds.js';
 client.on('ready', async function () {
     console.log('Bot ready!');
     client.user.setActivity('/help', { type: 'WATCHING' });
-    const mins15 = 900000;
-    setInterval(sendRSS, mins15, client);
+    const mins30 = 1_800_000;
+    setInterval(sendRSS, mins30, client);
     // client.guilds.cache.forEach(guild => { console.log(`${guild.name} | ${guild.id}`); })
-    /** Descomentar esto para crear los slash commands al enviar un mensaje en cualquier canal.
+    /** Descomentar esto para crear los slash commands. */
     // 1 Guild
-    await client.guilds.cache.get('123456789')?.commands.set(all_commands_array);
+    // await client.guilds.cache.get('123456789')?.commands.set([all_commands_array]);
     // Global
-    await client.application?.commands.set([]);
-    await client.application?.commands.set(all_commands_array);
-     */
+    // await client.application?.commands.set([]);
+    // await client.application?.commands.set(all_commands_array);
 });
 
 

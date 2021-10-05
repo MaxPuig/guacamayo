@@ -269,6 +269,9 @@ const activity = {
             name: 'Chess in the Park',
             value: '832012774040141894'
         }, {
+            name: 'Checkers (Alpha)',
+            value: '832012682520428625'
+        }, {
             name: 'Doodle Crew',
             value: '878067389634314250'
         }, {
@@ -281,12 +284,13 @@ const activity = {
             name: 'Awkword',
             value: '879863881349087252'
         }, {
-            name: 'Click Dis (No va aún)',
-            value: '832012854282158180'
+            name: 'Sketchy Artist (Beta/Dev)',
+            value: '879864104980979792'
         }, {
-            name: 'Sketchy Artist (No va aún)',
-            value: '879864070101172255'
-        }]
+            name: 'Decoders (Beta/Dev)',
+            value: '891001866073296967'
+        }, // { name: 'Click Dis (No va aún)', value: '832012854282158180' }, // { name: 'Sketchy Artist (No va aún)', value: '879864070101172255' },
+        ]
     }]
 }
 
