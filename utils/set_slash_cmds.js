@@ -289,7 +289,11 @@ const activity = {
         }, {
             name: 'Decoders (Beta/Dev)',
             value: '891001866073296967'
-        }, // { name: 'Click Dis (No va aún)', value: '832012854282158180' }, // { name: 'Sketchy Artist (No va aún)', value: '879864070101172255' },
+        }, {
+            name: 'SpellCast',
+            value: '852509694341283871'
+        },
+        { name: 'Putts (va regular)', value: '832012854282158180' }, //{ name: 'Sketchy Artist (No va aún)', value: '879864070101172255' },
         ]
     }]
 }

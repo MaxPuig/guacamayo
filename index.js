@@ -18,7 +18,7 @@ client.on('ready', async function () {
     // client.guilds.cache.forEach(guild => { console.log(`${guild.name} | ${guild.id}`); })
     /** Descomentar esto para crear los slash commands. */
     // 1 Guild
-    // await client.guilds.cache.get('123456789')?.commands.set([all_commands_array]);
+    // await client.guilds.cache.get('123456789')?.commands.set(all_commands_array);
     // Global
     // await client.application?.commands.set([]);
     // await client.application?.commands.set(all_commands_array);
