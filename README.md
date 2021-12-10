@@ -29,6 +29,7 @@ sudo npm install -g n
 sudo n latest
 ```
 - Descargar los archivos del bot ```git clone https://github.com/MaxPuig/bot-discord-js-v13.git```
+- Entrar a la carpeta ```cd bot-discord-js-v13```
 - Descargar los paquetes ```npm install```
 - Crear el archivo .env ```sudo nano .env``` y ahí escribir con los propios datos:
 ```

@@ -6,7 +6,7 @@ const idiomas = [
     { "name": "Catalan", "value": "ca" },
     { "name": "Chinese", "value": "zh" },
     { "name": "Chinese Mandarin China", "value": "zh-cn" },
-    { "name": "Chinese Cantonese", "value": "zh-yue" },
+    // { "name": "Chinese Cantonese", "value": "zh-yue" }, // No va
     { "name": "Croatian", "value": "hr" },
     { "name": "Czech", "value": "cs" },
     { "name": "Danish", "value": "da" },
@@ -61,17 +61,6 @@ const help = {
 const invite = {
     name: 'invite',
     description: 'Invita este bot a otros servidores.'
-}
-
-const lista = {
-    name: 'lista',
-    description: 'Crea una lista a la que se puede unir la gente.',
-    options: [{
-        name: 'nombre_lista',
-        type: 'STRING',
-        description: 'Nombre de la lista.',
-        required: false
-    }]
 }
 
 const ofertas = {
@@ -269,8 +258,8 @@ const activity = {
             name: 'Chess in the Park',
             value: '832012774040141894'
         }, {
-            name: 'Checkers (Alpha)',
-            value: '832012682520428625'
+            name: 'Checkers In The Park',
+            value: '832013003968348200'
         }, {
             name: 'Doodle Crew',
             value: '878067389634314250'
@@ -284,22 +273,23 @@ const activity = {
             name: 'Awkword',
             value: '879863881349087252'
         }, {
-            name: 'Sketchy Artist (Beta/Dev)',
-            value: '879864104980979792'
+            name: 'Sketchy Artist',
+            value: '879864070101172255'
         }, {
-            name: 'Decoders (Beta/Dev)',
+            name: 'Decoders',
             value: '891001866073296967'
         }, {
             name: 'SpellCast',
             value: '852509694341283871'
         },
-        { name: 'Putts (va regular)', value: '832012854282158180' }, //{ name: 'Sketchy Artist (No va aún)', value: '879864070101172255' },
+        // { name: 'Putts', value: '832012854282158180' }, 
+        // { name: 'Ocho', value: '832013108234289153 ' }, // Dev, QA: 832025114077298718 
         ]
     }]
 }
 
 
-const all_commands_array = [help, activity, lista, invite, ofertas, voz, xgame, adminPerms];
+const all_commands_array = [help, activity, invite, ofertas, voz, xgame, adminPerms];
 
 
 export { all_commands_array }

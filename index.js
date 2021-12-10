@@ -3,7 +3,6 @@ dotenv.config();
 import { Client } from 'discord.js';
 const client = new Client({ intents: 129 }); // https://ziad87.net/intents/
 import { slash_command } from './utils/slash_commands.js';
-import { addDeleteUser } from './utils/lists.js';
 import { xgame_continue } from './utils/xgame.js';
 import { userJoined } from './utils/voice.js';
 import { sendRSS } from './utils/rss.js';
@@ -33,7 +32,6 @@ client.on('interactionCreate', async interaction => {
     await interaction.deferUpdate();
     if (interaction.isMessageComponent() && interaction.componentType == 'BUTTON') {
         await xgame_continue(interaction);
-        await addDeleteUser(interaction);
     }
 });
 

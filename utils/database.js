@@ -8,7 +8,6 @@ if (db.data === null) { // Si no existe el archivo/db, lo crea.
         'nombresAudio': {},
         'freeGames': [],
         'rss': [],
-        'lists': {},
         'adminPerms': {},
         'activities': {}
     }

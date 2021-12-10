@@ -1,7 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import { sendHelpCommands, sendInvite } from './help.js';
-import { startList } from './lists.js';
 import { setRSSchannel } from './rss.js';
 import { xgame_start } from './xgame.js';
 import { getDatabase, setDatabase } from './database.js';
@@ -17,10 +16,6 @@ async function slash_command(interaction, client) {
         return;
     } else if (interaction.commandName == 'invite') {
         interaction.reply(sendInvite());
-        return;
-    } else if (interaction.commandName == 'lista') {
-        const nombre_lista = interaction.options.getString('nombre_lista');
-        startList(interaction, nombre_lista);
         return;
     } else if (interaction.commandName == 'xgame') {
         const tamano_x = interaction.options.getInteger('tamaño_x');
