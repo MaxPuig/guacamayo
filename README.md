@@ -19,14 +19,14 @@
 
 ## SETUP
 ```Es necesario tener una clave/credencial de google para usar su TTS```
-- instalar node.js y npm si no lo están:
+- instalar node.js >=v16.6 y npm si no lo están:
 ```
 sudo apt update
 sudo apt install nodejs
 sudo apt install npm
 sudo npm cache clean -f
 sudo npm install -g n
-sudo n latest
+sudo n stable
 ```
 - Descargar los archivos del bot ```git clone https://github.com/MaxPuig/bot-discord-js-v13.git```
 - Entrar a la carpeta ```cd bot-discord-js-v13```
@@ -34,6 +34,7 @@ sudo n latest
 - Crear el archivo .env ```sudo nano .env``` y ahí escribir con los propios datos:
 ```
 TOKEN="Token.del.bot"
+BOT_ADMIN="12345_admin_Id_67890"
 INVITELINK=https://bot_invite_link.com
 PATHGOOGLE="path/to/google_key.json"
 ```

@@ -63,6 +63,17 @@ const invite = {
     description: 'Invita este bot a otros servidores.'
 }
 
+const feedback = {
+    name: 'feedback',
+    description: '¿Tienes alguna sugerencia o feedback? Envía un mensaje al creador del bot.',
+    options: [{
+        name: 'mensaje',
+        type: 'STRING',
+        description: 'Mensaje que quieres enviar.',
+        required: true
+    }]
+}
+
 const ofertas = {
     name: 'ofertas',
     description: 'Establece (o no) este canal para recibir ofertas de juegos gratis.',
@@ -282,14 +293,14 @@ const activity = {
             name: 'SpellCast',
             value: '852509694341283871'
         },
-        // { name: 'Putts', value: '832012854282158180' }, 
-        // { name: 'Ocho', value: '832013108234289153 ' }, // Dev, QA: 832025114077298718 
+            // { name: 'Putts', value: '832012854282158180' }, 
+            // { name: 'Ocho', value: '832013108234289153 ' }, // Dev, QA: 832025114077298718 
         ]
     }]
 }
 
 
-const all_commands_array = [help, activity, invite, ofertas, voz, xgame, adminPerms];
+const all_commands_array = [help, voz, activity, xgame, feedback, invite, ofertas, adminPerms];
 
 
 export { all_commands_array }
