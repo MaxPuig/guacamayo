@@ -5,7 +5,7 @@ const client = new Client({ intents: 129 }); // https://ziad87.net/intents/
 import { slash_command } from './utils/slash_commands.js';
 import { xgame_continue } from './utils/xgame.js';
 import { userJoined } from './utils/voice.js';
-import { sendRSS } from './utils/rss.js';
+import { sendRSS, confirmGame } from './utils/rss.js';
 import { all_commands_array } from './utils/set_slash_cmds.js';
 
 
@@ -31,6 +31,7 @@ client.on('interactionCreate', async interaction => {
     }
     await interaction.deferUpdate();
     if (interaction.isMessageComponent() && interaction.componentType == 'BUTTON') {
+        await confirmGame(interaction, client)
         await xgame_continue(interaction);
     }
 });
