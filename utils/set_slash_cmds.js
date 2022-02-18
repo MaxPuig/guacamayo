@@ -250,51 +250,24 @@ const activity = {
         type: 'STRING',
         description: 'Actividad a empezar.',
         required: true,
-        choices: [{
-            name: 'Youtube Together (Viejo)',
-            value: '755600276941176913'
-        }, {
-            name: 'Watch Together (Nuevo)',
-            value: '880218394199220334'
-        }, {
-            name: 'Poker Night',
-            value: '755827207812677713'
-        }, {
-            name: 'Betrayal.io',
-            value: '773336526917861400'
-        }, {
-            name: 'Fishington.io',
-            value: '814288819477020702'
-        }, {
-            name: 'Chess in the Park',
-            value: '832012774040141894'
-        }, {
-            name: 'Checkers In The Park',
-            value: '832013003968348200'
-        }, {
-            name: 'Doodle Crew',
-            value: '878067389634314250'
-        }, {
-            name: 'Letter Tile',
-            value: '879863686565621790'
-        }, {
-            name: 'Word Snacks',
-            value: '879863976006127627'
-        }, {
-            name: 'Awkword',
-            value: '879863881349087252'
-        }, {
-            name: 'Sketchy Artist',
-            value: '879864070101172255'
-        }, {
-            name: 'Decoders',
-            value: '891001866073296967'
-        }, {
-            name: 'SpellCast',
-            value: '852509694341283871'
-        },
+        choices: [
+            { name: 'Watch Together', value: '880218394199220334' },
+            { name: 'Sketch Heads', value: '878067389634314250' },
+            { name: 'Word Snacks', value: '879863976006127627' },
+            { name: 'Betrayal.io', value: '773336526917861400' },
+            { name: 'Fishington.io', value: '814288819477020702' },
+            { name: 'Ocho (Server Boost 1)', value: '832013108234289153 ' },
+            { name: 'SpellCast (Server Boost 1)', value: '852509694341283871' },
+            { name: 'Poker Night (Server Boost 1)', value: '755827207812677713' },
+            { name: 'Letter League (Server Boost 1)', value: '879863686565621790' },
+            { name: 'Chess in the Park (Server Boost 1)', value: '832012774040141894' },
+            { name: 'Checkers In The Park (Server Boost 1)', value: '832013003968348200' },
+            // Unreleased/Locked
+            // { name: 'Youtube Together', value: '755600276941176913' },
+            // { name: 'Awkword', value: '879863881349087252' },
+            // { name: 'Fake Artist', value: '879864070101172255' },
+            // { name: 'Associations', value: '891001866073296967' },
             // { name: 'Putts', value: '832012854282158180' }, 
-            // { name: 'Ocho', value: '832013108234289153 ' }, // Dev, QA: 832025114077298718 
         ]
     }]
 }
