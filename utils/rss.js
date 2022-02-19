@@ -11,6 +11,8 @@ import { MessageActionRow, MessageButton } from 'discord.js';
 async function sendRSS(client) {
     let feed = await parser.parseURL('https://steamcommunity.com/groups/GrabFreeGames/rss/');
     let nombres = await getDatabase('freeGames');
+    let tempGames = await getDatabase('tempGames');
+    Object.keys(tempGames).forEach(val => { nombres.push(tempGames[val].titulo) });
     for (let item of feed.items) {
         if (!nombres.includes(item.title)) {
             nombres.push(item.title); // Por si hay alguna oferta duplicada
@@ -53,7 +55,7 @@ async function askConfirm(mensaje, titulo, client) {
     let tempGames = await getDatabase('tempGames');
     tempGames[msgid] = { mensaje, titulo };
     setDatabase('tempGames', tempGames);
-    await sleep(1000 * 60 * 10); // 10 minutos antes de que se envie el mensaje automáticamente
+    await sleep(1000 * 60 * Number(process.env.MINUTES_BEFORE_AUTOSEND_FREE_GAME)); // 10 minutos antes de que se envie el mensaje automáticamente
     let tempGames2 = await getDatabase('tempGames');
     if (tempGames2[msgid]) {
         sent_message.edit({ content: tempGames2[msgid].titulo + '\n**Oferta Enviada Automáticamente**', components: [] });
