@@ -24,6 +24,8 @@ async function sendRSS(client) {
                 link = link.split('"')[0];
                 link = link.replace('https://steamcommunity.com/linkfilter/?url=', '');
                 link = link.replace('store.epicgames.com/GRABFREEGAMES/', 'www.epicgames.com/store/es-ES/p/');
+                link = link.replace('?epic_affiliate=GRABFREEGAMES', '');
+                link = link.replace('https://www.epicgames.com/store/en-US/p/', 'https://www.epicgames.com/store/es-ES/p/');
                 gameLinks.push(link);
             }
             let mensaje = '**Nueva Oferta**\n' + item.title + '\n' + gameLinks.join('\n');

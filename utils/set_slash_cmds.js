@@ -268,6 +268,7 @@ const activity = {
             // { name: 'Fake Artist', value: '879864070101172255' },
             // { name: 'Associations', value: '891001866073296967' },
             // { name: 'Putts', value: '832012854282158180' }, 
+            // { name: 'Putt Party', value: '945737671223947305' }, // Newer
         ]
     }]
 }
