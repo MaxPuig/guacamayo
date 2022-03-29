@@ -256,19 +256,20 @@ const activity = {
             { name: 'Word Snacks', value: '879863976006127627' },
             { name: 'Betrayal.io', value: '773336526917861400' },
             { name: 'Fishington.io', value: '814288819477020702' },
-            { name: 'Ocho (Server Boost 1)', value: '832013108234289153 ' },
+            { name: 'land-io (Server Boost 1)', value: '903769130790969345' },
             { name: 'SpellCast (Server Boost 1)', value: '852509694341283871' },
+            { name: 'Blazing 8s (Server Boost 1)', value: '832025144389533716' },
+            { name: 'Putt Party (Server Boost 1)', value: '945737671223947305' },
             { name: 'Poker Night (Server Boost 1)', value: '755827207812677713' },
             { name: 'Letter League (Server Boost 1)', value: '879863686565621790' },
             { name: 'Chess in the Park (Server Boost 1)', value: '832012774040141894' },
             { name: 'Checkers In The Park (Server Boost 1)', value: '832013003968348200' },
             // Unreleased/Locked
             // { name: 'Youtube Together', value: '755600276941176913' },
-            // { name: 'Awkword', value: '879863881349087252' },
-            // { name: 'Fake Artist', value: '879864070101172255' },
             // { name: 'Associations', value: '891001866073296967' },
+            // { name: 'Fake Artist', value: '879864070101172255' },
+            // { name: 'Awkword', value: '879863881349087252' },
             // { name: 'Putts', value: '832012854282158180' }, 
-            // { name: 'Putt Party', value: '945737671223947305' }, // Newer
         ]
     }]
 }
