@@ -43,8 +43,8 @@ async function askConfirm(mensaje, titulo, client) {
     const row = new MessageActionRow()
     row.addComponents(
         new MessageButton()
-            .setCustomId('confrim')
-            .setLabel('confrim')
+            .setCustomId('confirm')
+            .setLabel('confirm')
             .setStyle('SUCCESS'));
     row.addComponents(
         new MessageButton()
@@ -79,7 +79,7 @@ async function askConfirm(mensaje, titulo, client) {
 async function confirmGame(interaction, client) {
     let tempGames = await getDatabase('tempGames');
     if (!tempGames[interaction.message.id]) return;
-    if (interaction.customId == 'confrim') {
+    if (interaction.customId == 'confirm') {
         let rssChannels = await getDatabase('rss');
         for (const channel of rssChannels) {
             try { client.channels.cache.get(channel).send({ content: tempGames[interaction.message.id].mensaje }); } catch (error) { console.log(error); }
