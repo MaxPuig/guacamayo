@@ -7,7 +7,7 @@ async function avisos(interaction, voz_activa) {
         let datos = await getDatabase('nombresAudio');
         if (datos[interaction.guild.id] != undefined) {
             datos[interaction.guild.id]["disabled"] = false;
-            interaction.reply('Avisos de voz activados. `/voz avisos` para deshacer.');
+            interaction.reply('Avisos de voz activados. `/voz avisos desactivar` para deshacer.');
         } else {
             datos[interaction.guild.id] = {
                 "disabled": false,
@@ -16,14 +16,14 @@ async function avisos(interaction, voz_activa) {
                 "idioma": "es-es",
                 "genero": "hombre"
             };
-            interaction.reply('Avisos de voz activados. `/voz avisos` para deshacer.');
+            interaction.reply('Avisos de voz activados. `/voz avisos desactivar` para deshacer.');
         }
         setDatabase('nombresAudio', datos);
     } else {
         let datos = await getDatabase('nombresAudio');
         if (datos[interaction.guild.id] != undefined) {
             datos[interaction.guild.id]["disabled"] = true;
-            interaction.reply('Avisos de voz desactivados. `/voz avisos` para deshacer.');
+            interaction.reply('Avisos de voz desactivados. `/voz avisos activar` para deshacer.');
         } else {
             datos[interaction.guild.id] = {
                 "disabled": true,
@@ -32,7 +32,7 @@ async function avisos(interaction, voz_activa) {
                 "idioma": "es-es",
                 "genero": "hombre"
             };
-            interaction.reply('Avisos de voz desactivados. `/voz avisos` para deshacer.');
+            interaction.reply('Avisos de voz desactivados. `/voz avisos activar` para deshacer.');
         }
         setDatabase('nombresAudio', datos);
     }
