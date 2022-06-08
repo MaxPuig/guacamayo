@@ -265,6 +265,7 @@ const activity = {
             { name: 'Chess in the Park (Server Boost 1)', value: '832012774040141894' },
             { name: 'Checkers In The Park (Server Boost 1)', value: '832013003968348200' },
             // Unreleased/Locked
+            // { name: 'Bobble League (Server Boost 1)', value: '947957217959759964' },
             // { name: 'Youtube Together', value: '755600276941176913' },
             // { name: 'Associations', value: '891001866073296967' },
             // { name: 'Fake Artist', value: '879864070101172255' },
