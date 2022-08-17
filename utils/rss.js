@@ -3,7 +3,7 @@ dotenv.config();
 import Parser from 'rss-parser';
 let parser = new Parser();
 import { getDatabase, setDatabase } from './database.js';
-import { MessageActionRow, MessageButton } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder } from 'discord.js';
 
 
 /** Recolecta las ofertas del feed RSS y las envia por DM con botón de confirmar/cancelar.
@@ -40,14 +40,14 @@ async function sendRSS(client) {
 
 /** Envía el mensaje con botón de confirmar/cancelar el envio de la oferta. */
 async function askConfirm(mensaje, titulo, client) {
-    const row = new MessageActionRow()
+    const row = new ActionRowBuilder()
     row.addComponents(
-        new MessageButton()
+        new ButtonBuilder()
             .setCustomId('confirm')
             .setLabel('confirm')
             .setStyle('SUCCESS'));
     row.addComponents(
-        new MessageButton()
+        new ButtonBuilder()
             .setCustomId('cancel')
             .setLabel('cancel')
             .setStyle('DANGER'));

@@ -25,12 +25,12 @@ client.on('ready', async function () {
 
 
 client.on('interactionCreate', async interaction => {
-    if (interaction.isCommand()) { // slash command
+    if (interaction.type === InteractionType.ApplicationCommand) { // slash command
         slash_command(interaction, client);
         return;
     }
     await interaction.deferUpdate();
-    if (interaction.isMessageComponent() && interaction.componentType == 'BUTTON') {
+    if (interaction.type === InteractionType.MessageComponent && interaction.componentType == 'BUTTON') {
         await confirmGame(interaction, client)
         await xgame_continue(interaction);
     }
