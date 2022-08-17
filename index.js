@@ -6,12 +6,13 @@ import { slash_command } from './utils/slash_commands.js';
 import { xgame_continue } from './utils/xgame.js';
 import { userJoined } from './utils/voice.js';
 import { sendRSS, confirmGame } from './utils/rss.js';
+import { ActivityType } from 'discord.js';
 import { all_commands_array } from './utils/set_slash_cmds.js';
 
 
 client.on('ready', async function () {
     console.log('Bot ready!');
-    client.user.setActivity('/help', { type: 'WATCHING' });
+    client.user.setActivity('/help', { type: ActivityType.Watching });
     const mins30 = 1_800_000;
     setInterval(sendRSS, mins30, client);
     // client.guilds.cache.forEach(guild => { console.log(`${guild.name} | ${guild.id}`); })
