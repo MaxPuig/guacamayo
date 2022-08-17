@@ -1,4 +1,4 @@
-import { Constants } from 'discord.js';
+import { GatewayDispatchEvents, Events, Status } from 'discord.js';
 
 const adapters = new Map();
 const trackedClients = new Set();
@@ -10,15 +10,15 @@ const trackedClients = new Set();
 function trackClient(client) {
     if (trackedClients.has(client)) return;
     trackedClients.add(client);
-    client.ws.on(Constants.WSEvents.VOICE_SERVER_UPDATE, (payload) => {
+    client.ws.on(GatewayDispatchEvents.VoiceServerUpdate, (payload) => {
         adapters.get(payload.guild_id)?.onVoiceServerUpdate(payload);
     });
-    client.ws.on(Constants.WSEvents.VOICE_STATE_UPDATE, (payload) => {
+    client.ws.on(GatewayDispatchEvents.VoiceStateUpdate, (payload) => {
         if (payload.guild_id && payload.session_id && payload.user_id === client.user?.id) {
             adapters.get(payload.guild_id)?.onVoiceStateUpdate(payload);
         }
     });
-    client.on(Constants.Events.SHARD_DISCONNECT, (_, shardID) => {
+    client.on(Events.ShardDisconnect, (_, shardID) => {
         const guilds = trackedShards.get(shardID);
         if (guilds) {
             for (const guildID of guilds.values()) {
@@ -51,7 +51,7 @@ export function createDiscordJSAdapter(channel) {
         trackGuild(channel.guild);
         return {
             sendPayload(data) {
-                if (channel.guild.shard.status === Constants.Status.READY) {
+                if (channel.guild.shard.status === Status.Ready) {
                     channel.guild.shard.send(data);
                     return true;
                 }

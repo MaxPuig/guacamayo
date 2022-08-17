@@ -1,4 +1,4 @@
-import { MessageActionRow, MessageButton } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder } from 'discord.js';
 let games = {};
 
 
@@ -77,9 +77,9 @@ class x_game {
     toMessage() {
         let rows = [];
         for (let y = 0; y < this.y; y++) {
-            const row = new MessageActionRow();
+            const row = new ActionRowBuilder();
             for (let x = 0; x < this.x; x++) {
-                row.addComponents(new MessageButton()
+                row.addComponents(new ButtonBuilder()
                     .setCustomId(x.toString() + y.toString())
                     .setLabel(this.board[y][x])
                     .setStyle('SECONDARY'));

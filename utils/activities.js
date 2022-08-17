@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import fetch from 'node-fetch';
-import { MessageEmbed } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 import { getDatabase, setDatabase } from './database.js';
 const token = process.env.TOKEN.toString();
 
@@ -81,7 +81,7 @@ async function checkInvite(client, invite, channelId, applicationId, guildId, da
 
 /** Crea un embed con la invitación. */
 function createEmbed(app_name, channel_name, invite_link) {
-    let embed = new MessageEmbed()
+    let embed = new EmbedBuilder()
         .setTitle(`${app_name} en ${channel_name}`)
         .setURL(invite_link)
         .setColor('#fc0303')

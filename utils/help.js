@@ -1,11 +1,11 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import { MessageEmbed } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 
 
 /** Envía la lista de comandos. */
 function sendHelpCommands() {
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
         .setTitle('**Comandos:**')
         .setColor('#fc0303')
         .addFields(
@@ -23,7 +23,7 @@ function sendHelpCommands() {
 
 /** Envía el link de invitación del bot. */
 function sendInvite() {
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
         .setTitle('**Añade el bot a tu server**')
         .setURL(process.env.INVITELINK.toString())
         .setColor('#fc0303')

@@ -1,3 +1,5 @@
+import { ChannelType, ApplicationCommandOptionType } from 'discord.js';
+
 const idiomas = [
     { "name": "Afrikaans", "value": "af" },
     { "name": "Albanian", "value": "sq" },
@@ -63,12 +65,13 @@ const invite = {
     description: 'Invita este bot a otros servidores.'
 }
 
+// Modal
 const feedback = {
     name: 'feedback',
     description: '¿Tienes alguna sugerencia o feedback? Envía un mensaje al creador del bot.',
     options: [{
         name: 'mensaje',
-        type: 'STRING',
+        type: ApplicationCommandOptionType.String,
         description: 'Mensaje que quieres enviar.',
         required: true
     }]
@@ -79,7 +82,7 @@ const ofertas = {
     description: 'Establece (o no) este canal para recibir ofertas de juegos gratis.',
     options: [{
         name: 'establecer_o_quitar',
-        type: 'STRING',
+        type: ApplicationCommandOptionType.String,
         description: 'Quieres recibir ofertas o quitarlas de este canal?',
         required: true,
         choices: [{
@@ -92,17 +95,18 @@ const ofertas = {
     }]
 }
 
+// Algunos Modal
 const voz = {
     name: 'voz',
     description: 'Cambiar ajustes de los avisos de voz.',
     options: [{
         name: 'avisos',
         description: 'Activa o deactiva los avisos en los canales de voz.',
-        type: 'SUB_COMMAND',
+        type: ApplicationCommandOptionType.Subcommand,
         options: [{
             name: 'activar_o_desactivar',
             description: 'Quieres activar o desactivar los avisos de voz?',
-            type: 'STRING',
+            type: ApplicationCommandOptionType.String,
             required: true,
             choices: [{
                 name: 'Activar',
@@ -115,11 +119,11 @@ const voz = {
     }, {
         name: 'español',
         description: 'Cambia la voz a español, hombre o mujer.',
-        type: 'SUB_COMMAND',
+        type: ApplicationCommandOptionType.Subcommand,
         options: [{
             name: 'género',
             description: 'Quieres que la voz en español sea hombre o mujer?',
-            type: 'STRING',
+            type: ApplicationCommandOptionType.String,
             required: true,
             choices: [{
                 name: 'Hombre',
@@ -132,28 +136,28 @@ const voz = {
     }, {
         name: 'idioma',
         description: 'Cambia el idioma de la voz.',
-        type: 'SUB_COMMAND',
+        type: ApplicationCommandOptionType.Subcommand,
         options: [{
             name: 'idioma_nuevo',
             description: 'Escoge el idioma.',
-            type: 'STRING',
+            type: ApplicationCommandOptionType.String,
             required: true,
             choices: primeros
         }, {
             name: 'idioma_nuevo_2',
             description: 'Escoge el idioma si no lo has hecho antes.',
-            type: 'STRING',
+            type: ApplicationCommandOptionType.String,
             required: true,
             choices: segundos
         }]
     }, {
         name: 'frase',
         description: 'Cambia la frase que dice la voz.',
-        type: 'SUB_COMMAND',
+        type: ApplicationCommandOptionType.Subcommand,
         options: [{
             name: 'posición_nombre',
             description: 'El nombre va delante o detrás de la frase?',
-            type: 'STRING',
+            type: ApplicationCommandOptionType.String,
             required: true,
             choices: [{
                 name: 'Delante',
@@ -165,7 +169,7 @@ const voz = {
         }, {
             name: 'frase_nueva',
             description: 'Nueva frase. Ejemplo: se ha unido',
-            type: 'STRING',
+            type: ApplicationCommandOptionType.String,
             required: true
         }]
     }]
@@ -176,7 +180,7 @@ const xgame = {
     description: 'Empezar partida xgame.',
     options: [{
         name: 'tamaño_x',
-        type: 'INTEGER',
+        type: ApplicationCommandOptionType.Integer,
         description: 'Tamaño "X" del tablero.',
         required: true,
         choices: [{
@@ -194,7 +198,7 @@ const xgame = {
         }]
     }, {
         name: 'tamaño_y',
-        type: 'INTEGER',
+        type: ApplicationCommandOptionType.Integer,
         description: 'Tamaño "Y" del tablero.',
         required: true,
         choices: [{
@@ -218,7 +222,7 @@ const adminPerms = {
     description: 'Añade a gente para que pueda utilizar los comandos de solo Admin.',
     options: [{
         name: 'dar_o_quitar',
-        type: 'STRING',
+        type: ApplicationCommandOptionType.String,
         description: 'Dar o quitar permisos para usar los comandos al ususario?',
         required: true,
         choices: [{
@@ -230,7 +234,7 @@ const adminPerms = {
         }]
     }, {
         name: 'usuario',
-        type: 'USER',
+        type: ApplicationCommandOptionType.User,
         description: 'Usuario al que darle permisos para editar la comandos Admin como: /voz /ofertas',
         required: true
     }]
@@ -241,13 +245,13 @@ const activity = {
     description: 'Empieza una actividad en el canal de voz.',
     options: [{
         name: 'canal',
-        type: 'CHANNEL',
-        channelTypes: ['GUILD_VOICE'],
+        type: ApplicationCommandOptionType.Channel,
+        channelTypes: [ChannelType.GuildVoice],
         description: 'Canal DE VOZ donde empezar la actividad.',
         required: true
     }, {
         name: 'actividad',
-        type: 'STRING',
+        type: ApplicationCommandOptionType.String,
         description: 'Actividad a empezar.',
         required: true,
         choices: [
