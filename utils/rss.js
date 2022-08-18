@@ -3,7 +3,7 @@ dotenv.config();
 import Parser from 'rss-parser';
 let parser = new Parser();
 import { getDatabase, setDatabase } from './database.js';
-import { ActionRowBuilder, ButtonBuilder } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 
 
 /** Recolecta las ofertas del feed RSS y las envia por DM con botón de confirmar/cancelar.
@@ -45,12 +45,12 @@ async function askConfirm(mensaje, titulo, client) {
         new ButtonBuilder()
             .setCustomId('confirm')
             .setLabel('confirm')
-            .setStyle('SUCCESS'));
+            .setStyle(ButtonStyle.Success));
     row.addComponents(
         new ButtonBuilder()
             .setCustomId('cancel')
             .setLabel('cancel')
-            .setStyle('DANGER'));
+            .setStyle(ButtonStyle.Danger));
     let sent_message;;
     const admin_id = await client.users.fetch(process.env.BOT_ADMIN);
     await admin_id.send({ content: mensaje, components: [row], fetchReply: true }).then(msg => sent_message = msg);

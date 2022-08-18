@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ButtonBuilder } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 let games = {};
 
 
@@ -82,7 +82,7 @@ class x_game {
                 row.addComponents(new ButtonBuilder()
                     .setCustomId(x.toString() + y.toString())
                     .setLabel(this.board[y][x])
-                    .setStyle('SECONDARY'));
+                    .setStyle(ButtonStyle.Secondary));
             }
             rows.push(row);
         }
