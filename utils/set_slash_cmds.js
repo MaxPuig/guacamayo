@@ -4,11 +4,11 @@ const idiomas = [
     { "name": "Afrikaans", "value": "af" },
     { "name": "Albanian", "value": "sq" },
     { "name": "Arabic", "value": "ar" },
-    { "name": "Armenian", "value": "hy" },
+    // { "name": "Armenian", "value": "hy" },
     { "name": "Catalan", "value": "ca" },
     { "name": "Chinese", "value": "zh" },
     { "name": "Chinese Mandarin China", "value": "zh-cn" },
-    // { "name": "Chinese Cantonese", "value": "zh-yue" }, // No va
+    // { "name": "Chinese Cantonese", "value": "zh-yue" },
     { "name": "Croatian", "value": "hr" },
     { "name": "Czech", "value": "cs" },
     { "name": "Danish", "value": "da" },
@@ -21,7 +21,7 @@ const idiomas = [
     { "name": "French", "value": "fr" },
     { "name": "German", "value": "de" },
     { "name": "Greek", "value": "el" },
-    { "name": "Haitian Creole", "value": "ht" },
+    // { "name": "Haitian Creole", "value": "ht" },
     { "name": "Hindi", "value": "hi" },
     { "name": "Hungarian", "value": "hu" },
     { "name": "Icelandic", "value": "is" },
@@ -31,7 +31,7 @@ const idiomas = [
     { "name": "Korean", "value": "ko" },
     { "name": "Latin", "value": "la" },
     { "name": "Latvian", "value": "lv" },
-    { "name": "Macedonian", "value": "mk" },
+    // { "name": "Macedonian", "value": "mk" },
     { "name": "Norwegian", "value": "no" },
     { "name": "Polish", "value": "pl" },
     { "name": "Portuguese", "value": "pt" },
@@ -48,7 +48,7 @@ const idiomas = [
     { "name": "Thai", "value": "th" },
     { "name": "Turkish", "value": "tr" },
     { "name": "Vietnamese", "value": "vi" },
-    { "name": "Welsh", "value": "cy" }
+    // { "name": "Welsh", "value": "cy" }
 ]
 let primeros = idiomas.slice(0, 24);
 primeros.push({ "name": "Más idiomas", "value": "mas" });
@@ -256,25 +256,28 @@ const activity = {
         required: true,
         choices: [
             { name: 'Watch Together', value: '880218394199220334' },
-            { name: 'Sketch Heads', value: '878067389634314250' },
+            { name: 'Ask Away', value: '976052223358406656' },
             { name: 'Word Snacks', value: '879863976006127627' },
-            { name: 'Betrayal.io', value: '773336526917861400' },
-            { name: 'Fishington.io', value: '814288819477020702' },
+            { name: 'Sketch Heads', value: '902271654783242291' },
+            { name: 'Know What I Meme', value: '950505761862189096' },
             { name: 'land-io (Server Boost 1)', value: '903769130790969345' },
             { name: 'SpellCast (Server Boost 1)', value: '852509694341283871' },
             { name: 'Blazing 8s (Server Boost 1)', value: '832025144389533716' },
             { name: 'Putt Party (Server Boost 1)', value: '945737671223947305' },
             { name: 'Poker Night (Server Boost 1)', value: '755827207812677713' },
+            { name: 'Bobble League (Server Boost 1)', value: '947957217959759964' },
             { name: 'Letter League (Server Boost 1)', value: '879863686565621790' },
             { name: 'Chess in the Park (Server Boost 1)', value: '832012774040141894' },
             { name: 'Checkers In The Park (Server Boost 1)', value: '832013003968348200' },
             // Unreleased/Locked
-            // { name: 'Bobble League (Server Boost 1)', value: '947957217959759964' },
-            // { name: 'Youtube Together', value: '755600276941176913' },
-            // { name: 'Associations', value: '891001866073296967' },
-            // { name: 'Fake Artist', value: '879864070101172255' },
+            // { name: 'Betrayal.io', value: '773336526917861400' },
+            // { name: 'Fishington.io', value: '814288819477020702' },
+            // { name: 'Doodle Crew (Sketch Heads)', value: '878067389634314250' },
+            // { name: 'Sketchy Artist', value: '879864070101172255' }, // Fake Artist
             // { name: 'Awkword', value: '879863881349087252' },
-            // { name: 'Putts', value: '832012854282158180' }, 
+            // { name: 'Putts', value: '832012854282158180' },
+            // { name: 'Youtube Together', value: '755600276941176913' },
+            // { name: 'Associations', value: '891001866073296967' }, // Decoders Dev
         ]
     }]
 }
