@@ -262,11 +262,11 @@ const activity = {
             { name: 'Know What I Meme', value: '950505761862189096' },
             { name: 'land-io (Server Boost 1)', value: '903769130790969345' },
             { name: 'SpellCast (Server Boost 1)', value: '852509694341283871' },
-            { name: 'Blazing 8s (Server Boost 1)', value: '832025144389533716' },
             { name: 'Putt Party (Server Boost 1)', value: '945737671223947305' },
+            { name: 'Blazing 8s (Server Boost 1)', value: '832025144389533716' },
             { name: 'Poker Night (Server Boost 1)', value: '755827207812677713' },
-            { name: 'Bobble League (Server Boost 1)', value: '947957217959759964' },
             { name: 'Letter League (Server Boost 1)', value: '879863686565621790' },
+            { name: 'Bobble League (Server Boost 1)', value: '947957217959759964' },
             { name: 'Chess in the Park (Server Boost 1)', value: '832012774040141894' },
             { name: 'Checkers In The Park (Server Boost 1)', value: '832013003968348200' },
             // Unreleased/Locked
