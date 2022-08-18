@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import { Client } from 'discord.js';
-const client = new Client({ intents: 129 }); // https://ziad87.net/intents/
+import { Client, GatewayIntentBits } from 'discord.js';
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates] });
 import { slash_command } from './utils/slash_commands.js';
 import { xgame_continue } from './utils/xgame.js';
 import { userJoined } from './utils/voice.js';
