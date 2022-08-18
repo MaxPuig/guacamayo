@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import { Client, GatewayIntentBits } from 'discord.js';
+import { Client, GatewayIntentBits, InteractionType } from 'discord.js';
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates] });
 import { slash_command } from './utils/slash_commands.js';
 import { xgame_continue } from './utils/xgame.js';
@@ -31,7 +31,7 @@ client.on('interactionCreate', async interaction => {
         return;
     }
     await interaction.deferUpdate();
-    if (interaction.type === InteractionType.MessageComponent && interaction.componentType == 'BUTTON') {
+    if (interaction.type === InteractionType.MessageComponent && interaction.isButton()) {
         await confirmGame(interaction, client)
         await xgame_continue(interaction);
     }
