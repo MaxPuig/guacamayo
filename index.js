@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import { Client, GatewayIntentBits, InteractionType } from 'discord.js';
+import { Client, GatewayIntentBits, InteractionType, ChannelType } from 'discord.js';
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates] });
 import { slash_command } from './utils/slash_commands.js';
 import { xgame_continue } from './utils/xgame.js';
@@ -39,7 +39,7 @@ client.on('interactionCreate', async interaction => {
 
 
 client.on('voiceStateUpdate', function (oldState, newState) {
-    if (newState.channel?.type == 'GUILD_STAGE_VOICE') return; // Ignores stage channels
+    if (newState.channel?.type == ChannelType.GuildStageVoice) return; // Ignores stage channels
     if (newState.channel?.joinable && !newState.channel?.full) {
         userJoined(oldState, newState);
     }

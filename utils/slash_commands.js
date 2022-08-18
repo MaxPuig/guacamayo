@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
+import { ChannelType } from 'discord.js';
 import { sendHelpCommands, sendInvite } from './help.js';
 import { setRSSchannel } from './rss.js';
 import { xgame_start } from './xgame.js';
@@ -30,7 +31,7 @@ async function slash_command(interaction, client) {
     } else if (interaction.commandName == 'activity') {
         const canal = interaction.options.getChannel('canal');
         const actividad = interaction.options.getString('actividad');
-        if (canal.type == 'GUILD_VOICE') {
+        if (canal.type == ChannelType.GuildVoice) {
             interaction.reply(await getActivity(canal.id, actividad, interaction.guild.id, client));
             return;
         } else {
