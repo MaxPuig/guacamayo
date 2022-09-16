@@ -5,7 +5,6 @@ import { writeFileSync, mkdirSync, createReadStream } from 'fs';
 import { getDatabase, setDatabase } from './database.js';
 const client = new TextToSpeechClient({ projectId: 'tts-nodejs-discord', keyFilename: process.env.PATHGOOGLE, });
 import { joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, } from '@discordjs/voice';
-import { createDiscordJSAdapter } from './adapter.js';
 import gTTS from 'gtts';
 
 
@@ -137,7 +136,7 @@ async function playAudio(newState, datos) {
 
 /** Crea una conexión con el canal de voz. */
 async function connectToChannel(channel) { // message.member.voice.channel
-    const connection = joinVoiceChannel({ channelId: channel.id, guildId: channel.guild.id, adapterCreator: createDiscordJSAdapter(channel), });
+    const connection = joinVoiceChannel({ channelId: channel.id, guildId: channel.guild.id, adapterCreator: channel.guild.voiceAdapterCreator, });
     try {
         await entersState(connection, VoiceConnectionStatus.Ready, 30e3);
         return connection;
