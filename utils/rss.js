@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
+import playwright from 'playwright';
 import Parser from 'rss-parser';
 let parser = new Parser();
 import { getDatabase, setDatabase } from './database.js';
@@ -35,11 +36,45 @@ async function sendRSS(client) {
             await sleep(1000); // Para que no se solape la db
         }
     }
+    try {
+        await getPrimeGames(client);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+/** Recoge todos los juegos gratis de Prime Gaming. */
+async function getPrimeGames(client) {
+    const url = 'https://gaming.amazon.com/home';
+    const browser = await playwright.chromium.launch({ headless: true });
+    const page = await browser.newPage();
+    await page.goto(url);
+    for (let i = 0; i < 4; i++) { // scroll down
+        page.mouse.wheel(0, 15000);
+        await page.waitForTimeout(1000);
+    }
+    const games = await page.$eval('xpath=//html/body/div[1]/div/div/main/div/div/div/div[3]/div[5]/div/div/div[2]/div',
+        navElm => {
+            let games_list = [];
+            let titles = navElm.getElementsByTagName('h3');
+            for (let item of titles) { games_list.push(item.innerText); }
+            return games_list;
+        });
+    await browser.close();
+    let titulo = games.join('; ');
+    let mensaje = (`**Juegos Gratis de Prime Gaming** ${url} \n`);
+    let n = 1;
+    for (let name of games) { mensaje += `${n}. ${name}\n`; n++; };
+    let nombres = await getDatabase('freeGames');
+    let tempGames = await getDatabase('tempGames');
+    Object.keys(tempGames).forEach(val => { nombres.push(tempGames[val].titulo) });
+    if (!nombres.includes(titulo)) askConfirm(mensaje.substring(0, 2000), titulo, client, true);
 }
 
 
 /** Envía el mensaje con botón de confirmar/cancelar el envio de la oferta. */
-async function askConfirm(mensaje, titulo, client) {
+async function askConfirm(mensaje, titulo, client, prime = false) {
     const row = new ActionRowBuilder()
     row.addComponents(
         new ButtonBuilder()
@@ -58,14 +93,16 @@ async function askConfirm(mensaje, titulo, client) {
     let tempGames = await getDatabase('tempGames');
     tempGames[msgid] = { mensaje, titulo };
     setDatabase('tempGames', tempGames);
-    await sleep(1000 * 60 * Number(process.env.MINUTES_BEFORE_AUTOSEND_FREE_GAME)); // 10 minutos antes de que se envie el mensaje automáticamente
+    let extra_minutes = 0;
+    if (prime) extra_minutes = 24 * 60; // 24h
+    await sleep(1000 * 60 * (Number(process.env.MINUTES_BEFORE_AUTOSEND_FREE_GAME) + extra_minutes)); // Espera x minutos antes de enviar el juego automáticamente
     let tempGames2 = await getDatabase('tempGames');
     if (tempGames2[msgid]) {
-        sent_message.edit({ content: tempGames2[msgid].titulo + '\n**Oferta Enviada Automáticamente**', components: [] });
         let rssChannels = await getDatabase('rss');
         for (const channel of rssChannels) {
             try { client.channels.cache.get(channel).send(tempGames2[msgid].mensaje); } catch (error) { console.log(error); }
         }
+        sent_message.edit({ content: tempGames2[msgid].titulo + '\n**Oferta Enviada Automáticamente**', components: [] });
         let nombres = await getDatabase('freeGames');
         nombres.push(tempGames2[msgid].titulo);
         setDatabase('freeGames', nombres);
