@@ -13,6 +13,13 @@ if (db.data === null) { // Si no existe el archivo/db, lo crea.
         'activities': {}
     }
     await db.write();
+} else { // Si existe, comprueba que no falten campos.
+    db.data.nombresAudio = db.data.nombresAudio || {};
+    db.data.freeGames = db.data.freeGames || [];
+    db.data.tempGames = db.data.tempGames || {};
+    db.data.rss = db.data.rss || [];
+    db.data.adminPerms = db.data.adminPerms || {};
+    db.data.activities = db.data.activities || {};
 }
 
 
