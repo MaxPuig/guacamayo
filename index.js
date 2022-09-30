@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import { Client, GatewayIntentBits, InteractionType, ChannelType } from 'discord.js';
+import { Client, GatewayIntentBits, InteractionType, ChannelType, Events } from 'discord.js';
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates] });
 import { slash_command } from './utils/slash_commands.js';
 import { xgame_continue } from './utils/xgame.js';
@@ -10,7 +10,7 @@ import { ActivityType } from 'discord.js';
 import { all_commands_array } from './utils/set_slash_cmds.js';
 
 
-client.on('ready', async function () {
+client.on(Events.ClientReady, async function () {
     console.log('Bot ready!');
     client.user.setActivity('/help', { type: ActivityType.Watching });
     const mins30 = 1_800_000;
@@ -25,7 +25,7 @@ client.on('ready', async function () {
 });
 
 
-client.on('interactionCreate', async interaction => {
+client.on(Events.InteractionCreate, async interaction => {
     if (interaction.type === InteractionType.ApplicationCommand) { // slash command
         slash_command(interaction, client);
         return;
@@ -38,7 +38,7 @@ client.on('interactionCreate', async interaction => {
 });
 
 
-client.on('voiceStateUpdate', function (oldState, newState) {
+client.on(Events.VoiceStateUpdate, function (oldState, newState) {
     if (newState.channel?.type == ChannelType.GuildStageVoice) return; // Ignores stage channels
     if (newState.channel?.joinable && !newState.channel?.full) {
         userJoined(oldState, newState);
