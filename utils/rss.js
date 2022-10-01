@@ -47,14 +47,13 @@ async function sendRSS(client) {
 /** Recoge todos los juegos gratis de Prime Gaming. */
 async function getPrimeGames(client) {
     const url = 'https://gaming.amazon.com/home';
-    const browser = await playwright.chromium.launch({ headless: true });
+    const browser = await playwright.firefox.launch({ headless: true });
     const page = await browser.newPage();
     await page.goto(url);
-    for (let i = 0; i < 4; i++) { // scroll down
-        page.mouse.wheel(0, 15000);
-        await page.waitForTimeout(1000);
-    }
-    const games = await page.$eval('xpath=//html/body/div[1]/div/div/main/div/div/div/div[3]/div[5]/div/div/div[2]/div',
+    await page.waitForSelector('.offer-filters__button:nth-child(3) > .tw-interactive > .tw-pd-x-1 > .tw-pd-x-05 > .offer-filters__button__title')
+    await page.click('.offer-filters__button:nth-child(3) > .tw-interactive > .tw-pd-x-1 > .tw-pd-x-05 > .offer-filters__button__title')
+    const eval_div = '//*[@id="root"]/div/div/main/div/div/div/div[3]/div[5]/div/div/div[2]/div'
+    const games = await page.$eval(eval_div,
         navElm => {
             let games_list = [];
             let titles = navElm.getElementsByTagName('h3');
