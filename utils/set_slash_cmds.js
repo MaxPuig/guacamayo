@@ -261,6 +261,7 @@ const activity = {
             { name: 'Sketch Heads', value: '902271654783242291' },
             { name: 'Know What I Meme', value: '950505761862189096' },
             { name: 'land-io (Server Boost 1)', value: '903769130790969345' },
+            { name: 'Bash Out (Server Boost 1)', value: '1006584476094177371' },
             { name: 'SpellCast (Server Boost 1)', value: '852509694341283871' },
             { name: 'Putt Party (Server Boost 1)', value: '945737671223947305' },
             { name: 'Blazing 8s (Server Boost 1)', value: '832025144389533716' },
