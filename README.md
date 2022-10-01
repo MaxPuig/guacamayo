@@ -29,6 +29,7 @@ sudo npm install -g n
 sudo n stable
 ```
 - Descargar los archivos del bot ```git clone https://github.com/MaxPuig/guacamayo.git```
+- Descargar dependencias de Playwright ```sudo npx playwright install-deps```
 - Entrar a la carpeta ```cd guacamayo```
 - Descargar los paquetes ```npm install```
 - Crear el archivo .env ```sudo nano .env``` y ahí escribir con los propios datos:
