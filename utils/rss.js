@@ -68,7 +68,7 @@ async function getPrimeGames(client) {
     let nombres = await getDatabase('freeGames');
     let tempGames = await getDatabase('tempGames');
     Object.keys(tempGames).forEach(val => { nombres.push(tempGames[val].titulo) });
-    if (!nombres.includes(titulo)) askConfirm(mensaje.substring(0, 2000), titulo, client, true);
+    if (!nombres.includes(titulo) && !nombres.includes('Prime Gaming Bundle')) askConfirm(mensaje.substring(0, 2000), titulo, client, true);
 }
 
 
