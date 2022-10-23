@@ -7,7 +7,7 @@ async function avisos(interaction, voz_activa) {
         let datos = await getDatabase('nombresAudio');
         if (datos[interaction.guild.id] != undefined) {
             datos[interaction.guild.id]["disabled"] = false;
-            interaction.reply('Avisos de voz activados. `/voz avisos desactivar` para deshacer.');
+            interaction.reply({ content: 'Avisos de voz activados. `/voz avisos desactivar` para deshacer.' });
         } else {
             datos[interaction.guild.id] = {
                 "disabled": false,
@@ -16,14 +16,14 @@ async function avisos(interaction, voz_activa) {
                 "idioma": "es-es",
                 "genero": "hombre"
             };
-            interaction.reply('Avisos de voz activados. `/voz avisos desactivar` para deshacer.');
+            interaction.reply({ content: 'Avisos de voz activados. `/voz avisos desactivar` para deshacer.' });
         }
         setDatabase('nombresAudio', datos);
     } else {
         let datos = await getDatabase('nombresAudio');
         if (datos[interaction.guild.id] != undefined) {
             datos[interaction.guild.id]["disabled"] = true;
-            interaction.reply('Avisos de voz desactivados. `/voz avisos activar` para deshacer.');
+            interaction.reply({ content: 'Avisos de voz desactivados. `/voz avisos activar` para deshacer.' });
         } else {
             datos[interaction.guild.id] = {
                 "disabled": true,
@@ -32,7 +32,7 @@ async function avisos(interaction, voz_activa) {
                 "idioma": "es-es",
                 "genero": "hombre"
             };
-            interaction.reply('Avisos de voz desactivados. `/voz avisos activar` para deshacer.');
+            interaction.reply({ content: 'Avisos de voz desactivados. `/voz avisos activar` para deshacer.' });
         }
         setDatabase('nombresAudio', datos);
     }
@@ -52,10 +52,10 @@ async function espanol(interaction, genero) {
                 "genero": "hombre"
             };
             datos[interaction.guild.id] = nuevosdatos;
-            interaction.reply('Voz cambiada a español hombre.');
+            interaction.reply({ content: 'Voz cambiada a español hombre.' });
             setDatabase('nombresAudio', datos);
         } else {
-            interaction.reply('La voz ya era español hombre.');
+            interaction.reply({ content: 'La voz ya era español hombre.' });
         }
     } else {
         let datos = await getDatabase('nombresAudio');
@@ -68,10 +68,10 @@ async function espanol(interaction, genero) {
                 "genero": "mujer"
             };
             datos[interaction.guild.id] = nuevosdatos;
-            interaction.reply('Voz cambiada a español mujer.');
+            interaction.reply({ content: 'Voz cambiada a español mujer.' });
             setDatabase('nombresAudio', datos);
         } else {
-            interaction.reply('La voz ya era español mujer.');
+            interaction.reply({ content: 'La voz ya era español mujer.' });
         }
     }
 }
@@ -81,14 +81,14 @@ async function espanol(interaction, genero) {
 async function idioma(interaction, idioma_nuevo, idioma_nuevo_2) {
     let idioma;
     if (idioma_nuevo == 'mas' && idioma_nuevo_2 == 'ignorar') {
-        interaction.reply('Has escogido mal el idioma. (Has escogido `más_idiomas` y `ya_he_escogido`).');
+        interaction.reply({ content: 'Has escogido mal el idioma. (Has escogido `más_idiomas` y `ya_he_escogido`).' });
         return;
     } else if (idioma_nuevo == 'mas' && idioma_nuevo_2 != 'ignorar') {
         idioma = idioma_nuevo_2;
     } else if (idioma_nuevo != 'mas' && idioma_nuevo_2 == 'ignorar') {
         idioma = idioma_nuevo;
     } else {
-        interaction.reply('Has escogido 2 idiomas. En el primer menú puedes seleccionar `más_idiomas`. En el segundo menú puedes seleccionar `ya_he_escogido`.');
+        interaction.reply({ content: 'Has escogido 2 idiomas. En el primer menú puedes seleccionar `más_idiomas`. En el segundo menú puedes seleccionar `ya_he_escogido`.' });
         return;
     }
     let datos = await getDatabase('nombresAudio');
@@ -101,10 +101,10 @@ async function idioma(interaction, idioma_nuevo, idioma_nuevo_2) {
             "genero": 'mujer'
         };
         datos[interaction.guild.id] = nuevosdatos;
-        interaction.reply(`Idioma cambiado a ${idioma}.`);
+        interaction.reply({ content: `Idioma cambiado a ${idioma}.` });
         setDatabase('nombresAudio', datos);
     } else {
-        interaction.reply('El idioma ya es este.');
+        interaction.reply({ content: 'El idioma ya es este.' });
     }
 }
 
@@ -121,9 +121,9 @@ async function frase(interaction, posicion_nombre, frase_nueva) {
     };
     datos[interaction.guild.id] = nuevosdatos;
     if (posicion_nombre == 'delante') {
-        interaction.reply(`Ahora los audios serán así: ${interaction.member.displayName} ${nuevosdatos.frase}.`);
+        interaction.reply({ content: `Ahora los audios serán así: ${interaction.member.displayName} ${nuevosdatos.frase}.` });
     } else {
-        interaction.reply(`Ahora los audios serán así: ${nuevosdatos.frase} ${interaction.member.displayName}.`);
+        interaction.reply({ content: `Ahora los audios serán así: ${nuevosdatos.frase} ${interaction.member.displayName}.` });
     }
     setDatabase('nombresAudio', datos);
 }

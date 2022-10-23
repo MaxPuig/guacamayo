@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import { ChannelType } from 'discord.js';
+import { ChannelType, PermissionsBitField } from 'discord.js';
 import { sendHelpCommands, sendInvite } from './help.js';
 import { setRSSchannel } from './rss.js';
 import { xgame_start } from './xgame.js';
@@ -20,8 +20,8 @@ async function slash_command(interaction, client) {
         return;
     } else if (interaction.commandName == 'feedback') {
         const admin_id = await client.users.fetch(process.env.BOT_ADMIN);
-        admin_id.send('<@!' + interaction.member.id + '>: ' + interaction.options.getString('mensaje'));
-        interaction.reply("Se ha enviado tu mensaje!\n> " + interaction.options.getString('mensaje'));
+        admin_id.send({ conent: '<@!' + interaction.member.id + '>: ' + interaction.options.getString('mensaje') });
+        interaction.reply({ content: "Se ha enviado tu mensaje!\n> " + interaction.options.getString('mensaje') });
         return;
     } else if (interaction.commandName == 'xgame') {
         const tamano_x = interaction.options.getInteger('tamaño_x');
@@ -42,7 +42,7 @@ async function slash_command(interaction, client) {
     let datos = await getDatabase('adminPerms');
     datos = datos[interaction.guild.id];
     if (datos == undefined) datos = [];
-    if (!interaction.member.permissions.has("ADMINISTRATOR") && !datos.includes(interaction.user.id) && interaction.member.id != process.env.BOT_ADMIN) {
+    if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator) && !datos.includes(interaction.user.id) && interaction.member.id != process.env.BOT_ADMIN) {
         let mensaje = 'Solo la gente con rol/permiso de administrador puede usar este comando.\n';
         mensaje += '`/help` Para ver lo que puedes usar.';
         interaction.reply({ content: mensaje, ephemeral: true });
@@ -52,7 +52,7 @@ async function slash_command(interaction, client) {
     } else if (interaction.commandName == 'voz') {
         voice_slash_command(interaction);
     } else if (interaction.commandName == 'dar_permisos_bot') {
-        if (interaction.member.permissions.has("ADMINISTRATOR") || interaction.member.id == process.env.BOT_ADMIN) {
+        if (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator) || interaction.member.id == process.env.BOT_ADMIN) {
             const userId = interaction.options.getUser('usuario').id;
             const addDelete = interaction.options.getString('dar_o_quitar');
             addDeleteUserPermission(interaction, addDelete, userId);

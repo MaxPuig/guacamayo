@@ -101,7 +101,11 @@ async function askConfirm(mensaje, titulo, client, prime = false) {
     if (tempGames2[msgid]) {
         let rssChannels = await getDatabase('rss');
         for (const channel of rssChannels) {
-            try { client.channels.cache.get(channel).send(tempGames2[msgid].mensaje); } catch (error) { console.log(error); }
+            try {
+                client.channels.cache.get(channel).send({ content: tempGames2[msgid].mensaje });
+            } catch (error) {
+                console.log(error);
+            }
         }
         sent_message.edit({ content: tempGames2[msgid].titulo + '\n**Oferta Enviada Automáticamente**', components: [] });
         let nombres = await getDatabase('freeGames');
@@ -143,11 +147,11 @@ async function setRSSchannel(interaction, activo) {
     if (activo == 'establecer') {
         let rssChannels = await getDatabase('rss');
         if (rssChannels.indexOf(interaction.channel.id) !== -1) {
-            await interaction.reply('El canal ya estaba establecido.\n`/ofertas quitar` para dejar de recibir las ofertas.');
+            await interaction.reply({ content: 'El canal ya estaba establecido.\n`/ofertas quitar` para dejar de recibir las ofertas.' });
         } else {
             rssChannels.push(interaction.channel.id)
             setDatabase('rss', rssChannels);
-            await interaction.reply('Canal establecido.\n`/ofertas quitar` para dejar de recibir las ofertas.');
+            await interaction.reply({ content: 'Canal establecido.\n`/ofertas quitar` para dejar de recibir las ofertas.' });
         }
     } else {
         let rssChannels = await getDatabase('rss');
@@ -155,9 +159,9 @@ async function setRSSchannel(interaction, activo) {
         if (index > -1) {
             rssChannels.splice(index, 1);
             setDatabase('rss', rssChannels);
-            await interaction.reply('Este canal ya no recibirá ofertas.\n`/ofertas establecer` para volver a recibirlas.');
+            await interaction.reply({ content: 'Este canal ya no recibirá ofertas.\n`/ofertas establecer` para volver a recibirlas.' });
         } else {
-            await interaction.reply('El canal NO recibía ofertas.\n`/ofertas establecer` para recibirlas.');
+            await interaction.reply({ content: 'El canal NO recibía ofertas.\n`/ofertas establecer` para recibirlas.' });
         }
     }
 };
