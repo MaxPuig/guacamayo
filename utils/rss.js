@@ -64,12 +64,11 @@ async function getPrimeGames(client) {
     let titulo = games.join('; ');
     let mensaje = (`**Juegos Gratis de Prime Gaming** ${url} \n`);
     let n = 1;
-    for (let name of games) { mensaje += `${n}. ${name}\n`; n++; };
+    let new_prime = true;
+    for (let name of games) { mensaje += `${n}. ${name}\n`; n++; if (name.toLowerCase().includes('prime gaming bundle')) new_prime = false; };
     let nombres = await getDatabase('freeGames');
     let tempGames = await getDatabase('tempGames');
     Object.keys(tempGames).forEach(val => { nombres.push(tempGames[val].titulo) });
-    let new_prime = true;
-    for (let name of nombres) { if (name.toLowerCase().includes('prime gaming bundle')) { new_prime = false; } }
     if (!nombres.includes(titulo) && new_prime) askConfirm(mensaje.substring(0, 2000), titulo, client, true);
 }
 
@@ -104,7 +103,7 @@ async function askConfirm(mensaje, titulo, client, prime = false) {
             try {
                 client.channels.cache.get(channel).send({ content: tempGames2[msgid].mensaje });
             } catch (error) {
-                console.log(error);
+                console.log(error, channel);
             }
         }
         sent_message.edit({ content: tempGames2[msgid].titulo + '\n**Oferta Enviada Automáticamente**', components: [] });
