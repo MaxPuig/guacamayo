@@ -52,7 +52,7 @@ async function getPrimeGames(client) {
     await page.goto(url);
     await page.waitForSelector('.offer-filters__button:nth-child(3) > .tw-interactive > .tw-pd-x-1 > .tw-pd-x-05 > .offer-filters__button__title')
     await page.click('.offer-filters__button:nth-child(3) > .tw-interactive > .tw-pd-x-1 > .tw-pd-x-05 > .offer-filters__button__title')
-    const eval_div = '//*[@id="root"]/div/div/main/div/div/div/div[3]/div[5]/div/div/div[2]/div'
+    const eval_div = 'xpath=//html/body/div[1]/div/div/main/div/div/div/div[3]/div[6]/div/div/div[2]/div'
     const games = await page.$eval(eval_div,
         navElm => {
             let games_list = [];
