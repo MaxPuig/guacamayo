@@ -14,6 +14,7 @@ client.on(Events.ClientReady, async function () {
     console.log('Bot ready!');
     client.user.setActivity('/help', { type: ActivityType.Watching });
     const mins30 = 1_800_000;
+    await sendRSS(client);
     setInterval(sendRSS, mins30, client);
     // client.guilds.cache.forEach(guild => { console.log(`${guild.name} | ${guild.id}`); })
     /** Descomentar esto para crear los slash commands. */
