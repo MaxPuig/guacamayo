@@ -156,7 +156,7 @@ async function downloadCustomAudio(interaction) {
             if (error || mp3_length == undefined) {
                 interaction.reply({ content: 'Ha sucedido un error.', ephemeral: true });
             } else if (mp3_length > Number(process.env.MAX_CUSTOM_AUDIO_LENGTH_SECS)) {
-                interaction.reply({ content: 'El archivo debe ser inferior a 5s.', ephemeral: true });
+                interaction.reply({ content: `El archivo debe ser inferior a ${process.env.MAX_CUSTOM_AUDIO_LENGTH_SECS}s.`, ephemeral: true });
             } else { // Save mp3
                 const guildID = interaction.guild.id;
                 const userID = interaction.user.id;
