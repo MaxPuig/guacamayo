@@ -130,7 +130,7 @@ async function downloadCustomAudio(interaction) {
             interaction.reply({ content: 'No has adjuntado ningún archivo.', ephemeral: true });
             return;
         }
-        if (mp3.size > 500_000) { // max 500KB
+        if (mp3.size > process.env.MAX_CUSTOM_FILE_SIZE_BYTES) {
             interaction.reply({ content: 'El archivo debe ser inferior a 500KB.', ephemeral: true });
             return;
         } else if (mp3.contentType != 'audio/mpeg' || !mp3.attachment.toLowerCase().endsWith('.mp3')) { // only mp3
@@ -145,13 +145,13 @@ async function downloadCustomAudio(interaction) {
             // temp file to get length of mp3
             let temp_file = fileSync();
             appendFile(temp_file.name, buffer, function (err) { if (err) { console.log(err); error = true; }; });
-
             try {
                 mp3_length = await getMP3Length(temp_file.name);
             } catch (e) {
                 error = true;
                 console.log(e);
             }
+            temp_file.removeCallback();
 
             if (error || mp3_length == undefined) {
                 interaction.reply({ content: 'Ha sucedido un error.', ephemeral: true });
