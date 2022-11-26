@@ -1,13 +1,13 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import { ChannelType, PermissionsBitField } from 'discord.js';
-import { sendHelpCommands, sendInvite } from './help.js';
-import { setRSSchannel } from './rss.js';
 import { xgame_start } from './xgame.js';
-import { getDatabase, setDatabase } from './database.js';
-import { addDeleteUserPermission } from './adminPerms.js';
+import { setRSSchannel } from './rss.js';
 import { getActivity } from './activities.js';
-import { avisos, espanol, idioma, frase } from './voice_settings.js';
+import { getDatabase, setDatabase } from './database.js';
+import { sendHelpCommands, sendInvite } from './help.js';
+import { addDeleteUserPermission } from './adminPerms.js';
+import { ChannelType, PermissionsBitField } from 'discord.js';
+import { avisos, espanol, idioma, frase, downloadCustomAudio, allowCustomAudio } from './voice_settings.js';
 
 
 /** Recibe los slash-commands y ejecuta lo que corresponde. */
@@ -36,6 +36,11 @@ async function slash_command(interaction, client) {
             return;
         } else {
             interaction.reply({ content: 'El canal debe ser un canal de voz.', ephemeral: true });
+            return;
+        }
+    } else if (interaction.commandName == 'voz') {
+        if (interaction.options._subcommand == 'audio_personalizado') {
+            downloadCustomAudio(interaction);
             return;
         }
     }
@@ -72,7 +77,8 @@ async function voice_slash_command(interaction) {
             "delante_o_detras": "detras",
             "frase": "Se ha unido",
             "idioma": "es-es",
-            "genero": "hombre"
+            "genero": "hombre",
+            "custom_audio": true
         };
         await setDatabase('nombresAudio', datos);
     }
@@ -90,6 +96,9 @@ async function voice_slash_command(interaction) {
         const posicion_nombre = interaction.options.getString('posición_nombre');
         const frase_nueva = interaction.options.getString('frase_nueva');
         frase(interaction, posicion_nombre, frase_nueva);
+    } else if (interaction.options._subcommand == 'permitir_audio_personalizado') {
+        const permitir_o_no = interaction.options.getString('si_o_no');
+        allowCustomAudio(interaction, permitir_o_no);
     }
 }
 

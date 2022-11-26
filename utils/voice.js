@@ -84,7 +84,8 @@ async function userJoined(oldState, newState) {
                     "delante_o_detras": "detras",
                     "frase": "Se ha unido",
                     "idioma": "es-es",
-                    "genero": "hombre"
+                    "genero": "hombre",
+                    "custom_audio": true
                 }
                 playAudio(newState, datos);
             }
@@ -99,16 +100,20 @@ async function playAudio(newState, datos) {
     let voiceChannel = newState.channel;
     let currentDisplayName = newState.member.displayName;
     let currentTime = Math.floor(Date.now() / 1000);
-    let displayName, lastTime;
+    let displayName, lastTime, customAudio;
     let userID = newState.member.user.id;
     let guildID = newState.channel.guild.id;
+    if (datos[guildID].custom_audio == undefined) datos[guildID].custom_audio = true; // Feature added later on, so it's undefined for old servers.
+    let custom_audio_allowed = datos[guildID].custom_audio;
     try {
         displayName = datos[guildID][userID][0];
         lastTime = datos[guildID][userID][1];
+        customAudio = datos[guildID][userID][2];
     } catch {
         lastTime = 0;
     }
-    if (displayName != currentDisplayName) { // Si el nombre NO es el mismo que el del audio
+    // Si el nombre NO es el mismo que el del audio o tiene audio propio pero no está permitido.
+    if (((displayName != currentDisplayName) && !customAudio) || (customAudio && !custom_audio_allowed)) {
         if (datos[guildID].genero == 'hombre') {
             datos = await descargar_audio_google(currentDisplayName, userID, guildID, datos);
         } else {

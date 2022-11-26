@@ -65,7 +65,6 @@ const invite = {
     description: 'Invita este bot a otros servidores.'
 }
 
-// Modal
 const feedback = {
     name: 'feedback',
     description: '¿Tienes alguna sugerencia o feedback? Envía un mensaje al creador del bot.',
@@ -95,7 +94,6 @@ const ofertas = {
     }]
 }
 
-// Algunos Modal
 const voz = {
     name: 'voz',
     description: 'Cambiar ajustes de los avisos de voz.',
@@ -117,23 +115,6 @@ const voz = {
             }]
         }]
     }, {
-        name: 'español',
-        description: 'Cambia la voz a español, hombre o mujer.',
-        type: ApplicationCommandOptionType.Subcommand,
-        options: [{
-            name: 'género',
-            description: 'Quieres que la voz en español sea hombre o mujer?',
-            type: ApplicationCommandOptionType.String,
-            required: true,
-            choices: [{
-                name: 'Hombre',
-                value: 'hombre'
-            }, {
-                name: 'Mujer',
-                value: 'mujer'
-            }]
-        }]
-    }, {
         name: 'idioma',
         description: 'Cambia el idioma de la voz.',
         type: ApplicationCommandOptionType.Subcommand,
@@ -149,6 +130,45 @@ const voz = {
             type: ApplicationCommandOptionType.String,
             required: true,
             choices: segundos
+        }]
+    }, {
+        name: 'permitir_audio_personalizado',
+        description: 'Permitir que los usuarios suban su propio audio?',
+        type: ApplicationCommandOptionType.Subcommand,
+        options: [{
+            name: 'si_o_no',
+            type: ApplicationCommandOptionType.String,
+            description: 'Permitir que los usuarios suban su propio audio?',
+            required: true,
+            choices: [{
+                name: 'Sí',
+                value: 'yes'
+            }, {
+                name: 'No',
+                value: 'no'
+            }]
+        }]
+    }, {
+        name: 'audio_personalizado',
+        description: 'Sube tu propio audio para los avisos de voz.',
+        type: ApplicationCommandOptionType.Subcommand,
+        options: [{
+            name: 'subir_o_quitar',
+            type: ApplicationCommandOptionType.String,
+            description: 'Establecer o quitar el mp3?',
+            required: true,
+            choices: [{
+                name: 'Subir',
+                value: 'add'
+            }, {
+                name: 'Quitar',
+                value: 'delete'
+            }]
+        }, {
+            name: 'mp3',
+            type: ApplicationCommandOptionType.Attachment,
+            description: 'Archivo mp3',
+            required: false
         }]
     }, {
         name: 'frase',
@@ -171,6 +191,23 @@ const voz = {
             description: 'Nueva frase. Ejemplo: se ha unido',
             type: ApplicationCommandOptionType.String,
             required: true
+        }]
+    }, {
+        name: 'español',
+        description: 'Cambia la voz a español, hombre o mujer.',
+        type: ApplicationCommandOptionType.Subcommand,
+        options: [{
+            name: 'género',
+            description: 'Quieres que la voz en español sea hombre o mujer?',
+            type: ApplicationCommandOptionType.String,
+            required: true,
+            choices: [{
+                name: 'Hombre',
+                value: 'hombre'
+            }, {
+                name: 'Mujer',
+                value: 'mujer'
+            }]
         }]
     }]
 }

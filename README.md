@@ -39,6 +39,7 @@ BOT_ADMIN   = "12345_admin_Id_67890"
 INVITELINK  = "https://bot_invite_link.com"
 PATHGOOGLE  = "path/to/google_key.json"
 MINUTES_BEFORE_AUTOSEND_FREE_GAME = 20
+MAX_CUSTOM_AUDIO_LENGTH_SECS = 5
 ```
 - ```Ctrl + x```, ```y```, ```enter ↵``` para guardar y salir del .env
 
