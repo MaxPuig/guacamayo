@@ -130,8 +130,8 @@ async function downloadCustomAudio(interaction) {
             interaction.reply({ content: 'No has adjuntado ningún archivo.', ephemeral: true });
             return;
         }
-        if (mp3.size > process.env.MAX_CUSTOM_FILE_SIZE_BYTES) {
-            interaction.reply({ content: 'El archivo debe ser inferior a 500KB.', ephemeral: true });
+        if (mp3.size > Number(process.env.MAX_CUSTOM_FILE_SIZE_BYTES)) {
+            interaction.reply({ content: `El archivo debe ser inferior a ${process.env.MAX_CUSTOM_FILE_SIZE_BYTES / 1000}KB.`, ephemeral: true });
             return;
         } else if (mp3.contentType != 'audio/mpeg' || !mp3.attachment.toLowerCase().endsWith('.mp3')) { // only mp3
             interaction.reply({ content: 'El archivo debe ser de tipo .mp3', ephemeral: true });

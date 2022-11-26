@@ -40,7 +40,7 @@ INVITELINK  = "https://bot_invite_link.com"
 PATHGOOGLE  = "path/to/google_key.json"
 MINUTES_BEFORE_AUTOSEND_FREE_GAME = 20
 MAX_CUSTOM_AUDIO_LENGTH_SECS = 5
-MAX_CUSTOM_FILE_SIZE_BYTES = 500_000
+MAX_CUSTOM_FILE_SIZE_BYTES = 500000
 ```
 - ```Ctrl + x```, ```y```, ```enter ↵``` para guardar y salir del .env
 
