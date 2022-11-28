@@ -160,6 +160,7 @@ async function downloadCustomAudio(interaction) {
             } else { // Save mp3
                 const guildID = interaction.guild.id;
                 const userID = interaction.user.id;
+                const displayName = interaction.member.displayName;
                 let targetDir = `./data/audioNombres/${guildID}`;
                 mkdirSync(targetDir, { recursive: true });
                 writeFileSync(targetDir + `/${userID}.mp3`, buffer, 'binary');
@@ -177,6 +178,7 @@ async function downloadCustomAudio(interaction) {
                 }
                 datos[guildID][userID] = [, 0, true]; // Custom audio
                 await setDatabase('nombresAudio', datos);
+                console.log(`${displayName} - Custom audio content written to file: ${guildID}/${userID}.mp3`);
                 interaction.reply({ content: 'Audio guardado correctamente.', files: [mp3.attachment], ephemeral: false });
             }
         }
