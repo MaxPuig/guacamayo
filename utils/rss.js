@@ -103,7 +103,7 @@ async function askConfirm(mensaje, titulo, client, prime = false) {
             try {
                 client.channels.cache.get(channel).send({ content: tempGames2[msgid].mensaje });
             } catch (error) {
-                console.log('RSS - Error sending message to: ' + channel);
+                console.log('RSS AutoSend askConfirm - Error sending message to: ' + channel);
             }
         }
         sent_message.edit({ content: tempGames2[msgid].titulo + '\n**Oferta Enviada Automáticamente**', components: [] });
@@ -123,7 +123,7 @@ async function confirmGame(interaction, client) {
     if (interaction.customId == 'confirm') {
         let rssChannels = await getDatabase('rss');
         for (const channel of rssChannels) {
-            try { client.channels.cache.get(channel).send({ content: tempGames[interaction.message.id].mensaje }); } catch (error) { console.log(error); }
+            try { client.channels.cache.get(channel).send({ content: tempGames[interaction.message.id].mensaje }); } catch (error) { 'RSS confirmGame - Error sending message to: ' + channel; }
         }
         interaction.editReply({ content: tempGames[interaction.message.id].titulo + '\n**Oferta Confirmada**', components: [] });
     } else {
