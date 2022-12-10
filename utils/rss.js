@@ -5,6 +5,7 @@ import Parser from 'rss-parser';
 let parser = new Parser();
 import { getDatabase, setDatabase } from './database.js';
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
+let prime_once_per_day_counter = 0;
 
 
 /** Recolecta las ofertas del feed RSS y las envia por DM con botón de confirmar/cancelar.
@@ -37,7 +38,10 @@ async function sendRSS(client) {
         }
     }
     try {
-        await getPrimeGames(client);
+        if (prime_once_per_day_counter == 0 || Math.floor(Date.now() / 1000) - prime_once_per_day_counter > 59 * 60 * 24) {
+            await getPrimeGames(client);
+            prime_once_per_day_counter = Math.floor(Date.now() / 1000);
+        }
     } catch (error) {
         console.log(error);
     }
@@ -65,7 +69,7 @@ async function getPrimeGames(client) {
     let mensaje = (`**Juegos Gratis de Prime Gaming** ${url} \n`);
     let n = 1;
     let new_prime = true;
-    for (let name of games) { mensaje += `${n}. ${name}\n`; n++; if (name.toLowerCase().includes('prime gaming bundle')) new_prime = false; };
+    for (let name of games) { mensaje += `${n}. ${name}\n`; n++; if (name.toLowerCase().includes('prime gaming bundle') || name.toLowerCase().includes('prime gaming pack') || name.toLowerCase().includes('prime gaming capsule')) new_prime = false; };
     let nombres = await getDatabase('freeGames');
     let tempGames = await getDatabase('tempGames');
     Object.keys(tempGames).forEach(val => { nombres.push(tempGames[val].titulo) });
