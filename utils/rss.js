@@ -23,6 +23,7 @@ async function sendRSS(client) {
             let gameLinks = [];
             for (let link of links) {
                 if (link.includes('discord.gg')) break;
+                if (link.toLowerCase().includes('grabfreegames.com')) break;
                 link = link.split('"')[0];
                 link = link.replace('https://steamcommunity.com/linkfilter/?url=', '');
                 link = link.replace('store.epicgames.com/GRABFREEGAMES/', 'www.epicgames.com/store/es-ES/p/');
