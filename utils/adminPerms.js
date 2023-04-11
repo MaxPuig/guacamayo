@@ -1,10 +1,11 @@
-import { setDatabase, getDatabase } from './database.js';
-
+import { setDatabase, getDatabase } from "./database.js";
 
 async function addDeleteUserPermission(interaction, addDelete, userId) {
-    let datos = await getDatabase('adminPerms');
-    if (datos[interaction.guild.id] == undefined) { datos[interaction.guild.id] = [] }
-    if (addDelete == 'add') {
+    let datos = await getDatabase("adminPerms");
+    if (datos[interaction.guild.id] == undefined) {
+        datos[interaction.guild.id] = [];
+    }
+    if (addDelete == "add") {
         if (datos[interaction.guild.id].includes(userId)) {
             interaction.reply({ content: `<@!${userId}> ya podía usar los comandos.` });
         } else {
@@ -20,8 +21,7 @@ async function addDeleteUserPermission(interaction, addDelete, userId) {
             interaction.reply({ content: `<@!${userId}> no podía usar los comandos.` });
         }
     }
-    setDatabase('adminPerms', datos);
+    setDatabase("adminPerms", datos);
 }
 
-
-export { addDeleteUserPermission }
+export { addDeleteUserPermission };

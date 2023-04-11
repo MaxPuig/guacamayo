@@ -1,21 +1,22 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
 let games = {};
 
-
 /** Devuelve un número aleatorio. [min, max) == [incluido, excluido). */
-function getRandomInt(min, max) { return Math.floor(Math.random() * (max - min)) + min; };
-
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+}
 
 /** Empieza una nueva partida de xgame. */
 async function xgame_start(interaction, x, y) {
-    const instructions = 'Objetivo: Ocultar todas las x pulsando los botones. Los botones se invierten en forma de cruz +';
+    const instructions = "Objetivo: Ocultar todas las x pulsando los botones. Los botones se invierten en forma de cruz +";
     if (x == 0) x = getRandomInt(3, 6);
     if (y == 0) y = getRandomInt(3, 6);
     let game = new x_game(x, y);
-    await interaction.reply({ content: instructions, components: game.toMessage(), fetchReply: true }).then(function (msg2) { game.message_id = msg2.id; });
+    await interaction.reply({ content: instructions, components: game.toMessage(), fetchReply: true }).then(function (msg2) {
+        game.message_id = msg2.id;
+    });
     games[interaction.user.id] = game;
 }
-
 
 /** Continúa la partida y comprueba si ha ganado. */
 async function xgame_continue(interaction) {
@@ -33,7 +34,6 @@ async function xgame_continue(interaction) {
         }
     }
 }
-
 
 class x_game {
     constructor(x, y) {
@@ -57,15 +57,43 @@ class x_game {
         press_y = parseInt(press_y);
         press_x = parseInt(press_x);
         // Middle
-        if (this.board[press_y][press_x] == " ") { this.board[press_y][press_x] = "x"; } else { this.board[press_y][press_x] = " "; };
+        if (this.board[press_y][press_x] == " ") {
+            this.board[press_y][press_x] = "x";
+        } else {
+            this.board[press_y][press_x] = " ";
+        }
         // Up
-        if (press_y > 0) { if (this.board[press_y - 1][press_x] == " ") { this.board[press_y - 1][press_x] = "x"; } else { this.board[press_y - 1][press_x] = " "; } };
+        if (press_y > 0) {
+            if (this.board[press_y - 1][press_x] == " ") {
+                this.board[press_y - 1][press_x] = "x";
+            } else {
+                this.board[press_y - 1][press_x] = " ";
+            }
+        }
         // Down
-        if (press_y + 1 != this.y) { if (this.board[press_y + 1][press_x] == " ") { this.board[press_y + 1][press_x] = "x"; } else { this.board[press_y + 1][press_x] = " "; } };
+        if (press_y + 1 != this.y) {
+            if (this.board[press_y + 1][press_x] == " ") {
+                this.board[press_y + 1][press_x] = "x";
+            } else {
+                this.board[press_y + 1][press_x] = " ";
+            }
+        }
         // Left
-        if (press_x > 0) { if (this.board[press_y][press_x - 1] == " ") { this.board[press_y][press_x - 1] = "x"; } else { this.board[press_y][press_x - 1] = " "; } };
+        if (press_x > 0) {
+            if (this.board[press_y][press_x - 1] == " ") {
+                this.board[press_y][press_x - 1] = "x";
+            } else {
+                this.board[press_y][press_x - 1] = " ";
+            }
+        }
         // Right
-        if (press_x + 1 != this.x) { if (this.board[press_y][press_x + 1] == " ") { this.board[press_y][press_x + 1] = "x"; } else { this.board[press_y][press_x + 1] = " "; } };
+        if (press_x + 1 != this.x) {
+            if (this.board[press_y][press_x + 1] == " ") {
+                this.board[press_y][press_x + 1] = "x";
+            } else {
+                this.board[press_y][press_x + 1] = " ";
+            }
+        }
     }
     randomize_board() {
         while (this.check_win(" ")) {
@@ -79,17 +107,20 @@ class x_game {
         for (let y = 0; y < this.y; y++) {
             const row = new ActionRowBuilder();
             for (let x = 0; x < this.x; x++) {
-                row.addComponents(new ButtonBuilder()
-                    .setCustomId(x.toString() + y.toString())
-                    .setLabel(this.board[y][x])
-                    .setStyle(ButtonStyle.Secondary));
+                row.addComponents(
+                    new ButtonBuilder()
+                        .setCustomId(x.toString() + y.toString())
+                        .setLabel(this.board[y][x])
+                        .setStyle(ButtonStyle.Secondary)
+                );
             }
             rows.push(row);
         }
         return rows;
     }
     // returns true when all are figure_to_check
-    check_win(figure_to_check) { // figure_to_check = "x" or " "
+    check_win(figure_to_check) {
+        // figure_to_check = "x" or " "
         for (let i = 0; i < this.y; i++) {
             for (let j = 0; j < this.x; j++) {
                 if (this.board[i][j] != figure_to_check) {
@@ -100,6 +131,5 @@ class x_game {
         return true;
     }
 }
-
 
 export { xgame_start, xgame_continue };
