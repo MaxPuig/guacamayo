@@ -57,7 +57,10 @@ async function getPrimeGames(client) {
     await page.goto(url);
     await page.waitForSelector(".offer-filters__button:nth-child(3) > .tw-interactive > .tw-pd-x-1 > .tw-pd-x-05 > .offer-filters__button__title");
     await page.click(".offer-filters__button:nth-child(3) > .tw-interactive > .tw-pd-x-1 > .tw-pd-x-05 > .offer-filters__button__title");
-    const eval_div = '//*[@id="root"]/div/div/main/div/div/div/div[3]/div[5]/div/div/div[2]/div';
+    await page.waitForTimeout(2000);
+    await page.keyboard.press("End");
+    await page.waitForTimeout(2000);
+    const eval_div = "div.tw-full-width:nth-child(4) > div:nth-child(8) > div:nth-child(1)";
     const games = await page.$eval(eval_div, (navElm) => {
         let games_list = [];
         let titles = navElm.getElementsByTagName("h3");
