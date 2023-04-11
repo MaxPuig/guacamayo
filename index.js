@@ -24,12 +24,11 @@ client.on(Events.ClientReady, async function () {
 
 client.on(Events.InteractionCreate, async (interaction) => {
     if (interaction.type === InteractionType.ApplicationCommand) {
-        // slash command
         slash_command(interaction, client);
         return;
     }
-    await interaction.deferUpdate();
     if (interaction.type === InteractionType.MessageComponent && interaction.isButton()) {
+        await interaction.deferReply();
         await confirmGame(interaction, client);
     }
 });

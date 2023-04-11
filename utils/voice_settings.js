@@ -8,23 +8,23 @@ import { writeFileSync, mkdirSync, appendFile } from "fs";
 
 /** Activa o desactiva los avisos en el canal de voz. */
 async function avisos(interaction, voz_activa) {
+    let datos = await getDatabase("nombresAudio");
+    if (!datos[interaction.guild.id]) datos[interaction.guild.id] = defaultAudioSettings;
     if (voz_activa == "activar") {
-        let datos = await getDatabase("nombresAudio");
         datos[interaction.guild.id]["disabled"] = false;
         interaction.reply({ content: "Avisos de voz activados. `/voz avisos desactivar` para deshacer." });
-        setDatabase("nombresAudio", datos);
     } else {
-        let datos = await getDatabase("nombresAudio");
         datos[interaction.guild.id]["disabled"] = true;
         interaction.reply({ content: "Avisos de voz desactivados. `/voz avisos activar` para deshacer." });
-        setDatabase("nombresAudio", datos);
     }
+    setDatabase("nombresAudio", datos);
 }
 
 /** Activa o desactiva los avisos en el canal de voz. */
 async function espanol(interaction, genero) {
+    let datos = await getDatabase("nombresAudio");
+    if (!datos[interaction.guild.id]) datos[interaction.guild.id] = defaultAudioSettings;
     if (genero == "hombre") {
-        let datos = await getDatabase("nombresAudio");
         if (datos[interaction.guild.id].genero == "mujer") {
             let nuevosdatos = {
                 disabled: datos[interaction.guild.id].disabled,
@@ -41,7 +41,6 @@ async function espanol(interaction, genero) {
             interaction.reply({ content: "La voz ya era español hombre." });
         }
     } else {
-        let datos = await getDatabase("nombresAudio");
         if (datos[interaction.guild.id].genero == "hombre" || datos[interaction.guild.id].idioma != "es-es") {
             let nuevosdatos = {
                 // Borra todo para volver a descargar todos los audios.
@@ -79,6 +78,7 @@ async function idioma(interaction, idioma_nuevo, idioma_nuevo_2) {
         return;
     }
     let datos = await getDatabase("nombresAudio");
+    if (!datos[interaction.guild.id]) datos[interaction.guild.id] = defaultAudioSettings;
     if (idioma != datos[interaction.guild.id].idioma) {
         let nuevosdatos = {
             disabled: datos[interaction.guild.id].disabled,
@@ -99,6 +99,7 @@ async function idioma(interaction, idioma_nuevo, idioma_nuevo_2) {
 /** Cambia la frase que dice el bot. Deja escoger si el nombre va antes o después de la frase. */
 async function frase(interaction, posicion_nombre, frase_nueva) {
     let datos = await getDatabase("nombresAudio");
+    if (!datos[interaction.guild.id]) datos[interaction.guild.id] = defaultAudioSettings;
     let nuevosdatos = {
         disabled: datos[interaction.guild.id].disabled,
         delante_o_detras: posicion_nombre,
@@ -118,8 +119,9 @@ async function frase(interaction, posicion_nombre, frase_nueva) {
 
 /** Descarar audio y comprobar si es menor a 5s */
 async function downloadCustomAudio(interaction) {
+    let datos = await getDatabase("nombresAudio");
+    if (!datos[interaction.guild.id]) datos[interaction.guild.id] = defaultAudioSettings;
     if (interaction.options.getString("subir_o_quitar") == "add") {
-        let datos = await getDatabase("nombresAudio");
         if (datos[interaction.guild.id].custom_audio == false) {
             // Could be undefined for old servers.
             interaction.reply({ content: "No se permiten audios personalizados en este servidor." });
@@ -191,15 +193,9 @@ async function downloadCustomAudio(interaction) {
         }
     } else {
         // Delete from DB
-        let datos = await getDatabase("nombresAudio");
-        if (datos[interaction.guild.id] == undefined) {
-            interaction.reply({ content: "Audio eliminado.", ephemeral: false });
-            return;
-        } else {
-            delete datos[interaction.guild.id][interaction.user.id];
-            await setDatabase("nombresAudio", datos);
-            interaction.reply({ content: "Audio eliminado.", ephemeral: false });
-        }
+        delete datos[interaction.guild.id][interaction.user.id];
+        await setDatabase("nombresAudio", datos);
+        interaction.reply({ content: "Audio eliminado.", ephemeral: false });
     }
 }
 
@@ -207,6 +203,7 @@ async function downloadCustomAudio(interaction) {
 async function allowCustomAudio(interaction, permitir) {
     permitir = permitir == "yes";
     let datos = await getDatabase("nombresAudio");
+    if (!datos[interaction.guild.id]) datos[interaction.guild.id] = defaultAudioSettings;
     datos[interaction.guild.id]["custom_audio"] = permitir;
     await setDatabase("nombresAudio", datos);
     if (permitir) {
@@ -228,5 +225,14 @@ async function getMP3Length(path) {
         });
     });
 }
+
+const defaultAudioSettings = {
+    disabled: false,
+    delante_o_detras: "detras",
+    frase: "Se ha unido",
+    idioma: "es-es",
+    genero: "hombre",
+    custom_audio: true,
+};
 
 export { avisos, espanol, idioma, frase, downloadCustomAudio, allowCustomAudio };

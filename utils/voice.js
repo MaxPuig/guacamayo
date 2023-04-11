@@ -72,28 +72,15 @@ async function userJoined(oldState, newState) {
     if (oldState.channelId != newState.channelId && (newState.channelId != null || newState.channelId != undefined) && !newState.member.user.bot) {
         let usersInChannel = 0;
         newState.channel.members.forEach((usuario) => {
-            if (!usuario.user.bot) {
-                usersInChannel++;
-            }
+            if (!usuario.user.bot) usersInChannel++;
         });
         if (usersInChannel > 1) {
-            let datos = await getDatabase("nombresAudio");
             const guildID = newState.channel.guild.id;
-            if (datos[guildID] != undefined) {
-                if (datos[guildID]["disabled"] == true) {
-                    return;
-                } else {
-                    playAudio(newState, datos);
-                }
+            let datos = await getDatabase("nombresAudio");
+            if (!datos[guildID]) datos[guildID] = defaultAudioSettings;
+            if (datos[guildID]["disabled"] == true) {
+                return;
             } else {
-                datos[guildID] = {
-                    disabled: false,
-                    delante_o_detras: "detras",
-                    frase: "Se ha unido",
-                    idioma: "es-es",
-                    genero: "hombre",
-                    custom_audio: true,
-                };
                 playAudio(newState, datos);
             }
         }
@@ -157,5 +144,14 @@ async function connectToChannel(channel) {
         throw error;
     }
 }
+
+const defaultAudioSettings = {
+    disabled: false,
+    delante_o_detras: "detras",
+    frase: "Se ha unido",
+    idioma: "es-es",
+    genero: "hombre",
+    custom_audio: true,
+};
 
 export { userJoined };
