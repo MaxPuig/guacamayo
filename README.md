@@ -5,14 +5,12 @@
 - Avisa por el canal de voz quien se ha unido.
 - Juega o mira videos de YouTube directamente desde una llamada.
 - Envía ofertas de juegos gratis.
-- Juego: xgame.
 
 ## COMANDOS de Barra [/]
 - `/help`: Envía todos los comandos.
 - `/invite`: Envía el link de invitación del Bot.
 - `/activity`: Juega o mira videos de YouTube directamente desde una llamada.
 - `/feedback <Mensaje>`: Envía un mensaje al creador del bot.
-- `/xgame <Tamaño>`: Juego. Objetivo: ocultar todas las "x".
 - `/ofertas [Solo Admin]`: Establece (o quita) ese canal de texto para recibir ofertas de juegos gratis.
 - `/voz [Solo Admin]`: Cambia los ajustes de los avisos de voz.
 - `/dar_permisos_bot [Solo Admin]`: Dar permiso a otro usuario para usar comandos [Solo Admin].

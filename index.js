@@ -3,7 +3,6 @@ dotenv.config();
 import { Client, GatewayIntentBits, InteractionType, ChannelType, Events, ActivityType } from "discord.js";
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates] });
 import { userJoined } from "./utils/voice.js";
-import { xgame_continue } from "./utils/xgame.js";
 import { sendRSS, confirmGame } from "./utils/rss.js";
 import { slash_command } from "./utils/slash_commands.js";
 import { all_commands_array } from "./utils/set_slash_cmds.js";
@@ -32,7 +31,6 @@ client.on(Events.InteractionCreate, async (interaction) => {
     await interaction.deferUpdate();
     if (interaction.type === InteractionType.MessageComponent && interaction.isButton()) {
         await confirmGame(interaction, client);
-        await xgame_continue(interaction);
     }
 });
 

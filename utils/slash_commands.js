@@ -1,6 +1,5 @@
 import dotenv from "dotenv";
 dotenv.config();
-import { xgame_start } from "./xgame.js";
 import { setRSSchannel } from "./rss.js";
 import { getActivity } from "./activities.js";
 import { getDatabase, setDatabase } from "./database.js";
@@ -21,11 +20,6 @@ async function slash_command(interaction, client) {
         const admin_id = await client.users.fetch(process.env.BOT_ADMIN);
         admin_id.send({ conent: "<@!" + interaction.member.id + ">: " + interaction.options.getString("mensaje") });
         interaction.reply({ content: "Se ha enviado tu mensaje!\n> " + interaction.options.getString("mensaje") });
-        return;
-    } else if (interaction.commandName == "xgame") {
-        const tamano_x = interaction.options.getInteger("tamaño_x");
-        const tamano_y = interaction.options.getInteger("tamaño_y");
-        xgame_start(interaction, tamano_x, tamano_y);
         return;
     } else if (interaction.commandName == "activity") {
         const canal = interaction.options.getChannel("canal");

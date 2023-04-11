@@ -256,61 +256,6 @@ const voz = {
     ],
 };
 
-const xgame = {
-    name: "xgame",
-    description: "Empezar partida xgame.",
-    options: [
-        {
-            name: "tamaño_x",
-            type: ApplicationCommandOptionType.Integer,
-            description: 'Tamaño "X" del tablero.',
-            required: true,
-            choices: [
-                {
-                    name: "Random",
-                    value: 0,
-                },
-                {
-                    name: "3",
-                    value: 3,
-                },
-                {
-                    name: "4",
-                    value: 4,
-                },
-                {
-                    name: "5",
-                    value: 5,
-                },
-            ],
-        },
-        {
-            name: "tamaño_y",
-            type: ApplicationCommandOptionType.Integer,
-            description: 'Tamaño "Y" del tablero.',
-            required: true,
-            choices: [
-                {
-                    name: "Random",
-                    value: 0,
-                },
-                {
-                    name: "3",
-                    value: 3,
-                },
-                {
-                    name: "4",
-                    value: 4,
-                },
-                {
-                    name: "5",
-                    value: 5,
-                },
-            ],
-        },
-    ],
-};
-
 const adminPerms = {
     name: "dar_permisos_bot",
     description: "Añade a gente para que pueda utilizar los comandos de solo Admin.",
@@ -386,6 +331,6 @@ const activity = {
     ],
 };
 
-const all_commands_array = [help, voz, activity, xgame, feedback, invite, ofertas, adminPerms];
+const all_commands_array = [help, voz, activity, feedback, invite, ofertas, adminPerms];
 
 export { all_commands_array };
