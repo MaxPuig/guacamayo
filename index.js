@@ -28,7 +28,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
         return;
     }
     if (interaction.type === InteractionType.MessageComponent && interaction.isButton()) {
-        await interaction.deferReply();
+        await interaction.deferUpdate();
         await confirmGame(interaction, client);
     }
 });
