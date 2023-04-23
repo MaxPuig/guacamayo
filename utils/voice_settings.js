@@ -127,7 +127,7 @@ async function downloadCustomAudio(interaction) {
             interaction.reply({ content: "No se permiten audios personalizados en este servidor." });
             return;
         }
-        interaction.deferReply();
+        await interaction.deferReply();
         const mp3 = interaction.options.getAttachment("mp3");
         if (!mp3) {
             interaction.editReply({ content: "No has adjuntado ningún archivo.", ephemeral: false });
