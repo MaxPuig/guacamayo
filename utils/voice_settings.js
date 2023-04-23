@@ -130,14 +130,14 @@ async function downloadCustomAudio(interaction) {
         interaction.deferReply();
         const mp3 = interaction.options.getAttachment("mp3");
         if (!mp3) {
-            interaction.editReply({ content: "No has adjuntado ningún archivo.", ephemeral: true });
+            interaction.editReply({ content: "No has adjuntado ningún archivo.", ephemeral: false });
             return;
         } else if (mp3.size > Number(process.env.MAX_CUSTOM_FILE_SIZE_BYTES)) {
-            interaction.editReply({ content: `El archivo debe ser inferior a ${process.env.MAX_CUSTOM_FILE_SIZE_BYTES / 1000}KB.`, ephemeral: true });
+            interaction.editReply({ content: `El archivo debe ser inferior a ${process.env.MAX_CUSTOM_FILE_SIZE_BYTES / 1000}KB.`, ephemeral: false });
             return;
         } else if (mp3.contentType != "audio/mpeg" || !mp3.attachment.toLowerCase().endsWith(".mp3")) {
             // only mp3
-            interaction.editReply({ content: "El archivo debe ser de tipo .mp3", ephemeral: true });
+            interaction.editReply({ content: "El archivo debe ser de tipo .mp3", ephemeral: false });
             return;
         } else {
             const url = mp3.attachment;
@@ -161,9 +161,9 @@ async function downloadCustomAudio(interaction) {
             }
             temp_file.removeCallback();
             if (error || mp3_length == undefined) {
-                interaction.editReply({ content: "Ha sucedido un error.", ephemeral: true });
+                interaction.editReply({ content: "Ha sucedido un error.", ephemeral: false });
             } else if (mp3_length > Number(process.env.MAX_CUSTOM_AUDIO_LENGTH_SECS)) {
-                interaction.editReply({ content: `El archivo debe ser inferior a ${process.env.MAX_CUSTOM_AUDIO_LENGTH_SECS}s.`, ephemeral: true });
+                interaction.editReply({ content: `El archivo debe ser inferior a ${process.env.MAX_CUSTOM_AUDIO_LENGTH_SECS}s.`, ephemeral: false });
             } else {
                 // Save mp3
                 const guildID = interaction.guild.id;
