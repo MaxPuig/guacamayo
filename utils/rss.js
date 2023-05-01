@@ -1,7 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
 import Parser from "rss-parser";
-import playwright from "playwright";
 import { getDatabase, setDatabase } from "./database.js";
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
 let parser = new Parser();
@@ -51,49 +50,33 @@ async function sendRSS(client) {
 
 /** Recoge todos los juegos gratis de Prime Gaming. */
 async function getPrimeGames(client) {
-    const url = "https://gaming.amazon.com/home";
-    const browser = await playwright.firefox.launch({ headless: true });
-    const page = await browser.newPage();
-    await page.goto(url);
-    await page.waitForSelector(".offer-filters__button:nth-child(3) > .tw-interactive > .tw-pd-x-1 > .tw-pd-x-05 > .offer-filters__button__title");
-    await page.click(".offer-filters__button:nth-child(3) > .tw-interactive > .tw-pd-x-1 > .tw-pd-x-05 > .offer-filters__button__title");
-    await page.waitForTimeout(2000);
-    await page.keyboard.press("End");
-    await page.waitForTimeout(2000);
-    const eval_div = "div.tw-full-width:nth-child(4) > div:nth-child(8) > div:nth-child(1)";
-    const games = await page.$eval(eval_div, (navElm) => {
-        let games_list = [];
-        let titles = navElm.getElementsByTagName("h3");
-        for (let item of titles) {
-            games_list.push(item.innerText);
-        }
-        return games_list;
+    let feed = await parser.parseURL("https://feed.phenx.de/lootscraper_amazon_game.xml");
+    let juegos = [];
+    feed = feed.items.slice(0, 10); // últimos 10 juegos
+    feed.forEach((item) => {
+        let title = item.title;
+        let link = item.link.split("?")[0];
+        let info = item.contentSnippet.split("\n");
+        let until = info[1].substring(1, 19);
+        info = title + "\nUntil: " + until + "\n" + link;
+        juegos.push({ title, info });
     });
-    await browser.close();
-    let titulo = games.join("; ");
-    let mensaje = `**Juegos Gratis de Prime Gaming** ${url} \n`;
-    let n = 1;
-    let new_prime = true;
-    for (let name of games) {
-        mensaje += `${n}. ${name}\n`;
-        n++;
-        if (
-            name.toLowerCase().includes("prime gaming bundle") ||
-            name.toLowerCase().includes("prime gaming pack") ||
-            name.toLowerCase().includes("prime gaming capsule")
-        )
-            new_prime = false;
-    }
     let nombres = await getDatabase("freeGames");
     let tempGames = await getDatabase("tempGames");
     Object.keys(tempGames).forEach((val) => {
         nombres.push(tempGames[val].titulo);
     });
-    if (!nombres.includes(titulo) && new_prime) askConfirm(mensaje.substring(0, 2000), titulo, client, true);
+    for (let juego of juegos) {
+        if (!nombres.includes(juego.title)) {
+            let mensaje = "**Nueva Oferta**\n" + juego.info;
+            askConfirm(mensaje.substring(0, 2000), juego.title, client);
+            await sleep(1000); // Para que no se solape la db
+        }
+    }
 }
 
 /** Envía el mensaje con botón de confirmar/cancelar el envio de la oferta. */
-async function askConfirm(mensaje, titulo, client, prime = false) {
+async function askConfirm(mensaje, titulo, client) {
     const row = new ActionRowBuilder();
     row.addComponents(new ButtonBuilder().setCustomId("confirm").setLabel("confirm").setStyle(ButtonStyle.Success));
     row.addComponents(new ButtonBuilder().setCustomId("cancel").setLabel("cancel").setStyle(ButtonStyle.Danger));
@@ -104,9 +87,7 @@ async function askConfirm(mensaje, titulo, client, prime = false) {
     let tempGames = await getDatabase("tempGames");
     tempGames[msgid] = { mensaje, titulo };
     setDatabase("tempGames", tempGames);
-    let extra_minutes = 0;
-    if (prime) extra_minutes = 24 * 60; // 24h
-    await sleep(1000 * 60 * (Number(process.env.MINUTES_BEFORE_AUTOSEND_FREE_GAME) + extra_minutes)); // Espera x minutos antes de enviar el juego automáticamente
+    await sleep(1000 * 60 * (Number(process.env.MINUTES_BEFORE_AUTOSEND_FREE_GAME))); // Espera x minutos antes de enviar el juego automáticamente
     let tempGames2 = await getDatabase("tempGames");
     if (tempGames2[msgid]) {
         let rssChannels = await getDatabase("rss");
