@@ -18,7 +18,7 @@ async function slash_command(interaction, client) {
         return;
     } else if (interaction.commandName == "feedback") {
         const admin_id = await client.users.fetch(process.env.BOT_ADMIN);
-        admin_id.send({ conent: "<@!" + interaction.member.id + ">: " + interaction.options.getString("mensaje") });
+        admin_id.send({ content: "<@!" + interaction.member.id + ">: " + interaction.options.getString("mensaje") });
         interaction.reply({ content: "Se ha enviado tu mensaje!\n> " + interaction.options.getString("mensaje") });
         return;
     } else if (interaction.commandName == "activity") {
