@@ -4,7 +4,7 @@ import Parser from "rss-parser";
 import { getDatabase, setDatabase } from "./database.js";
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
 let parser = new Parser();
-let prime_once_per_day_counter = 0;
+// let prime_once_per_day_counter = 0;
 
 /** Recolecta las ofertas del feed RSS y las envia por DM con botón de confirmar/cancelar.
  * Las ofertas serán nuevas si no están en la db. */
@@ -38,17 +38,18 @@ async function sendRSS(client) {
             await sleep(1000); // Para que no se solape la db
         }
     }
-    try {
-        if (prime_once_per_day_counter == 0 || Math.floor(Date.now() / 1000) - prime_once_per_day_counter > 59 * 60 * 24) {
-            await getPrimeGames(client);
-            prime_once_per_day_counter = Math.floor(Date.now() / 1000);
-        }
-    } catch (error) {
-        console.log(error);
-    }
+    /* Uncomment for Prime Gaming. Important, also uncomment global variable prime_once_per_day_counter */
+    // try {
+    //     if (prime_once_per_day_counter == 0 || Math.floor(Date.now() / 1000) - prime_once_per_day_counter > 59 * 60 * 24) {
+    //         await getPrimeGames(client);
+    //         prime_once_per_day_counter = Math.floor(Date.now() / 1000);
+    //     }
+    // } catch (error) {
+    //     console.log(error);
+    // }
 }
 
-/** Recoge todos los juegos gratis de Prime Gaming. */
+/** Obtiene los juegos gratis de Prime Gaming. */
 async function getPrimeGames(client) {
     let feed = await parser.parseURL("https://feed.phenx.de/lootscraper_amazon_game.xml");
     let juegos = [];
