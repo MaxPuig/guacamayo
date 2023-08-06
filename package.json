@@ -14,7 +14,7 @@
     "@discordjs/opus": "^0.9.0",
     "@discordjs/voice": "^0.16.0",
     "@google-cloud/text-to-speech": "^4.2.3",
-    "discord.js": "^14.11.1-dev.1689120705-7fb91c5.0",
+    "discord.js": "^14.12.1",
     "dotenv": "^16.3.1",
     "ffmpeg-static": "^5.1.0",
     "fluent-ffmpeg": "^2.1.2",
