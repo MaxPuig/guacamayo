@@ -135,7 +135,7 @@ async function downloadCustomAudio(interaction) {
         } else if (mp3.size > Number(process.env.MAX_CUSTOM_FILE_SIZE_BYTES)) {
             interaction.editReply({ content: `El archivo debe ser inferior a ${process.env.MAX_CUSTOM_FILE_SIZE_BYTES / 1000}KB.`, ephemeral: false });
             return;
-        } else if (mp3.contentType != "audio/mpeg" || !mp3.attachment.toLowerCase().endsWith(".mp3")) {
+        } else if (mp3.contentType != "audio/mpeg" || !mp3.name.toLowerCase().endsWith(".mp3")) {
             // only mp3
             interaction.editReply({ content: "El archivo debe ser de tipo .mp3", ephemeral: false });
             return;
