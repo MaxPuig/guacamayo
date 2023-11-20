@@ -1,4 +1,4 @@
-import { ChannelType, ApplicationCommandOptionType } from "discord.js";
+import { ChannelType, ApplicationCommandOptionType, PermissionsBitField } from "discord.js";
 
 const idiomas = [
     { name: "Afrikaans", value: "af" },
@@ -304,12 +304,13 @@ const activity = {
             choices: [
                 { name: "Watch Together", value: "880218394199220334" },
                 { name: "Blazing 8s", value: "832025144389533716" },
+                { name: "Bobble Bash", value: "1107689944685748377" },
                 { name: "Bobble League", value: "947957217959759964" },
                 { name: "Checkers In The Park", value: "832013003968348200" },
                 { name: "Chess in the Park", value: "832012774040141894" },
                 { name: "Color Together", value: "1039835161136746497" },
                 { name: "Gartic Phone", value: "1007373802981822582" },
-                { name: "Jamspace", value: "1070087967294631976" },
+                { name: "Jamspace Whiteboard", value: "1070087967294631976" },
                 { name: "Know What I Meme", value: "950505761862189096" },
                 { name: "land-io", value: "903769130790969345" },
                 { name: "Letter League", value: "879863686565621790" },
@@ -336,6 +337,26 @@ const activity = {
     ],
 };
 
-const all_commands_array = [help, voz, activity, feedback, invite, ofertas, adminPerms];
+const enviar_oferta = {
+    name: "enviar_oferta",
+    description: "Envia una nueva oferta.",
+    default_member_permissions: PermissionsBitField.Flags.Administrator,
+    options: [
+        {
+            name: "titulo",
+            type: ApplicationCommandOptionType.String,
+            description: "Nombre del juego.",
+            required: true,
+        },
+        {
+            name: "link",
+            type: ApplicationCommandOptionType.String,
+            description: "Link de la oferta. Separar links con un espacio.",
+            required: true,
+        }
+    ],
+};
+
+const all_commands_array = [help, voz, activity, feedback, invite, ofertas, adminPerms, enviar_oferta];
 
 export { all_commands_array };

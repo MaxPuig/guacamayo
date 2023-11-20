@@ -161,4 +161,4 @@ async function setRSSchannel(interaction, activo) {
     }
 }
 
-export { sendRSS, setRSSchannel, confirmGame };
+export { sendRSS, setRSSchannel, confirmGame, askConfirm };

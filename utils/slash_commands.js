@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
-import { setRSSchannel } from "./rss.js";
+import { setRSSchannel, askConfirm } from "./rss.js";
 import { getActivity } from "./activities.js";
 import { getDatabase, setDatabase } from "./database.js";
 import { sendHelpCommands, sendInvite } from "./help.js";
@@ -36,6 +36,18 @@ async function slash_command(interaction, client) {
             downloadCustomAudio(interaction);
             return;
         }
+    } else if (interaction.commandName == "enviar_oferta") {
+        if (interaction.member.id != process.env.BOT_ADMIN) {
+            interaction.reply({ content: "Solo el creador del bot puede ejecutar el comando.", ephemeral: true });
+            return;
+        }
+        const title = interaction.options.getString("titulo");
+        const link = interaction.options.getString("link");
+        let mensaje = "**Nueva Oferta**\n" + title + "\n" + link.replace(" ", "\n");
+        askConfirm(mensaje.substring(0, 2000), title, client);
+        let confirmation = "Oferta recibida para enviar!\n" + mensaje;
+        interaction.reply({ content: confirmation.substring(0, 2000), ephemeral: false });
+        return;
     }
     let datos = await getDatabase("adminPerms");
     datos = datos[interaction.guild.id];
