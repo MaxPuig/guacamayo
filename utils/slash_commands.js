@@ -43,7 +43,7 @@ async function slash_command(interaction, client) {
         }
         const title = interaction.options.getString("titulo");
         const link = interaction.options.getString("link");
-        let mensaje = "**Nueva Oferta**\n" + title + "\n" + link.replace(" ", "\n");
+        let mensaje = "**Nueva Oferta**\n" + title + "\n" + link.replace(/ /g, "\n");
         askConfirm(mensaje.substring(0, 2000), title, client);
         let confirmation = "Oferta recibida para enviar!\n" + mensaje;
         interaction.reply({ content: confirmation.substring(0, 2000), ephemeral: false });

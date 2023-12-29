@@ -19,17 +19,19 @@ async function sendRSS(client) {
         if (!nombres.includes(item.title)) {
             nombres.push(item.title); // Por si hay alguna oferta duplicada
             let links = item.content.split('href="');
-            links.shift();
+            links.shift(); // Elimina el link del post
             let gameLinks = [];
             for (let link of links) {
+                if (link.toLowerCase().startsWith("https://steamcommunity.com/linkfilter")) {
+                    link = decodeURIComponent(new URL(link).searchParams.get('u'));
+                }
                 if (link.includes("discord.gg")) break;
-                if (link.toLowerCase().includes("grabfreegames.com")) break;
                 link = link.split('"')[0];
                 link = link.replace("https://steamcommunity.com/linkfilter/?url=", "");
-                link = link.replace("store.epicgames.com/GRABFREEGAMES/", "www.epicgames.com/store/es-ES/p/");
-                link = link.replace("?epic_affiliate=GRABFREEGAMES", "");
-                link = link.replace("https://www.epicgames.com/store/en-US/p/", "https://www.epicgames.com/store/es-ES/p/");
-                link = link.replace("https://store.epicgames.com/en-US/p/", "https://store.epicgames.com/es-ES/p/");
+                link = link.split("?curator_clanid")[0];
+                link = link.split("?epic_affiliate")[0];
+                link = link.split("?ref")[0];
+                link = link.split("?partner")[0];
                 gameLinks.push(link);
             }
             let mensaje = "**Nueva Oferta**\n" + item.title + "\n" + gameLinks.join("\n");
