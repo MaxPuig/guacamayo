@@ -1,5 +1,5 @@
-# Guacamayo: Bot Discord
-[Link de invitación](https://bot.maxpuig.com)
+# Guacamayo: Discord bot
+[Link de invitación](https://discord.com/oauth2/authorize?client_id=710608604876767323&permissions=2150680648&scope=bot%20applications.commands)
 
 ## FUNCIONES
 - Avisa por el canal de voz quien se ha unido.
