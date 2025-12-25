@@ -3,6 +3,7 @@ dotenv.config();
 import fetch from "node-fetch";
 import { fileSync } from "tmp";
 import ffmpeg from "fluent-ffmpeg";
+import { MessageFlags } from "discord.js";
 import { getDatabase, setDatabase } from "./database.js";
 import { writeFileSync, mkdirSync, appendFile } from "fs";
 
@@ -130,14 +131,14 @@ async function downloadCustomAudio(interaction) {
         await interaction.deferReply();
         const mp3 = interaction.options.getAttachment("mp3");
         if (!mp3) {
-            interaction.editReply({ content: "No has adjuntado ningún archivo.", ephemeral: false });
+            interaction.editReply({ content: "No has adjuntado ningún archivo." });
             return;
         } else if (mp3.size > Number(process.env.MAX_CUSTOM_FILE_SIZE_BYTES)) {
-            interaction.editReply({ content: `El archivo debe ser inferior a ${process.env.MAX_CUSTOM_FILE_SIZE_BYTES / 1000}KB.`, ephemeral: false });
+            interaction.editReply({ content: `El archivo debe ser inferior a ${process.env.MAX_CUSTOM_FILE_SIZE_BYTES / 1000}KB.` });
             return;
         } else if (mp3.contentType != "audio/mpeg" || !mp3.name.toLowerCase().endsWith(".mp3")) {
             // only mp3
-            interaction.editReply({ content: "El archivo debe ser de tipo .mp3", ephemeral: false });
+            interaction.editReply({ content: "El archivo debe ser de tipo .mp3" });
             return;
         } else {
             const url = mp3.attachment;
@@ -161,9 +162,9 @@ async function downloadCustomAudio(interaction) {
             }
             temp_file.removeCallback();
             if (error || mp3_length == undefined) {
-                interaction.editReply({ content: "Ha sucedido un error.", ephemeral: false });
+                interaction.editReply({ content: "Ha sucedido un error." });
             } else if (mp3_length > Number(process.env.MAX_CUSTOM_AUDIO_LENGTH_SECS)) {
-                interaction.editReply({ content: `El archivo debe ser inferior a ${process.env.MAX_CUSTOM_AUDIO_LENGTH_SECS}s.`, ephemeral: false });
+                interaction.editReply({ content: `El archivo debe ser inferior a ${process.env.MAX_CUSTOM_AUDIO_LENGTH_SECS}s.` });
             } else {
                 // Save mp3
                 const guildID = interaction.guild.id;
@@ -187,14 +188,14 @@ async function downloadCustomAudio(interaction) {
                 datos[guildID][userID] = [, 0, true]; // Custom audio
                 await setDatabase("nombresAudio", datos);
                 console.log(`${displayName} - Custom audio content written to file: ${guildID}/${userID}.mp3`);
-                interaction.editReply({ content: "Audio guardado correctamente.", files: [mp3.attachment], ephemeral: false });
+                interaction.editReply({ content: "Audio guardado correctamente.", files: [mp3.attachment] });
             }
         }
     } else {
         // Delete from DB
         delete datos[interaction.guild.id][interaction.user.id];
         await setDatabase("nombresAudio", datos);
-        interaction.reply({ content: "Audio eliminado.", ephemeral: false });
+        interaction.reply({ content: "Audio eliminado." });
     }
 }
 
@@ -206,9 +207,9 @@ async function allowCustomAudio(interaction, permitir) {
     datos[interaction.guild.id]["custom_audio"] = permitir;
     await setDatabase("nombresAudio", datos);
     if (permitir) {
-        interaction.reply({ content: "Ahora ya se pueden utilizar audios personalizados.", ephemeral: false });
+        interaction.reply({ content: "Ahora ya se pueden utilizar audios personalizados." });
     } else {
-        interaction.reply({ content: "Ahora ya no se pueden utilizar audios personalizados.", ephemeral: false });
+        interaction.reply({ content: "Ahora ya no se pueden utilizar audios personalizados." });
     }
 }
 

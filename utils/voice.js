@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
-import gTTS from "gtts";
+import gtts from 'better-node-gtts';
 import { getDatabase, setDatabase } from "./database.js";
 import { writeFileSync, mkdirSync, createReadStream } from "fs";
 import { TextToSpeechClient } from "@google-cloud/text-to-speech";
@@ -49,19 +49,15 @@ async function descargar_audio_gtts(displayName, userID, guildID, datos) {
     } else {
         frase = `${frase} ${displayName}`;
     }
-    const gtts = new gTTS(frase, idioma);
     let path = `./data/audioNombres/${guildID}`;
     mkdirSync(path, { recursive: true });
-    await new Promise((resolve) => {
-        gtts.save(path + `/${userID}.mp3`, function (err, response) {
-            if (err) {
-                throw new Error(err);
-            }
+    await new gtts.Text2Speech(idioma).save(path + `/${userID}.mp3`, frase)
+        .then(() => {
             console.log(`${displayName} - Audio content written to file: ${guildID}/${userID}.mp3`);
-            resolve(response);
+        })
+        .catch((err) => {
+            throw new Error(err);
         });
-    });
-
     datos[guildID][userID] = [displayName, Math.floor(Date.now() / 1000)];
     return datos;
 }

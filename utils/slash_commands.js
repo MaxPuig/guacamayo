@@ -5,7 +5,7 @@ import { getActivity } from "./activities.js";
 import { getDatabase, setDatabase } from "./database.js";
 import { sendHelpCommands, sendInvite } from "./help.js";
 import { addDeleteUserPermission } from "./adminPerms.js";
-import { ChannelType, PermissionsBitField } from "discord.js";
+import { ChannelType, PermissionsBitField, MessageFlags } from "discord.js";
 import { avisos, espanol, idioma, frase, downloadCustomAudio, allowCustomAudio } from "./voice_settings.js";
 
 /** Recibe los slash-commands y ejecuta lo que corresponde. */
@@ -28,7 +28,7 @@ async function slash_command(interaction, client) {
             interaction.reply(await getActivity(canal.id, actividad, interaction.guild.id, client));
             return;
         } else {
-            interaction.reply({ content: "El canal debe ser un canal de voz.", ephemeral: true });
+            interaction.reply({ content: "El canal debe ser un canal de voz.", flags: MessageFlags.Ephemeral });
             return;
         }
     } else if (interaction.commandName == "voz") {
@@ -38,7 +38,7 @@ async function slash_command(interaction, client) {
         }
     } else if (interaction.commandName == "enviar_oferta") {
         if (interaction.member.id != process.env.BOT_ADMIN) {
-            interaction.reply({ content: "Solo el creador del bot puede ejecutar el comando.", ephemeral: true });
+            interaction.reply({ content: "Solo el creador del bot puede ejecutar el comando.", flags: MessageFlags.Ephemeral });
             return;
         }
         const title = interaction.options.getString("titulo");
@@ -46,7 +46,7 @@ async function slash_command(interaction, client) {
         let mensaje = "**Nueva Oferta**\n" + title + "\n" + link.replace(/ /g, "\n");
         askConfirm(mensaje.substring(0, 2000), title, client);
         let confirmation = "Oferta recibida para enviar!\n" + mensaje;
-        interaction.reply({ content: confirmation.substring(0, 2000), ephemeral: false });
+        interaction.reply({ content: confirmation.substring(0, 2000) });
         return;
     }
     let datos = await getDatabase("adminPerms");
@@ -59,7 +59,7 @@ async function slash_command(interaction, client) {
     ) {
         let mensaje = "Solo la gente con rol/permiso de administrador puede usar este comando.\n";
         mensaje += "`/help` Para ver lo que puedes usar.";
-        interaction.reply({ content: mensaje, ephemeral: true });
+        interaction.reply({ content: mensaje, flags: MessageFlags.Ephemeral });
     } else if (interaction.commandName == "ofertas") {
         const activo = interaction.options.getString("establecer_o_quitar");
         setRSSchannel(interaction, activo);
@@ -71,7 +71,7 @@ async function slash_command(interaction, client) {
             const addDelete = interaction.options.getString("dar_o_quitar");
             addDeleteUserPermission(interaction, addDelete, userId);
         } else {
-            interaction.reply({ content: "No puedes dar permisos. Solo un administrador puede.", ephemeral: true });
+            interaction.reply({ content: "No puedes dar permisos. Solo un administrador puede.", flags: MessageFlags.Ephemeral });
         }
     }
 }

@@ -23,9 +23,10 @@ async function sendRSS(client) {
             let gameLinks = [];
             for (let link of links) {
                 if (link.toLowerCase().startsWith("https://steamcommunity.com/linkfilter")) {
-                    link = decodeURIComponent(new URL(link).searchParams.get('u'));
+                    link = decodeURIComponent(new URL(link.split('"', 1)[0]).searchParams.get('u'));
                 }
                 if (link.includes("discord.gg")) break;
+                if (link.includes("steamcommunity.com/groups/")) break;
                 link = link.split('"')[0];
                 link = link.replace("https://steamcommunity.com/linkfilter/?url=", "");
                 link = link.split("?curator_clanid")[0];
@@ -81,8 +82,8 @@ async function getPrimeGames(client) {
 /** Envía el mensaje con botón de confirmar/cancelar el envio de la oferta. */
 async function askConfirm(mensaje, titulo, client) {
     const row = new ActionRowBuilder();
-    row.addComponents(new ButtonBuilder().setCustomId("confirm").setLabel("confirm").setStyle(ButtonStyle.Success));
-    row.addComponents(new ButtonBuilder().setCustomId("cancel").setLabel("cancel").setStyle(ButtonStyle.Danger));
+    row.addComponents(new ButtonBuilder().setCustomId("confirm").setLabel("Confirm").setStyle(ButtonStyle.Success));
+    row.addComponents(new ButtonBuilder().setCustomId("cancel").setLabel("Cancel").setStyle(ButtonStyle.Danger));
     let sent_message;
     const admin_id = await client.users.fetch(process.env.BOT_ADMIN);
     await admin_id.send({ content: mensaje, components: [row], fetchReply: true }).then((msg) => (sent_message = msg));

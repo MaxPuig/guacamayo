@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 import fetch from "node-fetch";
-import { EmbedBuilder } from "discord.js";
+import { EmbedBuilder, MessageFlags } from "discord.js";
 import { getDatabase, setDatabase } from "./database.js";
 const token = process.env.TOKEN.toString();
 
@@ -52,12 +52,12 @@ async function createInvite(channelId, applicationId, guildId, datos) {
                     setDatabase("activities", datos);
                 }
             });
-        if (error == 50013) return { content: "El bot no tiene permiso para crear invitaciones.", ephemeral: true };
-        else if (error == 10003) return { content: "El canal no existe.", ephemeral: true };
-        else if (error == "error") return { content: "Ha sucedido un error.", ephemeral: true };
+        if (error == 50013) return { content: "El bot no tiene permiso para crear invitaciones.", flags: MessageFlags.Ephemeral };
+        else if (error == 10003) return { content: "El canal no existe.", flags: MessageFlags.Ephemeral };
+        else if (error == "error") return { content: "Ha sucedido un error.", flags: MessageFlags.Ephemeral };
         else return { embeds: [embed] };
     } catch (err) {
-        return { content: "Ha sucedido un error.", ephemeral: true };
+        return { content: "Ha sucedido un error.", flags: MessageFlags.Ephemeral };
     }
 }
 
