@@ -1,5 +1,3 @@
-import dotenv from "dotenv";
-dotenv.config();
 import { EmbedBuilder } from "discord.js";
 
 /** Envía la lista de comandos. */

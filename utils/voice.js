@@ -1,5 +1,3 @@
-import dotenv from "dotenv";
-dotenv.config();
 import gtts from 'better-node-gtts';
 import { getDatabase, setDatabase } from "./database.js";
 import { writeFileSync, mkdirSync, createReadStream } from "fs";

@@ -1,5 +1,3 @@
-import dotenv from "dotenv";
-dotenv.config();
 import { setRSSchannel, askConfirm } from "./rss.js";
 import { getActivity } from "./activities.js";
 import { getDatabase, setDatabase } from "./database.js";

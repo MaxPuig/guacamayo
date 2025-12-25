@@ -1,9 +1,6 @@
-import dotenv from "dotenv";
-dotenv.config();
 import fetch from "node-fetch";
 import { fileSync } from "tmp";
 import ffmpeg from "fluent-ffmpeg";
-import { MessageFlags } from "discord.js";
 import { getDatabase, setDatabase } from "./database.js";
 import { writeFileSync, mkdirSync, appendFile } from "fs";
 

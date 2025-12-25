@@ -1,5 +1,4 @@
-import dotenv from "dotenv";
-dotenv.config();
+import "dotenv/config";
 import { Client, GatewayIntentBits, InteractionType, ChannelType, Events, ActivityType } from "discord.js";
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates] });
 import { userJoined } from "./utils/voice.js";

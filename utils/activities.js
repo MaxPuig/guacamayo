@@ -1,5 +1,3 @@
-import dotenv from "dotenv";
-dotenv.config();
 import fetch from "node-fetch";
 import { EmbedBuilder, MessageFlags } from "discord.js";
 import { getDatabase, setDatabase } from "./database.js";

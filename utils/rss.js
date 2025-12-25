@@ -1,5 +1,3 @@
-import dotenv from "dotenv";
-dotenv.config();
 import Parser from "rss-parser";
 import { getDatabase, setDatabase } from "./database.js";
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
