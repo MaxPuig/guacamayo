@@ -198,6 +198,7 @@ const voz = {
                     type: ApplicationCommandOptionType.Attachment,
                     description: "Archivo mp3",
                     required: false,
+                    file_types: [".mp3"],
                 },
             ],
         },

@@ -1,28 +1,21 @@
 import { Low } from "lowdb";
 import { JSONFile } from "lowdb/node";
-const db = new Low(new JSONFile("./data/database.json"));
+
+const defaultData = {
+    nombresAudio: {},
+    freeGames: [],
+    tempGames: {},
+    rss: [],
+    adminPerms: {},
+    activities: {},
+};
+
+const db = new Low(new JSONFile("./data/database.json"), defaultData);
 
 await db.read();
-if (db.data === null) {
-    // Si no existe el archivo/db, lo crea.
-    db.data = {
-        nombresAudio: {},
-        freeGames: [],
-        tempGames: {},
-        rss: [],
-        adminPerms: {},
-        activities: {},
-    };
-    await db.write();
-} else {
-    // Si existe, comprueba que no falten campos.
-    db.data.nombresAudio = db.data.nombresAudio || {};
-    db.data.freeGames = db.data.freeGames || [];
-    db.data.tempGames = db.data.tempGames || {};
-    db.data.rss = db.data.rss || [];
-    db.data.adminPerms = db.data.adminPerms || {};
-    db.data.activities = db.data.activities || {};
-}
+// Comprueba que no falten campos
+db.data = { ...defaultData, ...db.data };
+await db.write();
 
 /** Devuelve el objeto o array. */
 async function getDatabase(part) {

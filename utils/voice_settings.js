@@ -2,7 +2,7 @@ import fetch from "node-fetch";
 import { fileSync } from "tmp";
 import ffmpeg from "fluent-ffmpeg";
 import { getDatabase, setDatabase } from "./database.js";
-import { writeFileSync, mkdirSync, appendFile } from "fs";
+import { writeFileSync, mkdirSync } from "fs";
 
 /** Activa o desactiva los avisos en el canal de voz. */
 async function avisos(interaction, voz_activa) {
@@ -133,7 +133,8 @@ async function downloadCustomAudio(interaction) {
         } else if (mp3.size > Number(process.env.MAX_CUSTOM_FILE_SIZE_BYTES)) {
             interaction.editReply({ content: `El archivo debe ser inferior a ${process.env.MAX_CUSTOM_FILE_SIZE_BYTES / 1000}KB.` });
             return;
-        } else if (mp3.contentType != "audio/mpeg" || !mp3.name.toLowerCase().endsWith(".mp3")) {
+        } else if (!mp3.name.toLowerCase().endsWith(".mp3") || (mp3.contentType && !mp3.contentType.startsWith("audio/"))) {
+            // Discord puede enviar audio/mpeg, audio/mpeg3, audio/mp3... El formato real se comprueba luego con ffprobe.
             // only mp3
             interaction.editReply({ content: "El archivo debe ser de tipo .mp3" });
             return;
@@ -144,15 +145,14 @@ async function downloadCustomAudio(interaction) {
             buffer = Buffer.from(buffer);
             let mp3_length, error;
             // temp file to get length of mp3
-            let temp_file = fileSync();
-            appendFile(temp_file.name, buffer, function (err) {
-                if (err) {
-                    console.log(err);
-                    error = true;
-                }
-            });
+            let temp_file = fileSync({ postfix: ".mp3" });
             try {
-                mp3_length = await getMP3Length(temp_file.name);
+                // Esperar a que se escriba el archivo antes de ffprobe.
+                writeFileSync(temp_file.name, buffer);
+                const format = await getMP3Format(temp_file.name);
+                // Comprobar que realmente es un mp3
+                if (!format?.format_name?.split(",").includes("mp3")) throw new Error(`Not an mp3: ${format?.format_name}`);
+                mp3_length = format.duration;
             } catch (e) {
                 error = true;
                 console.log(e);
@@ -210,14 +210,14 @@ async function allowCustomAudio(interaction, permitir) {
     }
 }
 
-/** Calcular duración del mp3 */
-async function getMP3Length(path) {
+/** Formato y duración (format.duration) del mp3 */
+async function getMP3Format(path) {
     return new Promise((resolve, reject) => {
         ffmpeg.ffprobe(path, function (err, metadata) {
             if (err) {
                 reject(err);
             } else {
-                resolve(metadata?.format.duration);
+                resolve(metadata?.format);
             }
         });
     });
