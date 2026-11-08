@@ -7,7 +7,6 @@ const defaultData = {
     tempGames: {},
     rss: [],
     adminPerms: {},
-    activities: {},
 };
 
 const db = new Low(new JSONFile("./data/database.json"), defaultData);

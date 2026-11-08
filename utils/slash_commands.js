@@ -1,9 +1,8 @@
 import { setRSSchannel, askConfirm } from "./rss.js";
-import { getActivity } from "./activities.js";
 import { getDatabase, setDatabase } from "./database.js";
 import { sendHelpCommands, sendInvite } from "./help.js";
 import { addDeleteUserPermission } from "./adminPerms.js";
-import { ChannelType, PermissionsBitField, MessageFlags } from "discord.js";
+import { PermissionsBitField, MessageFlags } from "discord.js";
 import { avisos, espanol, idioma, frase, downloadCustomAudio, allowCustomAudio } from "./voice_settings.js";
 
 /** Recibe los slash-commands y ejecuta lo que corresponde. */
@@ -19,16 +18,6 @@ async function slash_command(interaction, client) {
         admin_id.send({ content: `**${interaction.user.username}** (<@!${interaction.user.id}>) de **${interaction.guild?.name}** te ha enviado un mensaje:\n> ${interaction.options.getString("mensaje")}` });
         interaction.reply({ content: "Se ha enviado tu mensaje!\n> " + interaction.options.getString("mensaje") });
         return;
-    } else if (interaction.commandName == "activity") {
-        const canal = interaction.options.getChannel("canal");
-        const actividad = interaction.options.getString("actividad");
-        if (canal.type == ChannelType.GuildVoice) {
-            interaction.reply(await getActivity(canal.id, actividad, interaction.guild.id, client));
-            return;
-        } else {
-            interaction.reply({ content: "El canal debe ser un canal de voz.", flags: MessageFlags.Ephemeral });
-            return;
-        }
     } else if (interaction.commandName == "voz") {
         if (interaction.options._subcommand == "audio_personalizado") {
             downloadCustomAudio(interaction);

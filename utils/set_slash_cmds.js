@@ -1,4 +1,4 @@
-import { ChannelType, ApplicationCommandOptionType, PermissionsBitField } from "discord.js";
+import { ApplicationCommandOptionType, PermissionsBitField } from "discord.js";
 
 const idiomas = [
     { name: "Afrikaans", value: "af" },
@@ -286,59 +286,6 @@ const adminPerms = {
     ],
 };
 
-const activity = {
-    name: "activity",
-    description: "Empieza una actividad en el canal de voz.",
-    options: [
-        {
-            name: "canal",
-            type: ApplicationCommandOptionType.Channel,
-            channelTypes: [ChannelType.GuildVoice],
-            description: "Canal DE VOZ donde empezar la actividad.",
-            required: true,
-        },
-        {
-            name: "actividad",
-            type: ApplicationCommandOptionType.String,
-            description: "Actividad a empezar.",
-            required: true,
-            choices: [
-                { name: "Watch Together", value: "880218394199220334" },
-                { name: "Blazing 8s", value: "832025144389533716" },
-                { name: "Bobble Bash", value: "1107689944685748377" },
-                { name: "Bobble League", value: "947957217959759964" },
-                { name: "Checkers In The Park", value: "832013003968348200" },
-                { name: "Chef Showdown", value: "1037680572660727838" },
-                { name: "Chess in the Park", value: "832012774040141894" },
-                { name: "Colonist", value: "1106787098452832296" },
-                { name: "Color Together", value: "1039835161136746497" },
-                { name: "Gartic Phone", value: "1007373802981822582" },
-                { name: "Jamspace Whiteboard", value: "1070087967294631976" },
-                { name: "Know What I Meme", value: "950505761862189096" },
-                { name: "Krunker Strike FRVR", value: "1011683823555199066" },
-                { name: "land-io", value: "903769130790969345" },
-                { name: "Letter League", value: "879863686565621790" },
-                { name: "Poker Night", value: "755827207812677713" },
-                { name: "Putt Party", value: "945737671223947305" },
-                { name: "Sketch Heads", value: "902271654783242291" },
-                { name: "SpellCast", value: "852509694341283871" },
-                // Unreleased/Locked/Deprecated
-                // { name: "Word Snacks", value: "879863976006127627" },
-                // { name: "Ask Away", value: "976052223358406656" },
-                // { name: "Bash Out", value: "1006584476094177371" },
-                // { name: "Scrappies", value: "1000100849122553977" },
-                // { name: "Awkword", value: "879863881349087252" },
-                // { name: "Betrayal.io", value: "773336526917861400" },
-                // { name: "Associations", value: "891001866073296967" }, // Decoders Dev
-                // { name: "Fishington.io", value: "814288819477020702" },
-                // { name: "Putts", value: "832012854282158180" },
-                // { name: "Sketchy Artist", value: "879864070101172255" }, // Fake Artist
-                // { name: "Youtube Together", value: "755600276941176913" },
-            ],
-        },
-    ],
-};
-
 const enviar_oferta = {
     name: "enviar_oferta",
     description: "Envia una nueva oferta.",
@@ -359,6 +306,6 @@ const enviar_oferta = {
     ],
 };
 
-const all_commands_array = [help, voz, activity, feedback, invite, ofertas, adminPerms, enviar_oferta];
+const all_commands_array = [help, voz, feedback, invite, ofertas, adminPerms, enviar_oferta];
 
 export { all_commands_array };
